@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "yarn run android:clean && react-native run-android",
+    "android": "react-native run-android",
     "android:clean": "cd android && gradlew clean && cd ..",
     "ios": "react-native run-ios",
     "start": "react-native start",
@@ -16,7 +16,11 @@
     "@react-navigation/native-stack": "^6.5.2",
     "ci-info": "^3.3.0",
     "email-validator": "^2.0.4",
+    "js-yaml": "^4.1.0",
+    "jsesc": "^3.0.2",
     "metro-cache-key": "^0.69.1",
+    "mime": "^3.0.0",
+    "nanoid": "^3.3.2",
     "react": "17.0.2",
     "react-native": "0.67.4",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
@@ -25,6 +29,8 @@
     "react-native-screens": "^3.13.1",
     "react-native-vector-icons": "^9.1.0",
     "react-redux": "^7.2.6",
+    "regjsparser": "^0.8.4",
+    "resolve": "^1.22.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.3.5"
   },
@@ -36,6 +42,8 @@
     "babel-jest": "^27.5.1",
     "eslint": "^8.12.0",
     "jest": "^27.5.1",
+    "jetifier": "^2.0.0",
+    "metro": "^0.70.0",
     "metro-react-native-babel-preset": "^0.69.1",
     "react-test-renderer": "17.0.2"
   },
