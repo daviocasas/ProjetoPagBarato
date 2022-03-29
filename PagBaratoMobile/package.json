@@ -11,9 +11,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@react-native-async-storage/async-storage": "^1.17.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.2",
+    "antd": "^4.19.3",
     "ci-info": "^3.3.0",
     "email-validator": "^2.0.4",
     "js-yaml": "^4.1.0",
@@ -39,6 +41,7 @@
     "@babel/runtime": "^7.17.8",
     "@react-native-community/eslint-config": "^3.0.1",
     "@types/react-native": "^0.67.3",
+    "@types/styled-components": "^5.1.24",
     "babel-jest": "^27.5.1",
     "eslint": "^8.12.0",
     "jest": "^27.5.1",

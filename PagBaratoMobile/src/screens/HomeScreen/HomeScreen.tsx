@@ -1,27 +1,43 @@
 import React from 'react';
-import { View } from 'react-native';
-import ItemBox from '../../components/ItemBox/ItemBox';
-import Button from '../../components/Button/Button';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/Auth';
-import Header from '../../components/Header/Header';
+import {
+    SafeAreaView,
+    View,
+    TextInput,
+    FlatList,
+    StyleSheet,
+    TouchableOpacity,
 
+} from 'react-native';
+
+import { productList } from '../../services/listResults';
+import { ProductItem } from '../../components/ProductItem/ProductItem';
+import { SeparatorItem } from '../../components/SeparatorItem/SeparatorItem';
 
 export function HomeScreen() {
 
-    const navigation = useNavigation();
-    const { signOut } = useAuth();
+    function renderItem({ item }) {
+        return <ProductItem {...item} />
+    }
 
     return (
-        <View>
-            <Header
-                title='Teste'
-                onPress={signOut} />
-            <Button
-                onPress={() => navigation.navigate('PostProductScreen')}
-                width={0.8}
-                title="Publicar um produto"
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                ItemSeparatorComponent={SeparatorItem}
+                keyExtractor={(item) => item.id}
+                data={productList}
+                renderItem={renderItem}
             />
-        </View>
-    );
-}
+        </SafeAreaView>
+    )
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+
+    },
+});
+
+
+
