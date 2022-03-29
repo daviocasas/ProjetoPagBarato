@@ -1,0 +1,51 @@
+export default [
+    {
+        id: 1,
+        name: 'Coca-Cola - 2l',
+        place: 'Mercado Extra',
+        price: 7.99,
+        avatar: 'https://i.pravatar.cc/150?img=31',
+    },
+    {
+        id: 2,
+        name: 'Coca-Cola - 600ml',
+        place: 'Mercado Extra',
+        price: 3.99,
+        avatar: 'https://i.pravatar.cc/150?img=32',
+    },
+    {
+        id: 3,
+        name: 'Coca-Cola - 600ml',
+        place: 'Oxxo',
+        price: 4.99,
+        avatar: 'https://i.pravatar.cc/150?img=33',
+    },
+    {
+        id: 4,
+        name: 'Arroz Camil - 1kg',
+        place: 'Oxxo',
+        price: 5.40,
+        avatar: 'https://i.pravatar.cc/150?img=34',
+    },
+    {
+        id: 5,
+        name: 'Feijão Carioca Meu Biju - 1kg',
+        place: 'Mercado do Zé',
+        price: 7.98,
+        avatar: 'https://i.pravatar.cc/150?img=35',
+    },
+    {
+        id: 6,
+        name: 'Maionese Heinz - 390g',
+        place: 'Carrefour',
+        price: 9.99,
+        avatar: 'https://i.pravatar.cc/150?img=36',
+    },
+    {
+        id: 7,
+        name: 'Maionese Hellmann`s Tradicional - 500g',
+        place: 'Carrefour',
+        price: 6.90,
+        avatar: 'https://i.pravatar.cc/150?img=37',
+    },
+];

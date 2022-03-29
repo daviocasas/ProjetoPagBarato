@@ -1,0 +1,22 @@
+{
+  "color": {
+    "primary": "#47E181",
+    "second": "#FF8976",
+    "little_gray": "#E0E0E0",
+    "baby_gray": "#BEBEBE",
+    "dark_gray": "#737373",
+    "black": "#190204",
+    "rose_quartz": "#FADCD9",
+    "little_coral": "#F79489",
+    "cream": "#F9F1F0",
+    "white": "#fff"
+  },
+  "font": {
+    "regular": "Lexend-Regular",
+    "medium": "Lexend-Medium",
+    "bold": "Lexend-Bold",
+    "semiBold": "Lexend-SemiBold",
+    "extraBold": "Lexend-ExtraBold",
+    "light": "Lexend-Light"
+  }
+}
