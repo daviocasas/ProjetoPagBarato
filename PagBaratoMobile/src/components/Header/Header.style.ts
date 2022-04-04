@@ -5,6 +5,7 @@ import * as Dimension from '../../services/dimensionsService';
 export const Container = styled.View`
   background-color: ${color.primary};
   padding-top: ${Dimension.widthScale(0.05)}px;
+  padding-bottom: ${Dimension.widthScale(0.02)}px;
   width: ${Dimension.widthScale(1)}px;
   flex-direction: row;
 `;
@@ -15,7 +16,6 @@ export const WrapperIcon = styled.TouchableOpacity.attrs({
   width: ${Dimension.widthScale(0.2)}px;
   justify-content: center;
   align-items: center;
-  background-color: red;
 `;
 
 export const WrapperExit = styled.TouchableOpacity.attrs({
@@ -24,7 +24,6 @@ export const WrapperExit = styled.TouchableOpacity.attrs({
   width: ${Dimension.widthScale(0.2)}px;
   justify-content: center;
   align-items: center;
-  background-color: blue;
 `;
 
 export const WrapperTitle = styled.View`
@@ -34,7 +33,7 @@ export const WrapperTitle = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${font.medium};
+  font-family: ${font.bold};
   font-size: ${Dimension.fontScale(14)}px;
   color: ${color.cream};
   text-align: center;

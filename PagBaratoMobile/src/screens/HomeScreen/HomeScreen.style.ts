@@ -21,7 +21,7 @@ export const DeafultSafeArea = styled.View`
 
 export const DefaultContainer = styled.SafeAreaView`
     flex: 1;
-    backgroundColor: #242425;
+    backgroundColor: #fff;
 `;
 
 export const OrderButton = styled.TouchableOpacity.attrs({

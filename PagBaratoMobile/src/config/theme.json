@@ -12,11 +12,10 @@
     "white": "#fff"
   },
   "font": {
-    "regular": "Lexend-Regular",
-    "medium": "Lexend-Medium",
-    "bold": "Lexend-Bold",
-    "semiBold": "Lexend-SemiBold",
-    "extraBold": "Lexend-ExtraBold",
-    "light": "Lexend-Light"
+    "regular": "Poppins-Regular",
+    "bold": "Poppins-Bold",
+    "semiBold": "Poppins-SemiBold",
+    "medium": "Poppins-Regular",
+    "light": "Poppins-Light"
   }
 }

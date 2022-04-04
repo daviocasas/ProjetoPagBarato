@@ -6,7 +6,7 @@ function signIn(email: string, password: string): Promise<AuthData> {
     return new Promise((resolve, reject) => {
 
         setTimeout(() => {
-            if (password === '123456') {
+            if (password === '123') {
                 resolve({
                     token: 'fake-token',
                     email,
