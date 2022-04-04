@@ -12,8 +12,10 @@ import {
 import { productList } from '../../services/listResults';
 import { ProductItem } from '../../components/ProductItem/ProductItem';
 import { SeparatorItem } from '../../components/SeparatorItem/SeparatorItem';
+import Header from '../../components/Header/Header';
+import Button from '../../components/Button/Button';
 
-export function HomeScreen() {
+export function HomeScreen({ navigation }) {
 
     function renderItem({ item }) {
         return <ProductItem {...item} />
@@ -21,6 +23,8 @@ export function HomeScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Header title="Home" navigation />
+            <Button title="Adicionar" width={0.3} onPress={() => navigation.navigate('PostProductScreen')} />
             <FlatList
                 ItemSeparatorComponent={SeparatorItem}
                 keyExtractor={(item) => item.id}

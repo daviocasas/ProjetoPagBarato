@@ -11,7 +11,7 @@ interface IProps {
 
 export const Container = styled(KeyboardAwareScrollView)`
   flex: 1;
-  background-color: ${color.primary};
+  background-color: ${color.cream};
   flex-direction: column;
 `;
 

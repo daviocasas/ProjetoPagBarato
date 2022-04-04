@@ -4,7 +4,6 @@ import EmailValidator from 'email-validator';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { InputType } from '../../enum/inputType';
-import * as MessageService from '../../services/message';
 import { useDispatch } from 'react-redux';
 
 

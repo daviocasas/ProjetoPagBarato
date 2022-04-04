@@ -4,15 +4,13 @@ import * as S from './ItemBox.style'
 interface IItemBox {
     title: string;
     price: number;
-    location: string;
 }
 
-const ItemBox = ({ title, price, location }: IItemBox) => {
+const ItemBox = ({ title, price }: IItemBox) => {
     return (
         <S.ItemContainer>
             <S.TextContainer>
                 <S.Title>{title}</S.Title>
-                <S.Location>{location}</S.Location>
             </S.TextContainer>
             <S.NumberContainer>
                 <S.Price>R$ {price}</S.Price>
