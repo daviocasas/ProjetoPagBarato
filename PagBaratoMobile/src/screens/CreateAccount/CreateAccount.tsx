@@ -8,11 +8,11 @@ import { useDispatch } from 'react-redux';
 
 
 import useReduxState from '../../hooks/useReduxState';
-import * as S from './LoginScreen.style';
+import * as S from './CreateAccount.style';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/Auth';
 
-export function LoginScreen({ navigation }) {
+export function CreateAccount() {
     const { signIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +23,7 @@ export function LoginScreen({ navigation }) {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>PagBarato</S.TextLogo>
+                        <S.TextLogo bold>Seja bem vindo!</S.TextLogo>
                         <S.WrapperForm>
                             <Input
                                 value={email}
@@ -44,16 +44,17 @@ export function LoginScreen({ navigation }) {
                                 keyboardType="default"
                                 maxLength={120}
                             />
+                            <Input
+                                value={password}
+                                onChangeText={setPassword}
+                                type={InputType.PASSWORD}
+                                password
+                                placeholder="Confirme a Senha"
+                                autoCapitalized="none"
+                                keyboardType="default"
+                                maxLength={120}
+                            />
                         </S.WrapperForm>
-                        <S.WrapperFormLink>
-                            <S.WrapperLink onPress={() => navigation.navigate('ForgotPassword')} >
-                                <S.TextLogo>Esqueci a senha</S.TextLogo>
-                            </S.WrapperLink>
-                            <S.WrapperLink onPress={() => navigation.navigate('CreateAccount')}>
-                                <S.TextLogo>Criar uma conta</S.TextLogo>
-                            </S.WrapperLink>
-
-                        </S.WrapperFormLink>
                         <S.WrapperForm>
                             <Button
                                 title="Entrar"

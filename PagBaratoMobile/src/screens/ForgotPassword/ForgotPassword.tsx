@@ -8,11 +8,11 @@ import { useDispatch } from 'react-redux';
 
 
 import useReduxState from '../../hooks/useReduxState';
-import * as S from './LoginScreen.style';
+import * as S from './ForgotPassword.style';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/Auth';
 
-export function LoginScreen({ navigation }) {
+export function ForgotPassword() {
     const { signIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,40 +23,21 @@ export function LoginScreen({ navigation }) {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>PagBarato</S.TextLogo>
+                        <S.TextLogo bold>Restaure a senha!</S.TextLogo>
                         <S.WrapperForm>
                             <Input
                                 value={email}
                                 onChangeText={setEmail}
                                 type={InputType.EMAIL}
-                                placeholder="E-mail"
+                                placeholder="Digite seu E-mail"
                                 autoCapitalized="none"
                                 keyboardType="email-address"
                                 maxLength={120}
                             />
-                            <Input
-                                value={password}
-                                onChangeText={setPassword}
-                                type={InputType.PASSWORD}
-                                password
-                                placeholder="Senha"
-                                autoCapitalized="none"
-                                keyboardType="default"
-                                maxLength={120}
-                            />
                         </S.WrapperForm>
-                        <S.WrapperFormLink>
-                            <S.WrapperLink onPress={() => navigation.navigate('ForgotPassword')} >
-                                <S.TextLogo>Esqueci a senha</S.TextLogo>
-                            </S.WrapperLink>
-                            <S.WrapperLink onPress={() => navigation.navigate('CreateAccount')}>
-                                <S.TextLogo>Criar uma conta</S.TextLogo>
-                            </S.WrapperLink>
-
-                        </S.WrapperFormLink>
                         <S.WrapperForm>
                             <Button
-                                title="Entrar"
+                                title="Enviar"
                                 width={0.6}
                                 onPress={() => signIn(email, password)}
                             />

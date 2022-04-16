@@ -2,6 +2,7 @@ import React from 'react';
 import * as S from './Header.style';
 import Feather from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../contexts/Auth';
+import { AppDrawer } from '../../routes/AppDrawer';
 
 interface IHeader {
   title?: string;

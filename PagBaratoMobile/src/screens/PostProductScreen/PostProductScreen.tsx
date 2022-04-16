@@ -23,7 +23,7 @@ export function PostProductScreen() {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>Seja bem vindo!</S.TextLogo>
+                        <S.TextLogo bold>Poste um novo produto!</S.TextLogo>
                         <S.WrapperForm>
                             <Input
                                 value={name}
