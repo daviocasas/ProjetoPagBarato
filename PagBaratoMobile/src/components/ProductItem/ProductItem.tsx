@@ -10,7 +10,7 @@ export function ProductItem({ name, price, image }: Product) {
                 <Image style={{ width: 120, height: 100 }} source={image} />
                 <S.ContentContainer>
                     <S.DefaultTitle>{name}</S.DefaultTitle>
-                    <S.DefaultDescription>Preço mais baixo: </S.DefaultDescription>
+                    <S.DefaultDescription>Preço mais baixo encontrado na sua região: </S.DefaultDescription>
                     <S.DefaultPrice>
                         R$ {price}
                     </S.DefaultPrice>

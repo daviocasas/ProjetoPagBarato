@@ -23,7 +23,7 @@ export function CreateAccount() {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>Seja bem vindo!</S.TextLogo>
+                        <S.TextLogo bold>Preencha os campos para criar a sua conta!</S.TextLogo>
                         <S.WrapperForm>
                             <Input
                                 value={email}
@@ -57,7 +57,7 @@ export function CreateAccount() {
                         </S.WrapperForm>
                         <S.WrapperForm>
                             <Button
-                                title="Entrar"
+                                title="Criar conta"
                                 width={0.6}
                                 onPress={() => signIn(email, password)}
                             />
