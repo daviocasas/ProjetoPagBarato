@@ -7,6 +7,8 @@ import { AuthStack } from './AuthStack';
 import { useAuth } from '../contexts/Auth';
 import { AppDrawer } from './AppDrawer';
 
+import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
+
 export function Router() {
     const { authData, loading } = useAuth();
 
@@ -22,9 +24,7 @@ export function Router() {
 
     if (loading) {
         return (
-            <View>
-                <Text>Carregando</Text>
-            </View>
+            <SplashScreen />
         )
     }
     return (

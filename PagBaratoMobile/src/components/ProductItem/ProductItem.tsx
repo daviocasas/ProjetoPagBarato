@@ -12,7 +12,7 @@ export function ProductItem({ name, price, image }: Product) {
                     <S.DefaultTitle>{name}</S.DefaultTitle>
                     <S.DefaultDescription>Preço mais baixo encontrado na sua região: </S.DefaultDescription>
                     <S.DefaultPrice>
-                        R$ {price}
+                        R$ {price.toFixed(2)}
                     </S.DefaultPrice>
                 </S.ContentContainer>
             </S.ProductContainer>

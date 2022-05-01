@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
-import EmailValidator from 'email-validator';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { InputType } from '../../enum/inputType';
-import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth'
+import { Image } from 'react-native';
 
 
 import useReduxState from '../../hooks/useReduxState';
@@ -30,7 +28,9 @@ export function LoginScreen({ navigation }) {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>PagBarato</S.TextLogo>
+                        <S.LogoContainer>
+                            <Image style={{ width: 250, height: 150 }} source={require('../../assets/logo/PagBarato_Cream.png')} />
+                        </S.LogoContainer>
                         <S.WrapperForm>
                             <Input
                                 value={email}

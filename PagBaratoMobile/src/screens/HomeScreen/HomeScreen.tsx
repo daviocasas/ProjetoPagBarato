@@ -43,7 +43,7 @@ export function HomeScreen() {
         <SafeAreaView style={styles.container}>
             <Header title="Home" />
             <TextInput
-                placeholder='Pesquise um produto'
+                placeholder='Pesquise um produto...'
                 value={searchText}
                 onChangeText={(t) => setSearchText(t)}
             />
@@ -60,9 +60,10 @@ export function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#f3f3f3",
 
     },
+
 });
 
 
