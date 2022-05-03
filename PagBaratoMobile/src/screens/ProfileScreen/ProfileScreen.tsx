@@ -13,6 +13,7 @@ export function ProfileScreen(): JSX.Element {
     const [distance, setDistance] = useState(0);
 
 
+
     return (
         <>
             <S.Container>

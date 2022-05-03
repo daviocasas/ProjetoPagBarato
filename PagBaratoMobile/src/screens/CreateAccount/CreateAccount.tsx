@@ -1,35 +1,24 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
-import EmailValidator from 'email-validator';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { InputType } from '../../enum/inputType';
-import { useDispatch } from 'react-redux';
-import auth from '@react-native-firebase/auth'
+import api from '../../services/api'
 
 
-import useReduxState from '../../hooks/useReduxState';
 import * as S from './CreateAccount.style';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/Auth';
 
 export function CreateAccount() {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
 
-    function signUp() {
-        auth().createUserWithEmailAndPassword(email, password).then((userCredential) => {
-            console.log('user: ', userCredential);
-        }).catch(error => {
-            if (error.code === 'auth/email-already-in-use') {
-                console.log('Email já existente')
-            }
-            if (error.code === 'auth/invalid-email') {
-                console.log('Email inválido')
-            }
-        });
-    }
 
+    const signUp = async (event: void) => {
+        const res = await api.post('/api/user', {
+            email, password, name
+        })
+        console.log(res.data)
+    }
 
     return (
         <>
@@ -54,6 +43,14 @@ export function CreateAccount() {
                                 password
                                 placeholder="Senha"
                                 autoCapitalized="none"
+                                keyboardType="default"
+                                maxLength={120}
+                            />
+                            <Input
+                                value={name}
+                                onChangeText={setName}
+                                placeholder="Nome"
+                                autoCapitalized="words"
                                 keyboardType="default"
                                 maxLength={120}
                             />

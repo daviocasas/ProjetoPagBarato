@@ -24,14 +24,14 @@ const Header = ({ title }: IHeader) => {
 
   return (
     <S.Container>
-      <S.WrapperExit onPress={signOut}>
-        <Feather name="log-out" size={30} />
+      <S.WrapperExit onPress={() => navigation.navigate('PostProductScreen')}>
+        <Feather name="plus" size={30} />
       </S.WrapperExit>
       <S.WrapperTitle>
         <S.Title>{title}</S.Title>
       </S.WrapperTitle>
-      <S.WrapperIcon onPress={() => navigation.navigate('PostProductScreen')} >
-        <Feather name="plus" size={30} />
+      <S.WrapperIcon onPress={signOut} >
+        <Feather name="log-out" size={30} />
       </S.WrapperIcon>
     </S.Container>
   );

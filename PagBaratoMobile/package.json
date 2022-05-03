@@ -21,6 +21,7 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.2",
     "antd": "^4.19.3",
+    "axios": "^0.27.2",
     "ci-info": "^3.3.0",
     "email-validator": "^2.0.4",
     "js-yaml": "^4.1.0",
