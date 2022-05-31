@@ -2,20 +2,28 @@ import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
+import api from '../../services/api'
+
 
 
 import * as S from './PostProductScreen.style';
 
 export function PostProductScreen() {
-    const [name, setName] = useState('');
+    const [productName, setProductName] = useState('');
     const [place, setPlace] = useState('');
     const [price, setPrice] = useState('');
 
-
-    const testeFunction = () => {
-        const message = "Produto publicado!"
-        return Alert.alert(message)
+    const postProductPrice = async () => {
+        const res = await api.post('/api/price', {
+            place, price, productName
+        })
+        console.log(res.data);
     }
+
+    //userID: a6adb78a-9beb-4c0f-a411-95f02323cb7c
+    //productName  
+
+    // https://github.com/lucasaraujonrt/react-native-animations
 
 
     return (
@@ -23,11 +31,11 @@ export function PostProductScreen() {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>Poste um novo produto!</S.TextLogo>
+                        <S.TextLogo bold>Poste um preço de produto!</S.TextLogo>
                         <S.WrapperForm>
                             <Input
-                                value={name}
-                                onChangeText={setName}
+                                value={productName}
+                                onChangeText={setProductName}
                                 placeholder="Nome do produto"
                                 autoCapitalized="none"
                                 keyboardType="default"
@@ -36,7 +44,7 @@ export function PostProductScreen() {
                             <Input
                                 value={place}
                                 onChangeText={setPlace}
-                                placeholder="Local do produto"
+                                placeholder="Estabelecimento"
                                 autoCapitalized="none"
                                 keyboardType="default"
                                 maxLength={120}
@@ -54,7 +62,7 @@ export function PostProductScreen() {
                             <Button
                                 title="Publicar produto"
                                 width={0.6}
-                                onPress={testeFunction}
+                                onPress={postProductPrice}
                             />
                         </S.WrapperForm>
                     </S.SubContainer>

@@ -10,9 +10,7 @@ interface IHeader {
   title?: string;
 }
 
-
-
-const Header = ({ title }: IHeader) => {
+const Header = ({ title }: any) => {
 
   //const { signOut } = useAuth();
 

@@ -3,7 +3,7 @@ import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { InputType } from '../../enum/inputType';
 import auth from '@react-native-firebase/auth'
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 
 
 import useReduxState from '../../hooks/useReduxState';
@@ -20,7 +20,16 @@ export function LoginScreen({ navigation }) {
     function signIn() {
         auth().signInWithEmailAndPassword(email, password)
             .then(() => console.log('Usuário logado'))
-            .catch(error => console.log(error))
+            .catch(error => {
+                if (error.code === 'auth/wrong-password') {
+                    Alert.alert('Senha incorreta')
+                    console.log('Senha incorreta')
+                }
+                if (error.code === 'auth/invalid-email') {
+                    Alert.alert('Email incorreto')
+                    console.log('Email incorreto')
+                }
+            })
     }
 
     return (
