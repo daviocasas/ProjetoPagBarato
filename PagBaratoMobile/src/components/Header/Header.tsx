@@ -2,32 +2,35 @@ import React from 'react';
 import * as S from './Header.style';
 import Feather from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../contexts/Auth';
+import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+
 
 interface IHeader {
   title?: string;
-  navigation;
 }
 
-const Header = ({ navigation, title }: IHeader) => {
+const Header = ({ title }: any) => {
 
-  const { signOut } = useAuth();
+  //const { signOut } = useAuth();
 
-  const openMenu = () => {
-    navigation.openDrawer()
+  const navigation = useNavigation();
+
+  function signOut() {
+    auth().signOut();
   }
-
 
   return (
     <S.Container>
-      <S.WrapperIcon onPress={openMenu}>
-        <Feather name="menu" size={30} />
-      </S.WrapperIcon>
+      <S.WrapperExit onPress={() => navigation.navigate('PostProductScreen')}>
+        <Feather name="plus" size={30} />
+      </S.WrapperExit>
       <S.WrapperTitle>
         <S.Title>{title}</S.Title>
       </S.WrapperTitle>
-      <S.WrapperExit onPress={signOut} >
+      <S.WrapperIcon onPress={signOut} >
         <Feather name="log-out" size={30} />
-      </S.WrapperExit>
+      </S.WrapperIcon>
     </S.Container>
   );
 };

@@ -40,6 +40,16 @@ export const TextLogo = styled.Text`
   color: ${(props: IProps) => (props.link ? color.dark_gray : color.black)};
 `;
 
+export const DefaultText = styled.Text`
+  font-family: ${font.medium};
+  font-size: ${(props: IProps) =>
+    props.bold ? `${Window.fontScale(22)}px` : `${Window.fontScale(14)}px`};
+  text-decoration: ${(props: IProps) => (props.link ? 'underline' : 'none')};
+  text-align: center;
+  font-weight: ${(props: IProps) => (props.bold ? 800 : 400)};
+  color: ${(props: IProps) => (props.link ? color.dark_gray : color.black)};
+`;
+
 export const SubContainer = styled.View`
   width: ${Window.widthScale(1)}px;
   height: ${Window.heightScale(0.7)}px;

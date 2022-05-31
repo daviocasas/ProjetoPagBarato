@@ -24,7 +24,7 @@ export const DefaultTitle = styled.Text`
 `;
 
 export const DefaultDescription = styled.Text`
-    font-size: 16px;
+    font-size: 12px;
     color: #000;
 `;
 

@@ -7,12 +7,12 @@ export function ProductItem({ name, price, image }: Product) {
     return (
         <>
             <S.ProductContainer>
-                <Image style={{ width: 120, height: 100 }} source={image} />
+                <Image style={{ width: 120, height: 100 }} source={image || { uri: 'https://criticalhits.com.br/wp-content/uploads/2022/05/one-piece-yamato.jpg' }} />
                 <S.ContentContainer>
                     <S.DefaultTitle>{name}</S.DefaultTitle>
-                    <S.DefaultDescription>Preço mais baixo: </S.DefaultDescription>
+                    <S.DefaultDescription>Preço: </S.DefaultDescription>
                     <S.DefaultPrice>
-                        R$ {price}
+                        R$ {price.toFixed(2)}
                     </S.DefaultPrice>
                 </S.ContentContainer>
             </S.ProductContainer>

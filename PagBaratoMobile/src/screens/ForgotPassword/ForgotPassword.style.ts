@@ -5,8 +5,8 @@ import { color, font } from '../../config/theme.json';
 import * as Window from '../../services/dimensionsService';
 
 interface IProps {
-  bold?: boolean;
-  link?: boolean;
+    bold?: boolean;
+    link?: boolean;
 }
 
 export const Container = styled(KeyboardAwareScrollView)`
@@ -27,16 +27,16 @@ export const WrapperLogo = styled.View`
 `;
 
 export const TextLogo = styled.Text`
-  font-family: ${font.medium};
+  font-family: ${font.semiBold};
   font-size: ${(props: IProps) =>
-    props.bold ? `${Window.fontScale(22)}px` : `${Window.fontScale(14)}px`};
+        props.bold ? `${Window.fontScale(22)}px` : `${Window.fontScale(12)}px`};
   text-decoration: ${(props: IProps) => (props.link ? 'underline' : 'none')};
   text-align: center;
   font-weight: ${(props: IProps) => (props.bold ? 800 : 400)};
   padding-vertical: ${(props: IProps) =>
-    props.bold
-      ? `${Window.heightScale(0.05)}px`
-      : `${Window.heightScale(0.025)}px`};
+        props.bold
+            ? `${Window.heightScale(0.05)}px`
+            : `${Window.heightScale(0.025)}px`};
   color: ${(props: IProps) => (props.link ? color.dark_gray : color.black)};
 `;
 
@@ -57,5 +57,14 @@ export const WrapperForm = styled.View`
 `;
 
 export const WrapperLink = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.6,
-})``;
+    activeOpacity: 0.6,
+})`
+  padding-left: ${Window.heightScale(0.02)}px;
+  padding-right: ${Window.heightScale(0.02)}px;
+`;
+
+export const WrapperFormLink = styled.View`
+  align-self: center;
+  flex-direction: row;
+  justify-content: center;
+`;
