@@ -10,16 +10,19 @@ import useReduxState from '../../hooks/useReduxState';
 import * as S from './LoginScreen.style';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../contexts/Auth';
+import { setAuthTokens, setItem, StorageItems } from '../../services/storage'
 
 export function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    //const { signIn } = useAuth();
-
     function signIn() {
         auth().signInWithEmailAndPassword(email, password)
-            .then(() => console.log('Usuário logado'))
+            .then((res) => {
+                console.log(res);
+                console.log(res.user.uid);
+                setItem(StorageItems.USER_ID, res.user.uid);
+            })
             .catch(error => {
                 if (error.code === 'auth/wrong-password') {
                     Alert.alert('Senha incorreta')
@@ -31,6 +34,16 @@ export function LoginScreen({ navigation }) {
                 }
             })
     }
+
+    auth().onAuthStateChanged(function (user) {
+        if (user) {
+            user.getIdToken().then(function (idToken) {  // <------ Check this line
+                setAuthTokens(idToken, ''); // It shows the Firebase token now
+                return idToken;
+            });
+        }
+    });
+
 
     return (
         <>

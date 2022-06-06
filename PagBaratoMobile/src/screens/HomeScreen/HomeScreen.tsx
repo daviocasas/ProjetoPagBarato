@@ -1,44 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     SafeAreaView,
     FlatList,
     StyleSheet,
-    TextInput
+    TextInput,
+    RefreshControl,
+    StatusBar,
 } from 'react-native';
-
-import { productList } from '../../services/listResults';
+import { useFocusEffect } from '@react-navigation/native';
 import { ProductItem } from '../../components/ProductItem/ProductItem';
 import { SeparatorItem } from '../../components/SeparatorItem/SeparatorItem';
-import { InputType } from '../../enum/inputType';
 import Header from '../../components/Header/Header';
-import Button from '../../components/Button/Button';
-import Input from '../../components/Input/Input';
 import api from '../../services/api';
+import { getItem, StorageItems } from '../../services/storage'
 
 
-import * as S from './HomeScreen.style';
 
 export function HomeScreen() {
     const [searchText, setSearchText] = useState('');
     const [list, setList] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     function renderItem({ item }) {
         return <ProductItem {...item} />
     }
 
-    // chamar a api :check:
-    // formatar os dados :check:
-    // renderizar os dados  :check:
-
     const fetchData = async () => {
-        const { data } = await api.get('/api/price?paginate=false');
-        const formatedData = data.data.records.map((item) => ({ ...item, price: item.value, name: item.productId }));
-        setList(formatedData);
+        setRefreshing((prevState) => !prevState);
+        const token = await getItem(StorageItems.ACCESS_TOKEN);
+        console.log(token)
+        try {
+            const { data } = await api.get('/api/product?paginate=false&usersLatitude=-22.565200&usersLongitude=-47.151500',
+                { headers: { 'Authorization': `Bearer ${token}` } });
+            if (data.data) {
+                const formatedData = data.data.map((item) => ({
+                    ...item,
+                    price: item.lowestPrice,
+                    name: item.name,
+                    establishment: item.lowestPriceEstablishment
+                }));
+                setRefreshing((prevState) => !prevState);
+                setList(formatedData);
+            }
+        } catch (err) {
+            console.log(err.response)
+        }
+
     }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            fetchData();
+        }, [])
+    );
 
 
     useEffect(() => {
@@ -51,7 +65,7 @@ export function HomeScreen() {
             fetchData();
         }
     }, [searchText]);
-
+    // https://reactnative.dev/docs/refreshcontrol
 
     return (
         <SafeAreaView style={styles.container}>
@@ -63,6 +77,7 @@ export function HomeScreen() {
             />
             <FlatList
                 data={list}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchData} />}
                 ItemSeparatorComponent={SeparatorItem}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}

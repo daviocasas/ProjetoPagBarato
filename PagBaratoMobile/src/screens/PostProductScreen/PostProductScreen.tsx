@@ -1,30 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import api from '../../services/api'
+import { getItem, StorageItems } from '../../services/storage'
 
-
+import SelectBox from 'react-native-multi-selectbox'
 
 import * as S from './PostProductScreen.style';
 
-export function PostProductScreen() {
+export function PostProductScreen({ navigation }) {
     const [productName, setProductName] = useState('');
-    const [place, setPlace] = useState('');
-    const [price, setPrice] = useState('');
+    const [establishmentId, setEstablishmentId] = useState('');
+    const [userId, setUserId] = useState('27f26108-7399-41fb-932e-9dcecd313f4b');
+    const [value, setValue] = useState('');
 
-    const postProductPrice = async () => {
-        const res = await api.post('/api/price', {
-            place, price, productName
-        })
-        console.log(res.data);
+    const [selectedItem, setSelectedItem] = useState<any>({})
+    const [establishmentList, setEstablishmentList] = useState([]);
+
+
+    const fetchData = async () => {
+        const token = await getItem(StorageItems.ACCESS_TOKEN);
+        const { data } = await api.get('/api/establishment?paginate=false', { headers: { 'Authorization': `Bearer ${token}` } });
+        const formatedData = data.data.map((item) => ({
+            ...item,
+            id: item.id,
+            item: item.name,
+        }));
+        return setEstablishmentList(formatedData);
+
     }
 
-    //userID: a6adb78a-9beb-4c0f-a411-95f02323cb7c
-    //productName  
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-    // https://github.com/lucasaraujonrt/react-native-animations
+    /* const getCurrentUser = async () => {
+        const id = await getItem(StorageItems.USER_ID);
+        console.log({ id })
+        if (id) {
+            setUserId(id);
+        }
+    } 
 
+    useEffect(() => {
+        getCurrentUser();
+
+    }, []); */
+
+    const postProductPrice = async () => {
+        try {
+            console.log({ userId, productName, establishmentId: selectedItem.id, value })
+            const token = await getItem(StorageItems.ACCESS_TOKEN);
+            const res = await api.post('/api/price',
+                { userId, productName, establishmentId: selectedItem.id, value },
+                { headers: { 'Authorization': `Bearer ${token}` } });
+            Alert.alert('Preço postado com sucesso!')
+            navigation.navigate('Home')
+
+            return res.data;
+
+        } catch (error) {
+            console.log(error.response.data);
+            //console.log(JSON.stringify(error));
+
+        }
+    }
+
+    function onChangeVal() {
+        return (val) => setSelectedItem(val)
+    }
 
     return (
         <>
@@ -41,17 +86,16 @@ export function PostProductScreen() {
                                 keyboardType="default"
                                 maxLength={120}
                             />
-                            <Input
-                                value={place}
-                                onChangeText={setPlace}
-                                placeholder="Estabelecimento"
-                                autoCapitalized="none"
-                                keyboardType="default"
-                                maxLength={120}
+                            <SelectBox
+                                label="Selecione o estabelecimento"
+                                options={establishmentList}
+                                value={selectedItem}
+                                onChange={onChangeVal()}
+                                hideInputFilter={false}
                             />
                             <Input
-                                value={price}
-                                onChangeText={setPrice}
+                                value={value}
+                                onChangeText={setValue}
                                 placeholder="Preço do produto"
                                 autoCapitalized="none"
                                 keyboardType="default"
