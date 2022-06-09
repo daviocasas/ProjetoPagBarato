@@ -14,7 +14,7 @@ export function ProductItem({ name, price, establishment, image }: Product) {
     return (
         <>
             <S.ProductContainer>
-                <Image style={{ width: 120, height: 100 }} source={image || { uri: 'https://criticalhits.com.br/wp-content/uploads/2022/05/one-piece-yamato.jpg' }} />
+                <Image style={{ width: 120, height: 100 }} source={image || { uri: 'https://cdn-icons-png.flaticon.com/512/2424/2424721.png' }} />
                 <S.ContentContainer>
                     <S.DefaultTitle>{name}</S.DefaultTitle>
                     <S.DefaultDescription>Estabelecimento: {establishment}</S.DefaultDescription>

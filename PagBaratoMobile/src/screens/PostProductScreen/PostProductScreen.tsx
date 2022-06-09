@@ -12,7 +12,6 @@ import * as S from './PostProductScreen.style';
 export function PostProductScreen({ navigation }) {
     const [productName, setProductName] = useState('');
     const [establishmentId, setEstablishmentId] = useState('');
-    const [userId, setUserId] = useState('27f26108-7399-41fb-932e-9dcecd313f4b');
     const [value, setValue] = useState('');
 
     const [selectedItem, setSelectedItem] = useState<any>({})
@@ -35,25 +34,13 @@ export function PostProductScreen({ navigation }) {
         fetchData();
     }, []);
 
-    /* const getCurrentUser = async () => {
-        const id = await getItem(StorageItems.USER_ID);
-        console.log({ id })
-        if (id) {
-            setUserId(id);
-        }
-    } 
-
-    useEffect(() => {
-        getCurrentUser();
-
-    }, []); */
 
     const postProductPrice = async () => {
         try {
-            console.log({ userId, productName, establishmentId: selectedItem.id, value })
+            console.log({ productName, establishmentId: selectedItem.id, value })
             const token = await getItem(StorageItems.ACCESS_TOKEN);
             const res = await api.post('/api/price',
-                { userId, productName, establishmentId: selectedItem.id, value },
+                { productName, establishmentId: selectedItem.id, value },
                 { headers: { 'Authorization': `Bearer ${token}` } });
             Alert.alert('Preço postado com sucesso!')
             navigation.navigate('Home')
@@ -98,7 +85,7 @@ export function PostProductScreen({ navigation }) {
                                 onChangeText={setValue}
                                 placeholder="Preço do produto"
                                 autoCapitalized="none"
-                                keyboardType="default"
+                                keyboardType="numeric"
                                 maxLength={120}
                             />
                         </S.WrapperForm>

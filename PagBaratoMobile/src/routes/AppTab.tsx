@@ -15,16 +15,12 @@ export default function AppTab() {
     return (
         <Tab.Navigator
             screenOptions={{
-                headerShown: false
+                headerShown: false,
+                tabBarActiveTintColor: '#47E181',
+                tabBarInactiveTintColor: '#666666',
+                tabBarActiveBackgroundColor: '#f3f3f3',
+                tabBarInactiveBackgroundColor: '#f3f3f3',
             }}
-            tabBarOptions={{
-                activeTintColor: '#47E181',
-                inactiveTintColor: '#666666',
-                activeBackgroundColor: '#f3f3f3',
-                inactiveBackgroundColor: '#f3f3f3',
-
-            }}
-
         >
             <Tab.Screen
                 name="Home"
