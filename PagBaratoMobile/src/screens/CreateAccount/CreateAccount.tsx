@@ -15,21 +15,26 @@ export function CreateAccount({ navigation }) {
 
 
     const signUp = async () => {
-        try {
+        if (email === '' || name === '' || password === '') {
+            console.log('Campos não preenchidos')
+            Alert.alert('Preencha todos os campos necessarios')
+        } else {
+            try {
 
-            const res = await api.post('/api/user', { email, password, name });
-            Alert.alert('Conta criada com sucesso!')
-            navigation.navigate('Login')
-            return res.data;
+                const res = await api.post('/api/user', { email, password, name });
+                Alert.alert('Conta criada com sucesso!')
+                navigation.navigate('Login')
+                return res.data;
 
-        } catch (error) {
-            console.log(error.response.data);
-            //console.log(JSON.stringify(error));
-            if (error.code === 'auth/invalid-email') {
-                Alert.alert('Email inválido')
-            }
-            if (error.code === 'auth/invalid-password') {
-                Alert.alert('Senha inválida')
+            } catch (error) {
+                console.log(error.response.data);
+                //console.log(JSON.stringify(error));
+                if (error.code === 'auth/invalid-email') {
+                    Alert.alert('Email inválido')
+                }
+                if (error.code === 'auth/invalid-password') {
+                    Alert.alert('Senha inválida')
+                }
             }
         }
 

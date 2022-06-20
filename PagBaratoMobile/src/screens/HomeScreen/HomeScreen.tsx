@@ -23,8 +23,8 @@ export function HomeScreen() {
     const [searchText, setSearchText] = useState('');
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [currentLatitude, setCurrentLatitude] = useState('-22.565200');
-    const [currentLongitude, setCurrentLongitude] = useState('-47.151500');
+    const [currentLatitude, setCurrentLatitude] = useState('');
+    const [currentLongitude, setCurrentLongitude] = useState('');
     const [watchID, setWatchID] = useState(0);
 
     function renderItem({ item }) {
@@ -56,6 +56,8 @@ export function HomeScreen() {
         }
 
     }
+
+    // -22.8558876,-47.0677625
 
     useFocusEffect(
         useCallback(() => {
@@ -111,7 +113,7 @@ export function HomeScreen() {
                 console.log("Latitude: " + currentLatitude + "Long: " + currentLongitude)
             },
             (error) => alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            { timeout: 20000 }
         );
         const watchID = Geolocation.watchPosition((position) => {
             const currentLatitude = JSON.stringify(position.coords.latitude);

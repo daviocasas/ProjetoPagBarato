@@ -6,10 +6,7 @@ import auth from '@react-native-firebase/auth'
 import { Image, Alert } from 'react-native';
 
 
-import useReduxState from '../../hooks/useReduxState';
 import * as S from './LoginScreen.style';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/Auth';
 import { setAuthTokens, setItem, StorageItems } from '../../services/storage'
 
 export function LoginScreen({ navigation }) {
@@ -17,28 +14,33 @@ export function LoginScreen({ navigation }) {
     const [password, setPassword] = useState('');
 
     function signIn() {
-        auth().signInWithEmailAndPassword(email, password)
-            .then((res) => {
-                console.log(res);
-                console.log(res.user.uid);
-                setItem(StorageItems.USER_ID, res.user.uid);
-            })
-            .catch(error => {
-                if (error.code === 'auth/wrong-password') {
-                    Alert.alert('Senha incorreta')
-                    console.log('Senha incorreta')
-                }
-                if (error.code === 'auth/invalid-email') {
-                    Alert.alert('Email incorreto')
-                    console.log('Email incorreto')
-                }
-            })
+        if (email === '' || password === '') {
+            console.log('Senha incorreta')
+            Alert.alert('Preencha todos os campos necessarios!')
+        } else {
+            auth().signInWithEmailAndPassword(email, password)
+                .then((res) => {
+                    console.log(res);
+                    console.log(res.user.uid);
+                    setItem(StorageItems.USER_ID, res.user.uid);
+                })
+                .catch(error => {
+                    if (error.code === 'auth/wrong-password') {
+                        Alert.alert('Senha incorreta')
+                        console.log('Senha incorreta')
+                    }
+                    if (error.code === 'auth/invalid-email') {
+                        Alert.alert('Email incorreto ou inexistente')
+                        console.log('Email incorreto ou inexistente')
+                    }
+                })
+        }
     }
 
     auth().onAuthStateChanged(function (user) {
         if (user) {
-            user.getIdToken().then(function (idToken) {  // <------ Check this line
-                setAuthTokens(idToken, ''); // It shows the Firebase token now
+            user.getIdToken().then(function (idToken) {
+                setAuthTokens(idToken, '');
                 return idToken;
             });
         }

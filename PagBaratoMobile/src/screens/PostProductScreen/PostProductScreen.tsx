@@ -36,20 +36,26 @@ export function PostProductScreen({ navigation }) {
 
 
     const postProductPrice = async () => {
-        try {
-            console.log({ productName, establishmentId: selectedItem.id, value })
-            const token = await getItem(StorageItems.ACCESS_TOKEN);
-            const res = await api.post('/api/price',
-                { productName, establishmentId: selectedItem.id, value },
-                { headers: { 'Authorization': `Bearer ${token}` } });
-            Alert.alert('Preço postado com sucesso!')
-            navigation.navigate('Home')
+        if (productName === '' || value === '' || selectedItem === '') {
+            console.log('Campos não preenchidos')
+            Alert.alert('Preencha todos os campos necessarios');
+        } else {
+            try {
+                console.log({ productName, establishmentId: selectedItem.id, value })
+                const token = await getItem(StorageItems.ACCESS_TOKEN);
+                const res = await api.post('/api/price',
+                    { productName, establishmentId: selectedItem.id, value },
+                    { headers: { 'Authorization': `Bearer ${token}` } });
+                Alert.alert('Preço postado com sucesso!')
+                navigation.navigate('Home')
 
-            return res.data;
+                return res.data;
 
-        } catch (error) {
-            console.log(error.response.data);
-            //console.log(JSON.stringify(error));
+            } catch (error) {
+                console.log(error.response.data);
+                //console.log(JSON.stringify(error));
+
+            }
 
         }
     }
