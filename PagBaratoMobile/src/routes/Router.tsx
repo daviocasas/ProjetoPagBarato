@@ -17,6 +17,7 @@ export function Router() {
     useEffect(() => {
         const unsubscribe = auth().onAuthStateChanged((_user) => {
             setUser(_user);
+            console.log({ _user })
         });
 
         return unsubscribe;

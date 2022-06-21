@@ -9,7 +9,7 @@ interface IProps {
   link?: boolean;
 }
 
-export const Container = styled(KeyboardAwareScrollView)`
+export const Container = styled.View`
   flex: 1;
   background-color: ${color.cream};
   flex-direction: column;

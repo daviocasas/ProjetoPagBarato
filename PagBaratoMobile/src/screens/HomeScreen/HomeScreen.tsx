@@ -1,44 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     SafeAreaView,
     FlatList,
     StyleSheet,
-    TextInput
+    TextInput,
+    RefreshControl,
+    StatusBar,
+    Platform,
+    PermissionsAndroid,
 } from 'react-native';
-
-import { productList } from '../../services/listResults';
+import { useFocusEffect } from '@react-navigation/native';
 import { ProductItem } from '../../components/ProductItem/ProductItem';
 import { SeparatorItem } from '../../components/SeparatorItem/SeparatorItem';
-import { InputType } from '../../enum/inputType';
 import Header from '../../components/Header/Header';
-import Button from '../../components/Button/Button';
-import Input from '../../components/Input/Input';
 import api from '../../services/api';
+import { getItem, StorageItems } from '../../services/storage'
+import Geolocation from '@react-native-community/geolocation';
 
 
-import * as S from './HomeScreen.style';
 
 export function HomeScreen() {
     const [searchText, setSearchText] = useState('');
     const [list, setList] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [currentLatitude, setCurrentLatitude] = useState('');
+    const [currentLongitude, setCurrentLongitude] = useState('');
+    const [watchID, setWatchID] = useState(0);
 
     function renderItem({ item }) {
         return <ProductItem {...item} />
     }
 
-    // chamar a api :check:
-    // formatar os dados :check:
-    // renderizar os dados  :check:
 
+    //lat = -22.565200
+    //long = -47.151500
     const fetchData = async () => {
-        const { data } = await api.get('/api/price?paginate=false');
-        const formatedData = data.data.records.map((item) => ({ ...item, price: item.value, name: item.productId }));
-        setList(formatedData);
+        setRefreshing((prevState) => !prevState);
+        const token = await getItem(StorageItems.ACCESS_TOKEN);
+        console.log(token)
+        try {
+            const { data } = await api.get(`/api/product?paginate=false&usersLatitude=${currentLatitude}&usersLongitude=${currentLongitude}`,
+                { headers: { 'Authorization': `Bearer ${token}` } });
+            if (data.data) {
+                const formatedData = data.data.map((item) => ({
+                    ...item,
+                    price: item.lowestPrice,
+                    name: item.name,
+                    establishment: item.lowestPriceEstablishment
+                }));
+                setRefreshing((prevState) => !prevState);
+                setList(formatedData);
+            }
+        } catch (err) {
+            console.log(err.response)
+        }
+
     }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // -22.8558876,-47.0677625
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchData();
+        }, [])
+    );
 
 
     useEffect(() => {
@@ -51,6 +76,61 @@ export function HomeScreen() {
             fetchData();
         }
     }, [searchText]);
+    // https://reactnative.dev/docs/refreshcontrol
+
+    const callLocation = () => {
+        if (Platform.OS === 'ios') {
+            getLocation();
+        } else {
+            const requestLocationPermission = async () => {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                        title: "Permissão de acesso a localização",
+                        message: "Este aplicativo precisa acessar sua localização",
+                        buttonNeutral: "Pergunte-me depois",
+                        buttonNegative: "Cancelar",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    getLocation();
+                } else {
+                    alert('Permissão de localização negada');
+                }
+            }
+            requestLocationPermission();
+        }
+    }
+
+    const getLocation = () => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                const currentLatitude = JSON.stringify(position.coords.latitude);
+                const currentLongitude = JSON.stringify(position.coords.longitude);
+                setCurrentLatitude(currentLatitude);
+                setCurrentLongitude(currentLongitude);
+                console.log("Latitude: " + currentLatitude + "Long: " + currentLongitude)
+            },
+            (error) => alert(error.message),
+            { timeout: 20000 }
+        );
+        const watchID = Geolocation.watchPosition((position) => {
+            const currentLatitude = JSON.stringify(position.coords.latitude);
+            const currentLongitude = JSON.stringify(position.coords.longitude);
+            setCurrentLatitude(currentLatitude);
+            setCurrentLongitude(currentLongitude);
+        });
+        setWatchID(watchID);
+    }
+
+    const clearLocation = () => {
+        Geolocation.clearWatch(watchID);
+    }
+
+    useEffect(() => {
+        callLocation();
+    }, []);
 
 
     return (
@@ -63,6 +143,7 @@ export function HomeScreen() {
             />
             <FlatList
                 data={list}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchData} />}
                 ItemSeparatorComponent={SeparatorItem}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
