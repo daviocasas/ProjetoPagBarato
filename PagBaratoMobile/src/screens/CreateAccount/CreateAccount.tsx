@@ -27,13 +27,15 @@ export function CreateAccount({ navigation }) {
                 return res.data;
 
             } catch (error) {
-                console.log(error.response.data);
-                //console.log(JSON.stringify(error));
-                if (error.code === 'auth/invalid-email') {
-                    Alert.alert('Email inválido')
-                }
-                if (error.code === 'auth/invalid-password') {
+                const erro = error.response.data.error.code;
+                console.log(erro)
+                if (erro === 'auth/invalid-password') {
                     Alert.alert('Senha inválida')
+                    console.log('Senha inválida')
+                }
+                if (erro === 'auth/invalid-email') {
+                    Alert.alert('Email incorreto ou inexistente')
+                    console.log('Email incorreto ou inexistente')
                 }
             }
         }
