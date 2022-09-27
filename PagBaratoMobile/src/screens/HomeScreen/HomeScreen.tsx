@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
 import {
     SafeAreaView,
     FlatList,
@@ -31,9 +32,11 @@ export function HomeScreen() {
         return <ProductItem {...item} />
     }
 
+    //PRIMEIRO EXEMPLO - USUARIO ESTA NA PUC
+    //lat = -22.8343228
+    //long = -47.0525011
 
-    //lat = -22.565200
-    //long = -47.151500
+
     const fetchData = async () => {
         setRefreshing((prevState) => !prevState);
         const token = await getItem(StorageItems.ACCESS_TOKEN);
@@ -62,6 +65,7 @@ export function HomeScreen() {
     useFocusEffect(
         useCallback(() => {
             fetchData();
+            getLocation();
         }, [])
     );
 
@@ -74,6 +78,7 @@ export function HomeScreen() {
             );
         } else {
             fetchData();
+
         }
     }, [searchText]);
     // https://reactnative.dev/docs/refreshcontrol
@@ -110,7 +115,7 @@ export function HomeScreen() {
                 const currentLongitude = JSON.stringify(position.coords.longitude);
                 setCurrentLatitude(currentLatitude);
                 setCurrentLongitude(currentLongitude);
-                console.log("Latitude: " + currentLatitude + "Long: " + currentLongitude)
+                console.log("Latitude: " + currentLatitude + " Long: " + currentLongitude)
             },
             (error) => alert(error.message),
             { timeout: 20000 }
@@ -124,9 +129,9 @@ export function HomeScreen() {
         setWatchID(watchID);
     }
 
-    const clearLocation = () => {
+    /* const clearLocation = () => {
         Geolocation.clearWatch(watchID);
-    }
+    } */
 
     useEffect(() => {
         callLocation();
