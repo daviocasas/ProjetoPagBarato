@@ -4,7 +4,7 @@ import { } from 'react-native/Libraries/NewAppScreen';
 import { AuthProvider } from './src/contexts/Auth';
 import { Router } from './src/routes/Router';
 
-const App = () => {
+const App = ({ navigation, route }) => {
   return (
     <AuthProvider>
       <Router />

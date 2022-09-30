@@ -2,6 +2,8 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen } from '../screens/HomeScreen/HomeScreen';
 import { ProfileScreen } from '../screens/ProfileScreen/ProfileScreen';
+import { ProductMapScreen } from '../screens/ProductMapScreen/ProductMapScreen';
+
 import Feather from 'react-native-vector-icons/Feather';
 
 import { color } from '../config/theme.json';
@@ -16,7 +18,7 @@ export default function AppTab() {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: '#47E181',
+                tabBarActiveTintColor: '#367315',
                 tabBarInactiveTintColor: '#666666',
                 tabBarActiveBackgroundColor: '#f3f3f3',
                 tabBarInactiveBackgroundColor: '#f3f3f3',
@@ -34,15 +36,16 @@ export default function AppTab() {
 
             />
             <Tab.Screen
-                name="Perfil"
-                component={ProfileScreen}
+                name="Mapa"
+                component={ProductMapScreen}
                 options={{
-                    tabBarLabel: 'Perfil',
+                    tabBarLabel: 'Mapa',
                     tabBarIcon: () => (
                         <Feather name="user" size={22} />
                     ),
                 }}
             />
+
         </Tab.Navigator>
     );
 }
