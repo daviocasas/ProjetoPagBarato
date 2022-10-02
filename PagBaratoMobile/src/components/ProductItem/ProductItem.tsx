@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, ImageProps } from 'react-native';
+
 import * as S from './ProductItem.style';
 
 export interface Product {
@@ -8,12 +9,13 @@ export interface Product {
     establishment: string;
     price: number;
     image: ImageProps["source"];
+    onPress: () => void;
 }
 
-export function ProductItem({ name, price, establishment, image }: Product) {
+export function ProductItem({ name, price, establishment, image, onPress }: Product) {
     return (
         <>
-            <S.ProductContainer>
+            <S.ProductContainer onPress={onPress}>
                 <Image style={{ width: 120, height: 100 }} source={image || { uri: 'https://cdn-icons-png.flaticon.com/512/2424/2424721.png' }} />
                 <S.ContentContainer>
                     <S.DefaultTitle>{name}</S.DefaultTitle>

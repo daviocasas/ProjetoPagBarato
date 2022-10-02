@@ -11,7 +11,7 @@ import {
     PermissionsAndroid,
     Text,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ProductItem } from '../../components/ProductItem/ProductItem';
 import { SeparatorItem } from '../../components/SeparatorItem/SeparatorItem';
 import { Slider } from '@miblanchard/react-native-slider';
@@ -31,13 +31,14 @@ export function HomeScreen() {
     const [currentLongitude, setCurrentLongitude] = useState('');
     const [distance, setDistance] = useState(0);
     const [watchID, setWatchID] = useState(0);
+    const navigation = useNavigation();
 
     //const { item } = route.params;
     //console.log(`PASSEI ESSE VALOR DA OUTRA TELA: ${JSON.stringify(item)}`)
 
 
     function renderItem({ item }) {
-        return <ProductItem {...item} />
+        return <ProductItem onPress={() => navigation.navigate('ProductMapScreen', { product: item })}  {...item} />
     }
 
     //PRIMEIRO EXEMPLO - USUARIO ESTA NA PUC
@@ -49,7 +50,12 @@ export function HomeScreen() {
     const fetchData = async () => {
         setRefreshing((prevState) => !prevState);
         const token = await getItem(StorageItems.ACCESS_TOKEN);
+        const refreshToken = await getItem(StorageItems.REFRESH_TOKEN);
+        console.log("TOKEN: ")
         console.log(token)
+        console.log("REFRESH TOKEN: ")
+        console.log(refreshToken)
+
         console.log(currentLatitude)
         console.log(currentLongitude)
         console.log(Math.floor(distance))
