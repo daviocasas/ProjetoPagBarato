@@ -11,7 +11,7 @@ import {
     PermissionsAndroid,
     Text,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ProductItem } from '../../components/ProductItem/ProductItem';
 import { SeparatorItem } from '../../components/SeparatorItem/SeparatorItem';
 import { Slider } from '@miblanchard/react-native-slider';
@@ -25,19 +25,20 @@ import Geolocation from '@react-native-community/geolocation';
 
 export function HomeScreen() {
     const [searchText, setSearchText] = useState('');
-    const [list, setList] = useState([]);
+    const [list, setList] = useState<any>([]);
     const [refreshing, setRefreshing] = useState(false);
     const [currentLatitude, setCurrentLatitude] = useState('');
     const [currentLongitude, setCurrentLongitude] = useState('');
-    const [distance, setDistance] = useState(0);
+    const [distance, setDistance] = useState(1);
     const [watchID, setWatchID] = useState(0);
+    const navigation = useNavigation();
 
     //const { item } = route.params;
     //console.log(`PASSEI ESSE VALOR DA OUTRA TELA: ${JSON.stringify(item)}`)
 
 
     function renderItem({ item }) {
-        return <ProductItem {...item} />
+        return <ProductItem onPress={() => navigation.navigate('ProductMapScreen', { product: item, distance })}  {...item} />
     }
 
     //PRIMEIRO EXEMPLO - USUARIO ESTA NA PUC
@@ -47,29 +48,38 @@ export function HomeScreen() {
 
 
     const fetchData = async () => {
-        setRefreshing((prevState) => !prevState);
+        //setRefreshing((prevState) => !prevState);
+        setRefreshing(true)
         const token = await getItem(StorageItems.ACCESS_TOKEN);
+        const refreshToken = await getItem(StorageItems.REFRESH_TOKEN);
+        console.log("TOKEN: ")
         console.log(token)
+        console.log("REFRESH TOKEN: ")
+        console.log(refreshToken)
+
         console.log(currentLatitude)
         console.log(currentLongitude)
         console.log(Math.floor(distance))
 
         try {
-            const { data } = await api.get(`/api/product?paginate=false&usersLatitude=${currentLatitude}&usersLongitude=${currentLongitude}&rangeRadius=${Math.floor(distance)}`,
+            const { data: response } = await api.get(`/api/product?paginate=false&usersLatitude=${currentLatitude}&usersLongitude=${currentLongitude}&rangeRadius=${Math.floor(distance)}`,
                 { headers: { 'Authorization': `Bearer ${token}` } });
-            if (data.data) {
-                const formatedData = data.data.map((item) => ({
+            if (response.data) {
+                const formatedData = response.data.map((item) => ({
                     ...item,
                     price: item.lowestPrice,
                     name: item.name,
                     establishment: item.lowestPriceEstablishment
                 }));
-                setRefreshing((prevState) => !prevState);
+                //setRefreshing((prevState) => !prevState);
+
                 setList(formatedData);
             }
         } catch (err) {
             console.log('Erro que ta dando é esse: ')
             console.log(err.response)
+        } finally {
+            setRefreshing(false);
         }
 
     }
@@ -77,9 +87,17 @@ export function HomeScreen() {
 
     useFocusEffect(
         useCallback(() => {
-            fetchData();
-            getMyLocation();
-        }, [])
+            console.log({ refreshing })
+            if (currentLatitude && currentLongitude) {
+                if (distance && Math.floor(distance) && !refreshing) {
+                    console.log('FatchData do Focus Effect')
+                    fetchData();
+
+                }
+            } else {
+                getMyLocation();
+            }
+        }, [currentLatitude, currentLongitude])
     );
 
 
@@ -89,14 +107,26 @@ export function HomeScreen() {
                 return (i.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
             })
             );
-        } else {
+        } else if (!refreshing) {
+            console.log('FatchData do SearchText')
             fetchData();
-
         }
     }, [searchText]);
     // https://reactnative.dev/docs/refreshcontrol
 
-    const callLocation = () => {
+    useEffect(() => {
+        grantPermissionLocation();
+    }, []);
+
+    useEffect(() => {
+        if (distance) {
+            fetchData();
+        }
+    }, [distance]);
+
+
+
+    const grantPermissionLocation = () => {
         if (Platform.OS === 'ios') {
             getMyLocation();
         } else {
@@ -174,9 +204,7 @@ export function HomeScreen() {
         Geolocation.clearWatch(watchID);
     } */
 
-    useEffect(() => {
-        callLocation();
-    }, []);
+
 
 
     return (
@@ -184,8 +212,8 @@ export function HomeScreen() {
             <Header title="Home" />
             <Text>Distância (km): {Math.floor(distance)}</Text>
             <Slider
-                minimumValue={0}
-                maximumValue={20}
+                minimumValue={1}
+                maximumValue={21}
                 thumbTintColor="#EF8F01"
                 value={distance}
                 onValueChange={(value) => setDistance(value)}
