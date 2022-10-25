@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { LogBox } from 'react-native';
 
 import {
     SafeAreaView,
@@ -45,7 +46,8 @@ export function HomeScreen() {
     //lat = -22.8343228
     //long = -47.0525011
 
-
+    LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+    LogBox.ignoreAllLogs(); //Ignore all log notifications
 
     const fetchData = async () => {
         //setRefreshing((prevState) => !prevState);
@@ -223,6 +225,8 @@ export function HomeScreen() {
                 value={searchText}
                 onChangeText={(t) => setSearchText(t)}
             />
+            <Text>LAT: {currentLatitude}</Text>
+            <Text>LONG: {currentLongitude}</Text>
             <FlatList
                 data={list}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchData} />}

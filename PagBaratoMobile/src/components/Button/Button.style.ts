@@ -19,7 +19,7 @@ export const ButtonContainer = styled.TouchableOpacity.attrs({
   border-radius: ${Window.widthScale(0.03)}px;
   elevation: 5;
   flex-direction: row;
-  margin-top: ${Window.heightScale(0.03)}px;;
+  margin-top: ${Window.heightScale(0.02)}px;;
 `;
 
 export const Title = styled.Text`

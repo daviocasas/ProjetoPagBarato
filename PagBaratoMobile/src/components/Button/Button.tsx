@@ -12,7 +12,7 @@ const Button = ({ title, width, onPress, disabled }: IButton) => {
     return (
         <S.ButtonContainer onPress={onPress} disabled={disabled} width={width}>
             {disabled ? (
-                <S.Loading animating={disabled} />
+                <S.Title></S.Title>
             ) : (
                 <S.Title>{title}</S.Title>
             )}

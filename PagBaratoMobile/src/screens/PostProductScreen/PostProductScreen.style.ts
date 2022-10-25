@@ -40,6 +40,20 @@ export const TextLogo = styled.Text`
   color: ${(props: IProps) => (props.link ? color.dark_gray : color.black)};
 `;
 
+export const TextSwitch = styled.Text`
+  font-family: ${font.medium};
+  font-size: ${(props: IProps) =>
+    props.bold ? `${Window.fontScale(22)}px` : `${Window.fontScale(10)}px`};
+  text-decoration: ${(props: IProps) => (props.link ? 'underline' : 'none')};
+  text-align: center;
+  font-weight: ${(props: IProps) => (props.bold ? 800 : 400)};
+  padding-vertical: ${(props: IProps) =>
+    props.bold
+      ? `${Window.heightScale(0.05)}px`
+      : `${Window.heightScale(0.025)}px`};
+  color: ${(props: IProps) => (props.link ? color.dark_gray : color.black)};
+`;
+
 export const SubContainer = styled.View`
   width: ${Window.widthScale(1)}px;
   height: ${Window.heightScale(0.7)}px;
@@ -53,9 +67,37 @@ export const WrapperForm = styled.View`
   align-self: center;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: ${Window.heightScale(0.02)}px;
+`;
+
+export const WrapperSelectBox = styled.View`
+  width: ${Window.widthScale(0.8)}px;
+  align-self: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: ${Window.heightScale(0.02)}px;
+`;
+
+export const WrapperSwitchSelector = styled.View`
+  width: ${Window.widthScale(0.8)}px;
+  align-self: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: ${Window.heightScale(0.02)}px;
+`;
+
+export const WrapperSwitchForm = styled.View`
+  flex-direction: row;
+  
+`;
+
+export const WrapperSwitchFormButton = styled.View`
+  background-color: red;
 `;
 
 export const WrapperLink = styled.TouchableOpacity.attrs({
   activeOpacity: 0.6,
-})``;
+})`
+  padding-left: ${Window.heightScale(0.02)}px;
+  padding-right: ${Window.heightScale(0.02)}px;
+`;
+

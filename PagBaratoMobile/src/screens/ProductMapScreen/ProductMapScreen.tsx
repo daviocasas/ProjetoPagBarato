@@ -59,7 +59,9 @@ export function ProductMapScreen({ route }) {
         console.log('Product Id', product.id)
 
         try {
-            const { data: response } = await api.get(`/api/product/${product.id}?usersLatitude=${currentLatitude}&usersLongitude=${currentLongitude}&rangeRadius=${currentRange}`,
+            const { data: response } = await api.get(`/api/product/${product.id}?usersLatitude=${currentLatitude}
+            &usersLongitude=${currentLongitude}
+            &rangeRadius=${currentRange}`,
                 { headers: { 'Authorization': `Bearer ${token}` } })
 
             console.log('DATA: ', response)
