@@ -18,9 +18,6 @@ export function PostProductScreen({ navigation }) {
     const [isNearValid, setNearValid] = useState(false);
     const [isEnabledSwitchValid, setIsEnabled] = useState(true);
 
-    const [isOffer, setIsOffer] = useState(false);
-    const [isEnabledSwitchOffer, setIsEnabledSwitch] = useState(true);
-
     const [selectedItem, setSelectedItem] = useState<any>({})
     const [establishmentList, setEstablishmentList] = useState([]);
 
@@ -39,21 +36,11 @@ export function PostProductScreen({ navigation }) {
         }
     }
 
-    const toggleCalendarSwitch = () => {
-        setIsEnabledSwitch(value => !value)
-        console.log({ isOffer });
-        if (isEnabledSwitchOffer) {
-            setIsOffer(true)
-        } else {
-            setIsOffer(false)
-        }
-    }
-
     const fetchData = async () => {
         const token = await getItem(StorageItems.ACCESS_TOKEN);
         const { data } = await api.get('/api/establishment?paginate=false',
             { headers: { 'Authorization': `Bearer ${token}` } });
-        const formatedData = data.data.map((item) => ({
+        const formatedData = data.data.map((item: { id: any; name: any; }) => ({
             ...item,
             id: item.id,
             item: item.name,
@@ -73,8 +60,16 @@ export function PostProductScreen({ navigation }) {
             Alert.alert('Preencha todos os campos necessarios');
         } else {
             try {
-                console.log({ productName, establishmentId: selectedItem.id, value })
-                console.log("Validade que estou enviando: ", isNearValid)
+                console.log({
+                    productName,
+                    establishmentId: selectedItem.id,
+                    value,
+                    isProductWithNearExpirationDate: isNearValid,
+                    type: priceType.id,
+                    expiresAt: date
+                })
+
+
                 const token = await getItem(StorageItems.ACCESS_TOKEN);
                 const res = await api.post(`/api/price`,
                     {
@@ -82,7 +77,7 @@ export function PostProductScreen({ navigation }) {
                         establishmentId: selectedItem.id,
                         value,
                         isProductWithNearExpirationDate: isNearValid,
-                        type: priceType,
+                        type: priceType.id,
                         expiresAt: date
                     },
                     { headers: { 'Authorization': `Bearer ${token}` } });
@@ -101,11 +96,11 @@ export function PostProductScreen({ navigation }) {
     }
 
     function onChangeVal() {
-        return (val) => setSelectedItem(val)
+        return (val: any) => setSelectedItem(val)
     }
 
     function onChangeValPriceType() {
-        return (val) => setPriceType(val)
+        return (val: any) => setPriceType(val)
     }
 
     const PRICE_OPTIONS = [
