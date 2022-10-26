@@ -12,11 +12,9 @@ import * as S from './PostProductScreen.style';
 
 export function PostProductScreen({ navigation }) {
     const [productName, setProductName] = useState('');
-    const [establishmentId, setEstablishmentId] = useState('');
     const [value, setValue] = useState('');
 
-    const [isNearValid, setNearValid] = useState(false);
-    const [isEnabledSwitchValid, setIsEnabled] = useState(true);
+    const [isEnabled, setIsEnabled] = useState(false);
 
     const [selectedItem, setSelectedItem] = useState<any>({})
     const [establishmentList, setEstablishmentList] = useState([]);
@@ -26,14 +24,10 @@ export function PostProductScreen({ navigation }) {
 
     const [priceType, setPriceType] = useState<any>({});
 
-    const toggleValidDateSwitch = () => {
-        setIsEnabled(previousState => !previousState)
-        console.log({ isNearValid });
-        if (isEnabledSwitchValid) {
-            setNearValid(true)
-        } else {
-            setNearValid(false)
-        }
+
+
+    const toggleSwitch = () => {
+        setIsEnabled(!isEnabled);
     }
 
     const fetchData = async () => {
@@ -64,7 +58,7 @@ export function PostProductScreen({ navigation }) {
                     productName,
                     establishmentId: selectedItem.id,
                     value,
-                    isProductWithNearExpirationDate: isNearValid,
+                    isProductWithNearExpirationDate: isEnabled,
                     type: priceType.id,
                     expiresAt: date
                 })
@@ -76,7 +70,7 @@ export function PostProductScreen({ navigation }) {
                         productName,
                         establishmentId: selectedItem.id,
                         value,
-                        isProductWithNearExpirationDate: isNearValid,
+                        isProductWithNearExpirationDate: isEnabled,
                         type: priceType.id,
                         expiresAt: date
                     },
@@ -151,13 +145,13 @@ export function PostProductScreen({ navigation }) {
                             />
                             <S.WrapperSwitchSelector>
                                 <S.WrapperSwitchForm>
-                                    <S.TextSwitch>Produto próximo da data de vencimento?</S.TextSwitch>
+                                    <S.TextSwitch>Produto próximo da data de vencimento? </S.TextSwitch>
                                     <Switch
                                         trackColor={{ false: "#3e3e3e", true: "green" }}
-                                        thumbColor={isEnabledSwitchValid ? "orange" : "#f4f4f4"}
+                                        thumbColor={isEnabled ? "orange" : "#f4f4f4"}
                                         ios_backgroundColor="#3e3e3e"
-                                        onValueChange={toggleValidDateSwitch}
-                                        value={isEnabledSwitchValid}
+                                        onValueChange={toggleSwitch}
+                                        value={isEnabled}
                                     />
                                 </S.WrapperSwitchForm>
                                 <S.WrapperSwitchForm>

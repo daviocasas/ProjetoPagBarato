@@ -23,7 +23,7 @@ export const ButtonContainer = styled.TouchableOpacity.attrs({
 `;
 
 export const Title = styled.Text`
-  font-family: ${font.medium};
+  font-family: ${font.semiBold};
   font-size: ${Window.fontScale(16)}px;
   color: ${color.cream};
   text-align: center;
