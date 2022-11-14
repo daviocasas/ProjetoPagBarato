@@ -1,10 +1,11 @@
 {
   "color": {
-    "primary": "#367315",
-    "second": "#4EA529",
-    "mango": "#F5B705",
-    "orange_web": "#F69F03",
-    "orange_carrot": "#EF8F01",
+    "primary": "#FB5607",
+    "second": "#012900",
+    "mid-green": "#015200",
+    "brighter-green": "#03B800",
+    "light-pink": "#FFD6E8",
+    "main-yellow": "#FFC933",
     "little_gray": "#E0E0E0",
     "baby_gray": "#BEBEBE",
     "dark_gray": "#737373",

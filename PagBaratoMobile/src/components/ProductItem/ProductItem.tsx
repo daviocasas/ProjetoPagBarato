@@ -9,10 +9,11 @@ export interface Product {
     establishment: string;
     price: number;
     image: ImageProps["source"];
+    isProductWithNearExpirationDate: boolean;
     onPress: () => void;
 }
 
-export function ProductItem({ name, price, establishment, image, onPress }: Product) {
+export function ProductItem({ name, price, establishment, image, isProductWithNearExpirationDate, onPress }: Product) {
     return (
         <>
             <S.ProductContainer onPress={onPress}>
@@ -20,6 +21,7 @@ export function ProductItem({ name, price, establishment, image, onPress }: Prod
                 <S.ContentContainer>
                     <S.DefaultTitle>{name}</S.DefaultTitle>
                     <S.DefaultDescription>Estabelecimento: {establishment}</S.DefaultDescription>
+                    <S.DefaultDescription>Produto próximo da validade? {isProductWithNearExpirationDate}</S.DefaultDescription>
                     <S.DefaultDescription>Preço mais baixo encontrado: </S.DefaultDescription>
                     <S.DefaultPrice>
                         R$ {price.toFixed(2)}

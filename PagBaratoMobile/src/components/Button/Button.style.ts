@@ -15,7 +15,7 @@ export const ButtonContainer = styled.TouchableOpacity.attrs({
   align-items: center;
   justify-content: center;
   align-self: center;
-  background-color: ${color.orange_carrot};
+  background-color: ${color.primary};
   border-radius: ${Window.widthScale(0.03)}px;
   elevation: 5;
   flex-direction: row;

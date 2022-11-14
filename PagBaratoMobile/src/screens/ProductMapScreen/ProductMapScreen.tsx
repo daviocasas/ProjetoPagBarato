@@ -157,9 +157,14 @@ export function ProductMapScreen({ route }) {
                                     latitude: x.establishment.latitude,
                                     longitude: x.establishment.longitude,
                                 }}
-                                pinColor={"orange"} // any color
-                                title={x.establishment.name || ''}
-                                description={String(x.value) || ''}>
+                                >
+
+                                    <S.MarkerContainer>
+                                        <S.WrapperMarkerContent>
+                                        <S.EstablishmentTitle>{x.establishment.name || ''}</S.EstablishmentTitle>
+                                        <S.ProductValue>R${String(x.value) || ''}</S.ProductValue>
+                                        </S.WrapperMarkerContent>
+                                    </S.MarkerContainer>
                             </Marker>
                         )
                     })}

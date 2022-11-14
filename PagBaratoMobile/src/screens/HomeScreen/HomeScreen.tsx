@@ -153,28 +153,6 @@ export function HomeScreen() {
         }
     }
 
-    /*
-    const getLocation = () => {
-        Geolocation.getCurrentPosition(
-            (position) => {
-                const currentLatitude = JSON.stringify(position.coords.latitude);
-                const currentLongitude = JSON.stringify(position.coords.longitude);
-                setCurrentLatitude(currentLatitude);
-                setCurrentLongitude(currentLongitude);
-                console.log("Latitude: " + currentLatitude + " Long: " + currentLongitude)
-            },
-            (error) => alert(error.message),
-            { timeout: 20000 }
-        );
-        const watchID = Geolocation.watchPosition((position) => {
-            const currentLatitude = JSON.stringify(position.coords.latitude);
-            const currentLongitude = JSON.stringify(position.coords.longitude);
-            setCurrentLatitude(currentLatitude);
-            setCurrentLongitude(currentLongitude);
-        });
-        setWatchID(watchID);
-    }
-    */
 
     function getMyLocation() {
         Geolocation.getCurrentPosition(info => {
@@ -189,8 +167,7 @@ export function HomeScreen() {
         },
             () => { console.log("Erro") }, {
             enableHighAccuracy: true,
-            timeout: 2000,
-            maximumAge: 1000,
+           
 
         })
         const watchID = Geolocation.watchPosition((position) => {
@@ -225,8 +202,7 @@ export function HomeScreen() {
                 value={searchText}
                 onChangeText={(t) => setSearchText(t)}
             />
-            <Text>LAT: {currentLatitude}</Text>
-            <Text>LONG: {currentLongitude}</Text>
+            
             <FlatList
                 data={list}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchData} />}
@@ -235,6 +211,7 @@ export function HomeScreen() {
                 renderItem={renderItem}
             />
         </SafeAreaView>
+        
     )
 };
 

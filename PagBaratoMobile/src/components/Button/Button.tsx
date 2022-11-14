@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         elevation: 0,
     },
     enabled: {
-        backgroundColor: `${color.orange_carrot}`,
+        backgroundColor: `${color.primary}`,
     },
 });
 
