@@ -1,21 +1,50 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
-import EmailValidator from 'email-validator';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { InputType } from '../../enum/inputType';
-import { useDispatch } from 'react-redux';
+import auth from '@react-native-firebase/auth'
+import { Image, Alert } from 'react-native';
 
 
-import useReduxState from '../../hooks/useReduxState';
 import * as S from './LoginScreen.style';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/Auth';
+import { setAuthTokens, setItem, StorageItems } from '../../services/storage'
 
 export function LoginScreen({ navigation }) {
-    const { signIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    function signIn() {
+        if (email === '' || password === '') {
+            console.log('Senha incorreta')
+            Alert.alert('Preencha todos os campos necessarios!')
+        } else {
+            auth().signInWithEmailAndPassword(email, password)
+                .then((res) => {
+                    console.log(res);
+                    console.log(res.user.uid);
+                    setItem(StorageItems.USER_ID, res.user.uid);
+                })
+                .catch(error => {
+                    if (error.code === 'auth/wrong-password') {
+                        Alert.alert('Senha incorreta')
+                        console.log('Senha incorreta')
+                    }
+                    if (error.code === 'auth/invalid-email') {
+                        Alert.alert('Email incorreto ou inexistente')
+                        console.log('Email incorreto ou inexistente')
+                    }
+                })
+        }
+    }
+
+    auth().onAuthStateChanged(function (user) {
+        if (user) {
+            user.getIdToken().then(function (idToken) {
+                setAuthTokens(idToken, '');
+                return idToken;
+            });
+        }
+    });
 
 
     return (
@@ -23,7 +52,9 @@ export function LoginScreen({ navigation }) {
             <S.Container>
                 <S.WrapperContainer>
                     <S.SubContainer>
-                        <S.TextLogo bold>PagBarato</S.TextLogo>
+                        <S.LogoContainer>
+                            <Image style={{ width: 250, height: 150 }} source={require('../../assets/logo/PagBarato_Cream.png')} />
+                        </S.LogoContainer>
                         <S.WrapperForm>
                             <Input
                                 value={email}
@@ -58,7 +89,8 @@ export function LoginScreen({ navigation }) {
                             <Button
                                 title="Entrar"
                                 width={0.6}
-                                onPress={() => signIn(email, password)}
+                                onPress={signIn}
+                            //onPress={() => signIn(email, password)}
                             />
                         </S.WrapperForm>
                     </S.SubContainer>

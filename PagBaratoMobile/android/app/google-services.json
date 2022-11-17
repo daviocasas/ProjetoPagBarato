@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "52475764497",
+    "project_id": "pagbarato-auth",
+    "storage_bucket": "pagbarato-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52475764497:android:9b4a9d1917b43cb79836b0",
+        "android_client_info": {
+          "package_name": "com.pagbaratomobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52475764497-a2bcn1ihuf3099osuvh7tbg7mdrq0duo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATLcVr4nT6US9WYy7DFzVVfhXCTVt9xow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52475764497-a2bcn1ihuf3099osuvh7tbg7mdrq0duo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

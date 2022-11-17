@@ -1,21 +1,47 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
-import EmailValidator from 'email-validator';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { InputType } from '../../enum/inputType';
-import { useDispatch } from 'react-redux';
+import api from '../../services/api'
 
 
-import useReduxState from '../../hooks/useReduxState';
 import * as S from './CreateAccount.style';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/Auth';
 
-export function CreateAccount() {
-    const { signIn } = useAuth();
+export function CreateAccount({ navigation }) {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+
+
+    const signUp = async () => {
+        if (email === '' || name === '' || password === '') {
+            console.log('Campos não preenchidos')
+            Alert.alert('Preencha todos os campos necessarios')
+        } else {
+            try {
+
+                const res = await api.post('/api/user', { email, password, name });
+                Alert.alert('Conta criada com sucesso!')
+                navigation.navigate('Login')
+                return res.data;
+
+            } catch (error) {
+                const erro = error.response.data.error.code;
+                console.log(erro)
+                if (erro === 'auth/invalid-password') {
+                    Alert.alert('Senha inválida')
+                    console.log('Senha inválida')
+                }
+                if (erro === 'auth/invalid-email') {
+                    Alert.alert('Email incorreto ou inexistente')
+                    console.log('Email incorreto ou inexistente')
+                }
+            }
+        }
+
+    }
+
 
 
     return (
@@ -45,12 +71,10 @@ export function CreateAccount() {
                                 maxLength={120}
                             />
                             <Input
-                                value={password}
-                                onChangeText={setPassword}
-                                type={InputType.PASSWORD}
-                                password
-                                placeholder="Confirme a Senha"
-                                autoCapitalized="none"
+                                value={name}
+                                onChangeText={setName}
+                                placeholder="Nome"
+                                autoCapitalized="words"
                                 keyboardType="default"
                                 maxLength={120}
                             />
@@ -59,7 +83,7 @@ export function CreateAccount() {
                             <Button
                                 title="Criar conta"
                                 width={0.6}
-                                onPress={() => signIn(email, password)}
+                                onPress={signUp}
                             />
                         </S.WrapperForm>
                     </S.SubContainer>

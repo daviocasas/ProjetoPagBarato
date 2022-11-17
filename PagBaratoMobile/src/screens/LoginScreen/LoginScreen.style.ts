@@ -15,6 +15,12 @@ export const Container = styled(KeyboardAwareScrollView)`
   flex-direction: column;
 `;
 
+export const LogoContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-top: ${Window.heightScale(0.06)}px ;
+`;
+
 export const WrapperContainer = styled.View`
   justify-content: flex-end;
 `;

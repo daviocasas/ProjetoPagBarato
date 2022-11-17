@@ -1,13 +1,15 @@
 {
   "color": {
-    "primary": "#47E181",
-    "second": "#FF8976",
+    "primary": "#FB5607",
+    "second": "#012900",
+    "mid-green": "#015200",
+    "brighter-green": "#03B800",
+    "light-pink": "#FFD6E8",
+    "main-yellow": "#FFC933",
     "little_gray": "#E0E0E0",
     "baby_gray": "#BEBEBE",
     "dark_gray": "#737373",
     "black": "#190204",
-    "rose_quartz": "#FADCD9",
-    "little_coral": "#F79489",
     "cream": "#F9F1F0",
     "white": "#fff"
   },
