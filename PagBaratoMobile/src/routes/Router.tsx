@@ -10,14 +10,13 @@ import { AppDrawer } from './AppDrawer';
 import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
 
 export function Router() {
-    const { authData, loading } = useAuth();
+    const { loading } = useAuth();
 
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
     useEffect(() => {
         const unsubscribe = auth().onAuthStateChanged((_user) => {
             setUser(_user);
-            console.log({ _user })
         });
 
         return unsubscribe;
