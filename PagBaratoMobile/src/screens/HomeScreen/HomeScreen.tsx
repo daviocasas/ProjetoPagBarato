@@ -120,7 +120,6 @@ export function HomeScreen() {
     grantPermissionLocation();
 
     return () => {
-      console.log('Alou');
       clearLocation();
     };
   }, []);
