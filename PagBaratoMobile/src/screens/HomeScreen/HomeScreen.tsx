@@ -11,6 +11,7 @@ import {
   PermissionsAndroid,
   Text,
 } from 'react-native';
+
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {ProductItem} from '../../components/ProductItem/ProductItem';
 import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
@@ -38,7 +39,11 @@ export function HomeScreen() {
     return (
       <ProductItem
         onPress={() =>
-          navigation.navigate('ProductMapScreen', {product: item, distance})
+          navigation.navigate('ProductMapScreen', {
+            productId: item.id,
+            currentLocation: location,
+            distance,
+          })
         }
         {...item}
       />
@@ -52,6 +57,7 @@ export function HomeScreen() {
     if (!location.currentLatitude || !location.currentLongitude) return;
 
     setRefreshing(true);
+
     const token = await getItem(StorageItems.ACCESS_TOKEN);
 
     console.log({...location, distance: Math.floor(distance)});
@@ -85,10 +91,9 @@ export function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      console.log({refreshing});
       if (location.currentLatitude && location.currentLongitude) {
         if (distance && Math.floor(distance) && !refreshing) {
-          console.log('FatchData do Focus Effect');
+          console.log('FocusEffect fetchData()');
           fetchData();
         }
       } else {
@@ -105,7 +110,7 @@ export function HomeScreen() {
         }),
       );
     } else if (!refreshing) {
-      console.log('FatchData do SearchText');
+      console.log('SearchText fetchData()');
       fetchData();
     }
   }, [searchText]);
@@ -113,6 +118,11 @@ export function HomeScreen() {
 
   useEffect(() => {
     grantPermissionLocation();
+
+    return () => {
+      console.log('Alou');
+      clearLocation();
+    };
   }, []);
 
   useEffect(() => {
@@ -144,63 +154,81 @@ export function HomeScreen() {
     }
   };
 
+  const setMyLocation = (latitude, longitude) => {
+    const currentLatitude = JSON.stringify(latitude);
+    const currentLongitude = JSON.stringify(longitude);
+
+    if (
+      currentLatitude != location.currentLatitude &&
+      currentLongitude != location.currentLongitude
+    ) {
+      setLocation({currentLatitude, currentLongitude});
+    }
+  };
+
   function getMyLocation() {
     Geolocation.getCurrentPosition(
       info => {
-        console.log('LAT: ', info.coords.latitude);
-        console.log('LONG: ', info.coords.longitude);
-
-        const currentLatitude = JSON.stringify(info.coords.latitude);
-        const currentLongitude = JSON.stringify(info.coords.longitude);
-
-        setLocation({currentLatitude, currentLongitude});
+        setMyLocation(info.coords.latitude, info.coords.longitude);
       },
       err => {
         console.log('Erro', err);
       },
       {
         enableHighAccuracy: true,
+        timeout: 20000,
       },
     );
-    const watchID = Geolocation.watchPosition(position => {
-      const currentLatitude = JSON.stringify(position.coords.latitude);
-      const currentLongitude = JSON.stringify(position.coords.longitude);
-      setLocation({currentLatitude, currentLongitude});
-    });
+
+    const watchID = Geolocation.watchPosition(
+      position => {
+        setMyLocation(position.coords.latitude, position.coords.longitude);
+      },
+      err => {
+        console.log('Erro', err);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+      },
+    );
+
     setWatchID(watchID);
   }
 
-  /* const clearLocation = () => {
-        Geolocation.clearWatch(watchID);
-    } */
+  const clearLocation = () => {
+    Geolocation.clearWatch(watchID);
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header title="Home" />
-      <Text>Distância (km): {Math.floor(distance)}</Text>
-      <Slider
-        minimumValue={1}
-        maximumValue={21}
-        thumbTintColor="#EF8F01"
-        value={distance}
-        onValueChange={value => setDistance(value)}
-      />
-      <TextInput
-        placeholder="Pesquise um produto..."
-        value={searchText}
-        onChangeText={t => setSearchText(t)}
-      />
+    <>
+      <SafeAreaView style={styles.container}>
+        <Header title="Home" />
+        <Text>Distância (km): {Math.floor(distance)}</Text>
+        <Slider
+          minimumValue={1}
+          maximumValue={21}
+          thumbTintColor="#EF8F01"
+          value={distance}
+          onValueChange={value => setDistance(value)}
+        />
+        <TextInput
+          placeholder="Pesquise um produto..."
+          value={searchText}
+          onChangeText={t => setSearchText(t)}
+        />
 
-      <FlatList
-        data={list}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-        }
-        ItemSeparatorComponent={SeparatorItem}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-      />
-    </SafeAreaView>
+        <FlatList
+          data={list}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          }
+          ItemSeparatorComponent={SeparatorItem}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      </SafeAreaView>
+    </>
   );
 }
 
