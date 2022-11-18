@@ -9,6 +9,16 @@ import * as S from './ProductMapScreen.style';
 
 const {width, height} = Dimensions.get('screen');
 
+const getMapZoomLevel = (distanceRange: number) => {
+  let zoomLevel = 16;
+  if (distanceRange >= 1 && distanceRange <= 2) zoomLevel = 15;
+  if (distanceRange >= 3 && distanceRange <= 5) zoomLevel = 10;
+  if (distanceRange >= 6 && distanceRange <= 9) zoomLevel = 8;
+  if (distanceRange >= 10 && distanceRange <= 12) zoomLevel = 6;
+  if (distanceRange >= 13) zoomLevel = 3;
+  return zoomLevel;
+};
+
 export function ProductMapScreen({route}) {
   const {
     params: {productId, currentLocation, distance},
@@ -65,7 +75,7 @@ export function ProductMapScreen({route}) {
             longitudeDelta: 0.0421,
           }}
           zoomEnabled={true}
-          minZoomLevel={16}
+          minZoomLevel={getMapZoomLevel(currentRange)}
           showsUserLocation={true}
           loadingEnabled={true}>
           {prices &&
