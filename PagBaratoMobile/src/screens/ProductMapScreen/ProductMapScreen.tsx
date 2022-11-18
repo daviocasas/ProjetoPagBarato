@@ -65,7 +65,7 @@ export function ProductMapScreen({route}) {
             longitudeDelta: 0.0421,
           }}
           zoomEnabled={true}
-          minZoomLevel={10}
+          minZoomLevel={16}
           showsUserLocation={true}
           loadingEnabled={true}>
           {prices &&
