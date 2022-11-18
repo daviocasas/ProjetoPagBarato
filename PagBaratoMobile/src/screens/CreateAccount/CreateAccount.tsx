@@ -16,7 +16,6 @@ export function CreateAccount({ navigation }) {
 
     const signUp = async () => {
         if (email === '' || name === '' || password === '') {
-            console.log('Campos não preenchidos')
             Alert.alert('Preencha todos os campos necessarios')
         } else {
             try {
@@ -28,14 +27,11 @@ export function CreateAccount({ navigation }) {
 
             } catch (error) {
                 const erro = error.response.data.error.code;
-                console.log(erro)
                 if (erro === 'auth/invalid-password') {
                     Alert.alert('Senha inválida')
-                    console.log('Senha inválida')
                 }
                 if (erro === 'auth/invalid-email') {
                     Alert.alert('Email incorreto ou inexistente')
-                    console.log('Email incorreto ou inexistente')
                 }
             }
         }
