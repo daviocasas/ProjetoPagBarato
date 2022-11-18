@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services' // <- Add this line
 
-import groovy.swing.SwingBuilder
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -215,7 +214,9 @@ android {
         release {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
                 keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
             }
         }
         debug {
@@ -253,40 +254,6 @@ android {
             }
 
         }
-    }
-}
-
-task ask {
-    doLast {
-        def keyPassPhrase
-        def console = System.console()
-
-        if (console) {
-            keyPassPhrase = console.readLine('> Please enter your keystore pass: ')
-        } else {
-            new SwingBuilder().edt {
-                dialog(modal: true,
-                        title: 'Enter credentials',
-                        alwaysOnTop: true,
-                        resizable: false,
-                        locationRelativeTo: null,
-                        pack: true,
-                        show: true
-                ) {
-                    vbox {
-                        label(text: "Please enter key passphrase:")
-                        input = passwordField()
-                        button(defaultButton: true, text: 'OK', actionPerformed: {
-                            keyPassPhrase = input.password;
-                            dispose();
-                        })
-                    }
-                }
-          }
-        }
-
-        android.signingConfigs.release.storePassword = keyPassPhrase
-        android.signingConfigs.release.keyPassword = keyPassPhrase
     }
 }
 
