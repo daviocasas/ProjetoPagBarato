@@ -93,12 +93,7 @@ export function LoginScreen({navigation}) {
               </S.WrapperLink>
             </S.WrapperFormLink>
             <S.WrapperForm>
-              <Button
-                title="Entrar"
-                width={0.6}
-                onPress={() => signIn()}
-                //onPress={() => signIn(email, password)}
-              />
+              <Button title="Entrar" width={0.6} onPress={() => signIn()} />
             </S.WrapperForm>
           </S.SubContainer>
         </S.WrapperContainer>

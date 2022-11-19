@@ -169,6 +169,7 @@ export function PostProductScreen({navigation}) {
                     arrowIconColor="green"
                   />
                 </S.WrapperSwitchForm>
+
                 <Button
                   disabled={priceType.id != 'DEAL'}
                   title="Data da oferta"

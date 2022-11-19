@@ -29,7 +29,7 @@ export function ProductItem({
             <Feather
               name="chevrons-right"
               size={20}
-              color={color['mid-orange']}
+              color={color['primary']}
             />
           </S.TitleContainer>
 

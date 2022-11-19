@@ -7,24 +7,26 @@ interface IProps {
   disabled?: boolean;
 }
 
-export const ButtonContainer = styled.TouchableOpacity.attrs({
+export const FloatingButtonContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
   width: ${(props: IProps) =>
     props.width ? `${Window.widthScale(props.width)}px` : '100%'};
+  height: ${(props: IProps) =>
+    props.width ? `${Window.heightScale(props.width)}px` : '100%'};
+  position: absolute;
   align-items: center;
   justify-content: center;
-  align-self: center;
-  background-color: ${color.primary};
-  border-radius: ${Window.widthScale(0.005)}px;
+  top: 400;
+  right: 20;
+  background-color: ${color.second};
+  border-radius: ${Window.widthScale(0.03)}px;
   elevation: 5;
-  flex-direction: row;
-  margin-top: ${Window.heightScale(0.02)}px; ;
 `;
 
 export const Title = styled.Text`
   font-family: ${font.semiBold};
-  font-size: ${Window.fontScale(12)}px;
+  font-size: ${Window.fontScale(16)}px;
   color: ${color.cream};
   text-align: center;
   padding-vertical: 5%;
