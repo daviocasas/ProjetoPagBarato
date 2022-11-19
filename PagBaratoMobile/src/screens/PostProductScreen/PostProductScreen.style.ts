@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { color, font } from '../../config/theme.json';
+import {color, font} from '../../config/theme.json';
 import * as Window from '../../services/dimensionsService';
 
 interface IProps {
@@ -87,7 +86,6 @@ export const WrapperSwitchSelector = styled.View`
 
 export const WrapperSwitchForm = styled.View`
   flex-direction: row;
-  
 `;
 
 export const WrapperSwitchFormButton = styled.View`
@@ -100,4 +98,3 @@ export const WrapperLink = styled.TouchableOpacity.attrs({
   padding-left: ${Window.heightScale(0.02)}px;
   padding-right: ${Window.heightScale(0.02)}px;
 `;
-

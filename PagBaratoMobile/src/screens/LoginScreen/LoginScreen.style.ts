@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import { color, font } from '../../config/theme.json';
+import {color, font} from '../../config/theme.json';
 import * as Window from '../../services/dimensionsService';
 
 interface IProps {
@@ -18,7 +18,7 @@ export const Container = styled(KeyboardAwareScrollView)`
 export const LogoContainer = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: ${Window.heightScale(0.06)}px ;
+  margin-top: ${Window.heightScale(0.06)}px;
 `;
 
 export const WrapperContainer = styled.View`

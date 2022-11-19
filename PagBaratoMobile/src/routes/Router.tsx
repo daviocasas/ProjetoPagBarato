@@ -1,35 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { AppStack } from './AppStack';
-import { AuthStack } from './AuthStack';
-import { useAuth } from '../contexts/Auth';
-import { AppDrawer } from './AppDrawer';
+import React, {useEffect, useState} from 'react';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {NavigationContainer} from '@react-navigation/native';
+import {AppStack} from './AppStack';
+import {AuthStack} from './AuthStack';
+import {useAuth} from '../contexts/Auth';
 
-import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
+import {SplashScreen} from '../screens/SplashScreen/SplashScreen';
 
 export function Router() {
-    const { loading } = useAuth();
+  const {loading, refreshToken} = useAuth();
 
-    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
-    useEffect(() => {
-        const unsubscribe = auth().onAuthStateChanged((_user) => {
-            setUser(_user);
-        });
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(_user => {
+      setUser(_user);
+      refreshToken();
+    });
 
-        return unsubscribe;
-    }, [])
+    return unsubscribe;
+  }, []);
 
-    if (loading) {
-        return (
-            <SplashScreen />
-        )
-    }
-    return (
-        <NavigationContainer>
-            {user ? <AppStack /> : <AuthStack />}
-        </NavigationContainer>
-    )
+  if (loading) return <SplashScreen />;
+
+  return (
+    <NavigationContainer>
+      {user ? <AppStack /> : <AuthStack />}
+    </NavigationContainer>
+  );
 }

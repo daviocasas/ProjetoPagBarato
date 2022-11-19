@@ -12,10 +12,11 @@ const {width, height} = Dimensions.get('screen');
 const getMapZoomLevel = (distanceRange: number) => {
   let zoomLevel = 16;
   if (distanceRange >= 1 && distanceRange <= 2) zoomLevel = 15;
-  if (distanceRange >= 3 && distanceRange <= 5) zoomLevel = 10;
+  if (distanceRange >= 3 && distanceRange <= 5) zoomLevel = 12;
   if (distanceRange >= 6 && distanceRange <= 9) zoomLevel = 8;
-  if (distanceRange >= 10 && distanceRange <= 12) zoomLevel = 6;
-  if (distanceRange >= 13) zoomLevel = 3;
+  if (distanceRange >= 10 && distanceRange <= 13) zoomLevel = 6;
+  if (distanceRange >= 13 && distanceRange <= 15) zoomLevel = 3;
+  if (distanceRange >= 16) zoomLevel = 0;
   return zoomLevel;
 };
 
@@ -25,15 +26,26 @@ export function ProductMapScreen({route}) {
   } = route;
 
   const [productData, setProductData] = useState<any>(null);
+  const [lowestPrice, setLowestPrice] = useState<any>(null);
 
-  const prices = productData?.prices;
   const location = currentLocation;
+  const prices = productData?.prices;
   const currentRange = Math.floor(distance);
 
   console.log('Map: ', {...currentLocation, distance});
 
+  const getLowestPrice = (prices: Array<any>) => {
+    let min = prices[0];
+
+    for (let i = 1; i < prices.length; i++) {
+      let price = prices[i];
+      min = price.value < min.value ? price : min;
+    }
+
+    return min;
+  };
+
   const fetchCoord = async () => {
-    console.log('fetchCoord()', productId);
     const token = await getItem(StorageItems.ACCESS_TOKEN);
 
     try {
@@ -43,6 +55,11 @@ export function ProductMapScreen({route}) {
             &rangeRadius=${currentRange}`,
         {headers: {Authorization: `Bearer ${token}`}},
       );
+
+      if (response.data?.prices) {
+        const lowestPrice = getLowestPrice(response.data?.prices);
+        setLowestPrice(lowestPrice);
+      }
 
       setProductData(response.data);
     } catch (err) {
@@ -58,7 +75,7 @@ export function ProductMapScreen({route}) {
 
   return (
     <S.WrapperContainer>
-      {productData && prices ? (
+      {productData && lowestPrice && prices ? (
         <MapView
           onMapReady={() => {
             Platform.OS === 'android'
@@ -69,8 +86,8 @@ export function ProductMapScreen({route}) {
           }}
           style={{width, height}}
           region={{
-            latitude: Number(location.currentLatitude),
-            longitude: Number(location.currentLongitude),
+            latitude: lowestPrice.establishment.latitude,
+            longitude: lowestPrice.establishment.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}

@@ -12,16 +12,24 @@ export function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function signIn() {
-    if (email === '' || password === '') {
-      Alert.alert('Preencha todos os campos necessarios!');
-    } else {
-      auth()
+  async function signIn() {
+    try {
+      console.log('Entrou signIn', email, password);
+
+      if (email === '' || password === '') {
+        Alert.alert('Preencha todos os campos necessarios!');
+        return;
+      }
+
+      await auth()
         .signInWithEmailAndPassword(email, password)
         .then(res => {
+          console.log(res);
           setItem(StorageItems.USER_ID, res.user.uid);
         })
         .catch(error => {
+          console.log(error);
+
           if (error.code === 'auth/wrong-password') {
             Alert.alert('Senha incorreta');
           }
@@ -30,6 +38,8 @@ export function LoginScreen({navigation}) {
             Alert.alert('Email incorreto ou inexistente');
           }
         });
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -88,7 +98,7 @@ export function LoginScreen({navigation}) {
               <Button
                 title="Entrar"
                 width={0.6}
-                onPress={signIn}
+                onPress={() => signIn()}
                 //onPress={() => signIn(email, password)}
               />
             </S.WrapperForm>

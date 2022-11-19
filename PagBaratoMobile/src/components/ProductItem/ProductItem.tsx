@@ -1,5 +1,6 @@
 import React from 'react';
-import {Image, ImageProps} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import {color} from '../../config/theme.json';
 
 import * as S from './ProductItem.style';
 
@@ -8,7 +9,6 @@ export interface Product {
   name: string;
   establishment: string;
   price: number;
-  image: ImageProps['source'];
   isProductWithNearExpirationDate: boolean;
   onPress: () => void;
 }
@@ -17,33 +17,35 @@ export function ProductItem({
   name,
   price,
   establishment,
-  image,
   isProductWithNearExpirationDate,
   onPress,
 }: Product) {
   return (
     <>
       <S.ProductContainer onPress={onPress}>
-        <Image
-          style={{width: 120, height: 100}}
-          source={
-            image || {
-              uri: 'https://cdn-icons-png.flaticon.com/512/2424/2424721.png',
-            }
-          }
-        />
         <S.ContentContainer>
-          <S.DefaultTitle>{name}</S.DefaultTitle>
+          <S.TitleContainer>
+            <S.DefaultTitle>{name}</S.DefaultTitle>
+            <Feather
+              name="chevrons-right"
+              size={20}
+              color={color['mid-orange']}
+            />
+          </S.TitleContainer>
+
           <S.DefaultDescription>
             Estabelecimento: {establishment}
           </S.DefaultDescription>
           <S.DefaultDescription>
-            Produto próximo da validade? {isProductWithNearExpirationDate}
+            Produto próximo da validade?{' '}
+            {isProductWithNearExpirationDate ? 'SIM' : 'NÃO'}
           </S.DefaultDescription>
-          <S.DefaultDescription>
-            Preço mais baixo encontrado:{' '}
-          </S.DefaultDescription>
-          <S.DefaultPrice>R$ {price.toFixed(2)}</S.DefaultPrice>
+          <S.DefaultPrice>
+            Menor preço:{' '}
+            <S.DefaultPriceValue>
+              R$ {price.toFixed(2).replace('.', ',')}
+            </S.DefaultPriceValue>
+          </S.DefaultPrice>
         </S.ContentContainer>
       </S.ProductContainer>
     </>

@@ -30,14 +30,17 @@ export function PostProductScreen({navigation}) {
 
   const fetchData = async () => {
     const token = await getItem(StorageItems.ACCESS_TOKEN);
+
     const {data} = await api.get('/api/establishment?paginate=false', {
       headers: {Authorization: `Bearer ${token}`},
     });
+
     const formatedData = data.data.map((item: {id: any; name: any}) => ({
       ...item,
       id: item.id,
       item: item.name,
     }));
+
     return setEstablishmentList(formatedData);
   };
 
