@@ -38,14 +38,12 @@ export const AuthProvider: React.FC = ({children}) => {
 
   async function refreshToken() {
     try {
-      console.log('Entrou')
       if (auth().currentUser) {
-        console.log('Tem currentUser')
-        const idTokenResult = await auth().currentUser?.getIdTokenResult(true);
+        const idTokenResult = await auth().currentUser?.getIdTokenResult();
         if (idTokenResult) setAuthTokens(idTokenResult.token, '');
       }
     } catch (err) {
-      console.log('É aqui:', err);
+      console.log('refreshToken()', err);
     }
   }
 

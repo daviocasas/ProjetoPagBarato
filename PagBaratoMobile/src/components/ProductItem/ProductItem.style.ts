@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {color, font} from '../../config/theme.json';
+import * as Dimension from '../../services/dimensionsService';
 
 export const ProductContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
@@ -35,7 +36,7 @@ export const DefaultDescription = styled.Text`
 `;
 
 export const DefaultPrice = styled.Text`
-  padding-top: 12;
+  padding-top: ${Dimension.widthScale(0.04)}px;
   text-align: right;
   font-size: 12px;
   color: ${color.black};
