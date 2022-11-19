@@ -14,8 +14,6 @@ export function LoginScreen({navigation}) {
 
   async function signIn() {
     try {
-      console.log('Entrou signIn', email, password);
-
       if (email === '' || password === '') {
         Alert.alert('Preencha todos os campos necessarios!');
         return;
