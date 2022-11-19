@@ -11,7 +11,8 @@ const {width, height} = Dimensions.get('screen');
 
 const getMapZoomLevel = (distanceRange: number) => {
   let zoomLevel = 16;
-  if (distanceRange >= 1 && distanceRange <= 2) zoomLevel = 15;
+  if (distanceRange === 1) zoomLevel = 17;
+  if (distanceRange === 2) zoomLevel = 16;
   if (distanceRange >= 3 && distanceRange <= 5) zoomLevel = 12;
   if (distanceRange >= 6 && distanceRange <= 9) zoomLevel = 8;
   if (distanceRange >= 10 && distanceRange <= 13) zoomLevel = 6;
@@ -45,7 +46,7 @@ export function ProductMapScreen({route}) {
     return min;
   };
 
-  const fetchCoord = async () => {
+  const fetchProductPrices = async () => {
     const token = await getItem(StorageItems.ACCESS_TOKEN);
 
     try {
@@ -70,7 +71,8 @@ export function ProductMapScreen({route}) {
   console.log('productData: ', productData);
 
   useEffect(() => {
-    if (location.currentLongitude && location.currentLongitude) fetchCoord();
+    if (location.currentLongitude && location.currentLongitude)
+      fetchProductPrices();
   }, [location]);
 
   return (
