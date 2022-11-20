@@ -1,14 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {Alert, Switch} from 'react-native';
-import Button from '../../components/Button/Button';
-import Input from '../../components/Input/Input';
-import api from '../../services/api';
-import {getItem, StorageItems} from '../../services/storage';
+import {Switch, StyleSheet} from 'react-native';
 
 import SelectBox from 'react-native-multi-selectbox';
 import DatePicker from 'react-native-date-picker';
+import Toast from 'react-native-toast-message';
 
 import * as S from './PostProductScreen.style';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+import api from '../../services/api';
+
+import {color, font} from '../../config/theme.json';
+import * as Window from '../../services/dimensionsService';
+import {getItem, StorageItems} from '../../services/storage';
+
+const PriceTypeEnum = [
+  {
+    item: 'Comum',
+    id: 'COMMON',
+  },
+  {
+    item: 'Oferta',
+    id: 'DEAL',
+  },
+];
 
 export function PostProductScreen({navigation}) {
   const [productName, setProductName] = useState('');
@@ -49,45 +64,56 @@ export function PostProductScreen({navigation}) {
   }, []);
 
   const postProductPrice = async () => {
-    if (
-      productName === '' ||
-      value === '' ||
-      selectedItem === '' ||
-      priceType === ''
-    ) {
-      Alert.alert('Preencha todos os campos necessarios');
-    } else {
-      try {
-        console.log({
+    try {
+      if (
+        productName === '' ||
+        value === '' ||
+        selectedItem === '' ||
+        priceType === ''
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: 'Preencha todos os campos!',
+          text2: 'Não é permitido nenhum campo vazio.',
+        });
+
+        return;
+      }
+      console.log({
+        productName,
+        establishmentId: selectedItem.id,
+        value,
+        isProductWithNearExpirationDate: isEnabled,
+        type: priceType.id,
+        expiresAt: date,
+      });
+
+      const token = await getItem(StorageItems.ACCESS_TOKEN);
+      const res = await api.post(
+        `/api/price`,
+        {
           productName,
           establishmentId: selectedItem.id,
           value,
           isProductWithNearExpirationDate: isEnabled,
           type: priceType.id,
           expiresAt: date,
-        });
+        },
+        {headers: {Authorization: `Bearer ${token}`}},
+      );
 
-        const token = await getItem(StorageItems.ACCESS_TOKEN);
-        const res = await api.post(
-          `/api/price`,
-          {
-            productName,
-            establishmentId: selectedItem.id,
-            value,
-            isProductWithNearExpirationDate: isEnabled,
-            type: priceType.id,
-            expiresAt: date,
-          },
-          {headers: {Authorization: `Bearer ${token}`}},
-        );
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Preço criado com sucesso!',
+        text2: 'Agora você já pode visualizá-lo na busca :)',
+      });
 
-        Alert.alert('Preço postado com sucesso!');
-        navigation.navigate('HomeScreen');
+      navigation.navigate('HomeScreen');
 
-        return res.data;
-      } catch (error) {
-        console.log(error.response.data);
-      }
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data);
     }
   };
 
@@ -98,17 +124,6 @@ export function PostProductScreen({navigation}) {
   function onChangeValPriceType() {
     return (val: any) => setPriceType(val);
   }
-
-  const PRICE_OPTIONS = [
-    {
-      item: 'Comum',
-      id: 'COMMON',
-    },
-    {
-      item: 'Oferta',
-      id: 'DEAL',
-    },
-  ];
 
   return (
     <>
@@ -127,14 +142,36 @@ export function PostProductScreen({navigation}) {
               />
               <S.WrapperSelectBox>
                 <SelectBox
-                  label="Selecione o estabelecimento"
+                  label=""
                   options={establishmentList}
                   value={selectedItem}
                   onChange={onChangeVal()}
+                  labelStyle={{display: 'none'}}
+                  containerStyle={{
+                    borderColor: color.little_gray,
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    color: color.dark_gray,
+                    fontSize: Window.widthScale(0.0325),
+                    width: Window.widthScale(0.8),
+                    fontFamily: font.regular,
+                    paddingLeft: '6%',
+                  }}
+                  inputFilterStyle={{
+                    ...styles.selectInputText,
+                    fontSize: Window.widthScale(0.0275),
+                  }}
+                  optionsLabelStyle={styles.selectInputText}
+                  optionContainerStyle={styles.selectInputText}
+                  multiListEmptyLabelStyle={styles.selectInputText}
+                  multiOptionContainerStyle={styles.selectInputText}
+                  selectedItemStyle={{...styles.selectInputText, padding: '3%'}}
                   hideInputFilter={false}
-                  inputPlaceholder="Estabelecimentos"
-                  arrowIconColor="green"
-                  searchIconColor="green"
+                  inputPlaceholder="Selecione o estabelecimento"
+                  listEmptyText="Nenhum estabelecimento encontrado"
+                  arrowIconColor={color.mid_green}
+                  searchIconColor={color.mid_green}
+                  toggleIconColor={color.mid_green}
                 />
               </S.WrapperSelectBox>
               <Input
@@ -145,56 +182,81 @@ export function PostProductScreen({navigation}) {
                 keyboardType="numeric"
                 maxLength={120}
               />
+
+              <S.WrapperSelectBox>
+                <SelectBox
+                  label=""
+                  labelStyle={{display: 'none'}}
+                  containerStyle={{
+                    borderColor: color.little_gray,
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    color: color.dark_gray,
+                    fontSize: Window.widthScale(0.0325),
+                    width: Window.widthScale(0.8),
+                    fontFamily: font.regular,
+                    paddingLeft: '6%',
+                  }}
+                  inputFilterStyle={{
+                    ...styles.selectInputText,
+                    fontSize: Window.widthScale(0.0275),
+                  }}
+                  optionsLabelStyle={styles.selectInputText}
+                  optionContainerStyle={styles.selectInputText}
+                  multiListEmptyLabelStyle={styles.selectInputText}
+                  multiOptionContainerStyle={styles.selectInputText}
+                  selectedItemStyle={{...styles.selectInputText, padding: '3%'}}
+                  inputPlaceholder="Selecione o tipo de preço"
+                  options={PriceTypeEnum}
+                  value={priceType}
+                  onChange={onChangeValPriceType()}
+                  hideInputFilter={true}
+                  arrowIconColor={color.mid_green}
+                />
+              </S.WrapperSelectBox>
+
+              {priceType.id === 'DEAL' ? (
+                <Button
+                  title="Data da oferta"
+                  width={0.4}
+                  onPress={() => setOpen(true)}
+                />
+              ) : (
+                <></>
+              )}
+
+              <DatePicker
+                modal
+                open={open}
+                date={date}
+                mode="date"
+                onConfirm={date => {
+                  setOpen(false);
+                  setDate(date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+              />
+
               <S.WrapperSwitchSelector>
                 <S.WrapperSwitchForm>
                   <S.TextSwitch>
                     Produto próximo da data de vencimento?{' '}
                   </S.TextSwitch>
                   <Switch
-                    trackColor={{false: '#3e3e3e', true: 'green'}}
-                    thumbColor={isEnabled ? 'orange' : '#f4f4f4'}
+                    trackColor={{false: '#3e3e3e', true: color.mid_green}}
+                    thumbColor={isEnabled ? color.secondary : '#f4f4f4'}
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                   />
                 </S.WrapperSwitchForm>
-                <S.WrapperSwitchForm>
-                  <SelectBox
-                    label="Selecione o tipo de preço"
-                    inputPlaceholder="Tipo de preço"
-                    options={PRICE_OPTIONS}
-                    value={priceType}
-                    onChange={onChangeValPriceType()}
-                    hideInputFilter={true}
-                    arrowIconColor="green"
-                  />
-                </S.WrapperSwitchForm>
-
-                <Button
-                  disabled={priceType.id != 'DEAL'}
-                  title="Data da oferta"
-                  width={0.4}
-                  onPress={() => setOpen(true)}
-                />
-
-                <DatePicker
-                  modal
-                  open={open}
-                  date={date}
-                  mode="date"
-                  onConfirm={date => {
-                    setOpen(false);
-                    setDate(date);
-                  }}
-                  onCancel={() => {
-                    setOpen(false);
-                  }}
-                />
               </S.WrapperSwitchSelector>
             </S.WrapperForm>
             <S.WrapperForm>
               <Button
-                title="Publicar produto"
+                title="Publicar preço"
                 width={0.6}
                 onPress={postProductPrice}
               />
@@ -205,3 +267,11 @@ export function PostProductScreen({navigation}) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  selectInputText: {
+    color: color.dark_gray,
+    fontSize: Window.widthScale(0.0325),
+    fontFamily: font.regular,
+  },
+});

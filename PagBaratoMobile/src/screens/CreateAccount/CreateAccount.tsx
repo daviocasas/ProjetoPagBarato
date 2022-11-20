@@ -51,8 +51,7 @@ export function CreateAccount({navigation}) {
         Toast.show({
           type: 'error',
           text1: 'Cadastro não efetuado!',
-          text2:
-            'Algum erro inesperado ocorreu durante a criação da sua conta, verifique os dados e tente novamente',
+          text2: 'Erro inesperado! Verifique os dados e tente novamente.',
         });
       }
     }

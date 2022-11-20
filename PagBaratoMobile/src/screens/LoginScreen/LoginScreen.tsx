@@ -30,6 +30,7 @@ export function LoginScreen({navigation}) {
 
       const res = await auth().signInWithEmailAndPassword(email, password);
       await setItem(StorageItems.USER_ID, res.user.uid);
+
       Toast.show({
         type: 'success',
         position: 'bottom',

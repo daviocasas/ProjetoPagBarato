@@ -73,7 +73,7 @@ export const WrapperSelectBox = styled.View`
   align-self: center;
   flex-direction: column;
   justify-content: center;
-  padding: ${Window.heightScale(0.02)}px;
+  paddingTop: ${Window.heightScale(0.02)}px;
 `;
 
 export const WrapperSwitchSelector = styled.View`

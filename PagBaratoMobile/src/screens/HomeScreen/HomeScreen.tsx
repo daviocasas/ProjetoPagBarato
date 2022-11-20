@@ -214,8 +214,8 @@ export function HomeScreen() {
           <Slider
             minimumValue={1}
             maximumValue={20}
-            minimumTrackTintColor={color.primary}
-            thumbTintColor={color.mid_orange}
+            minimumTrackTintColor={color.mid_orange}
+            thumbTintColor={color.primary}
             value={distance}
             onSlidingComplete={changeDistanceRange}
             onValueChange={value => setDistance(value as number)}
