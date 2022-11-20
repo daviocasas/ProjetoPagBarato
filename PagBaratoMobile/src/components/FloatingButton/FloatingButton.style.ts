@@ -19,9 +19,9 @@ export const FloatingButtonContainer = styled.TouchableOpacity.attrs({
   justify-content: center;
   top: 400;
   right: 20;
-  background-color: ${color.second};
+  background-color: ${color.secondary};
   border-radius: ${Window.widthScale(0.03)}px;
-  elevation: 5;
+  elevation: 3;
 `;
 
 export const Title = styled.Text`

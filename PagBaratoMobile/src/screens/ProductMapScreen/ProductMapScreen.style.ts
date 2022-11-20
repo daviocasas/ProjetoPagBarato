@@ -13,7 +13,7 @@ export const MarkerContainer = styled.View`
   align-items: center;
   border-radius: 3px;
   border: 1px solid;
-  border-color: ${color['mid-orange']};
+  border-color: ${color.mid_orange};
   max-width: 140px;
 `;
 

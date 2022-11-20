@@ -1,7 +1,5 @@
 import React, {useContext, createContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Alert} from 'react-native';
-import {authService} from '../services/authService';
 import auth from '@react-native-firebase/auth';
 import {setAuthTokens} from '../services/storage';
 
@@ -11,11 +9,9 @@ export interface AuthData {
   name: string;
 }
 interface AuthContextData {
-  authData?: AuthData;
-  signIn: (email: string, password: string) => Promise<AuthData>;
-  signOut: () => Promise<void>;
-  refreshToken: () => Promise<void>;
   loading: boolean;
+  authData?: AuthData;
+  refreshToken: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -47,23 +43,8 @@ export const AuthProvider: React.FC = ({children}) => {
     }
   }
 
-  async function signIn(email: string, password: string) {
-    try {
-      const auth = await authService.signIn(email, password);
-      AsyncStorage.setItem('@AuthData', JSON.stringify(auth));
-      setAuth(auth);
-      return auth;
-    } catch (error) {
-      Alert.alert(error.message, 'Tente novamente');
-    }
-  }
-  async function signOut(): Promise<void> {
-    setAuth(undefined);
-    AsyncStorage.removeItem('@AuthData');
-  }
   return (
-    <AuthContext.Provider
-      value={{authData, loading, signIn, signOut, refreshToken}}>
+    <AuthContext.Provider value={{authData, loading, refreshToken}}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,11 +1,10 @@
 import styled from 'styled-components/native';
-import { TextInput } from 'react-native';
-import { color, font } from '../../config/theme.json';
+import {TextInput} from 'react-native';
+import {color, font} from '../../config/theme.json';
 import * as Window from '../../services/dimensionsService';
 import Mail from 'react-native-vector-icons/MaterialCommunityIcons';
 import Lock from 'react-native-vector-icons/Feather';
 import Eyes from 'react-native-vector-icons/Feather';
-//import User from '../../assets/svg/home/ic_user.svg';
 
 export const IconEye = styled(Eyes).attrs({
   size: 18,
@@ -14,27 +13,24 @@ export const IconEye = styled(Eyes).attrs({
 
 export const IconLock = styled(Lock).attrs({
   name: 'lock',
-  color: color.primary,
+  color: color.mid_green,
   size: 23,
 })``;
 
 export const IconMail = styled(Mail).attrs({
   name: 'email-outline',
-  color: color.primary,
+  color: color.mid_green,
   size: 24,
 })``;
-
-/* export const IconUser = styled(User).attrs({
-  width: Window.widthScale(0.05),
-  height: Window.heightScale(0.05),
-})``; */
 
 export const Container = styled.View`
   flex-direction: row;
   position: relative;
-  background-color: ${color.little_gray};
-  border-radius: ${Window.widthScale(0.02)}px;
-  margin-top: 5%;
+  border-color: ${color.little_gray};
+  border-width: ${Window.widthScale(0.002)}px;
+  background-color: ${color.little_cream};
+  border-radius: ${Window.widthScale(0.01)}px;
+  margin-top: 3%;
 `;
 
 export const WrapperIcon = styled.View`

@@ -45,5 +45,5 @@ export const DefaultPrice = styled.Text`
 export const DefaultPriceValue = styled.Text`
   font-size: 15px;
   font-weight: bold;
-  color: ${color['mid-green']};
+  color: ${color.mid_green};
 `;

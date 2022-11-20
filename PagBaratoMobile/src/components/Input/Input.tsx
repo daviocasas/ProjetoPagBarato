@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { font } from '../../config/theme.json';
-import { InputType } from '../../enum/inputType';
+import React, {useState} from 'react';
+import {font} from '../../config/theme.json';
+import {InputType} from '../../enum/inputType';
 import * as S from './Input.style';
 
 interface IInput {
@@ -13,19 +13,19 @@ interface IInput {
   maxLength?: number;
   autoCapitalized?: 'none' | 'sentences' | 'words' | 'characters';
   keyboardType?:
-  | 'default'
-  | 'email-address'
-  | 'numeric'
-  | 'phone-pad'
-  | 'number-pad'
-  | 'decimal-pad'
-  | 'visible-password'
-  | 'ascii-capable'
-  | 'numbers-and-punctuation'
-  | 'url'
-  | 'name-phone-pad'
-  | 'twitter'
-  | 'web-search';
+    | 'default'
+    | 'email-address'
+    | 'numeric'
+    | 'phone-pad'
+    | 'number-pad'
+    | 'decimal-pad'
+    | 'visible-password'
+    | 'ascii-capable'
+    | 'numbers-and-punctuation'
+    | 'url'
+    | 'name-phone-pad'
+    | 'twitter'
+    | 'web-search';
 }
 
 const Input = ({
@@ -66,8 +66,8 @@ const Input = ({
         keyboardType={keyboardType}
         editable={!disabled}
         maxLength={maxLength}
-        ref={(ref) =>
-          ref && ref.setNativeProps({ style: { fontFamily: font.regular } })
+        ref={ref =>
+          ref && ref.setNativeProps({style: {fontFamily: font.regular}})
         }
       />
       {password && (

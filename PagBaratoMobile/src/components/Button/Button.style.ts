@@ -17,7 +17,7 @@ export const ButtonContainer = styled.TouchableOpacity.attrs({
   align-self: center;
   background-color: ${color.primary};
   border-radius: ${Window.widthScale(0.005)}px;
-  elevation: 5;
+  elevation: 3;
   flex-direction: row;
   margin-top: ${Window.heightScale(0.02)}px; ;
 `;
@@ -27,12 +27,12 @@ export const Title = styled.Text`
   font-size: ${Window.fontScale(12)}px;
   color: ${color.cream};
   text-align: center;
-  padding-vertical: 5%;
+  padding-vertical: 3.5%;
 `;
 
 export const Loading = styled.ActivityIndicator.attrs({
   size: 'small',
   color: color.cream,
 })`
-  padding-vertical: 5%;
+  padding-vertical: 3.5%;
 `;

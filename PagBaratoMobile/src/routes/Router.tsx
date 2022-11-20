@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {NavigationContainer} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+
 import {AppStack} from './AppStack';
 import {AuthStack} from './AuthStack';
-import {useAuth} from '../contexts/Auth';
 
+import {useAuth} from '../contexts/Auth';
 import {SplashScreen} from '../screens/SplashScreen/SplashScreen';
 
 export function Router() {
@@ -26,6 +28,7 @@ export function Router() {
   return (
     <NavigationContainer>
       {user ? <AppStack /> : <AuthStack />}
+      <Toast />
     </NavigationContainer>
   );
 }

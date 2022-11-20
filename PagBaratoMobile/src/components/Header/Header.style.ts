@@ -25,7 +25,7 @@ export const WrapperTitle = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${font.bold};
+  font-family: ${font.semiBold};
   font-size: ${Dimension.fontScale(18)}px;
   color: ${color.cream};
   text-align: center;

@@ -5,7 +5,7 @@ const options: RNSInfo.RNSensitiveInfoOptions = {};
 export enum StorageItems {
   ACCESS_TOKEN = 'ACCESS_TOKEN',
   REFRESH_TOKEN = 'REFRESH_TOKEN',
-  USER_ID = 'userid',
+  USER_ID = 'USER_ID',
 }
 
 export const getItem = async (key: StorageItems) =>

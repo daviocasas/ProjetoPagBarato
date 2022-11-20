@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {LogBox, View} from 'react-native';
-import {color} from '../../config/theme.json';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -13,14 +13,16 @@ import {
   Text,
 } from 'react-native';
 
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {Slider} from '@miblanchard/react-native-slider';
+import Geolocation from '@react-native-community/geolocation';
+
+import {color} from '../../config/theme.json';
 import {ProductItem} from '../../components/ProductItem/ProductItem';
 import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
-import {Slider} from '@miblanchard/react-native-slider';
+import {getItem, StorageItems} from '../../services/storage';
+
 import Header from '../../components/Header/Header';
 import api from '../../services/api';
-import {getItem, StorageItems} from '../../services/storage';
-import Geolocation from '@react-native-community/geolocation';
 
 export function HomeScreen() {
   const [watchID, setWatchID] = useState(0);
@@ -212,8 +214,8 @@ export function HomeScreen() {
           <Slider
             minimumValue={1}
             maximumValue={20}
-            minimumTrackTintColor={color['mid-green']}
-            thumbTintColor={color['mid-orange']}
+            minimumTrackTintColor={color.primary}
+            thumbTintColor={color.mid_orange}
             value={distance}
             onSlidingComplete={changeDistanceRange}
             onValueChange={value => setDistance(value as number)}

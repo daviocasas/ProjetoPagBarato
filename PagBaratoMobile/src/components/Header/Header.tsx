@@ -12,20 +12,20 @@ interface IHeader {
 const Header: FunctionComponent<IHeader> = ({title}: any) => {
   const navigation = useNavigation();
 
-  function signOut() {
+  const signOut = () => {
     auth().signOut();
-  }
+  };
 
   return (
     <S.Container>
       <S.WrapperIcon onPress={() => navigation.navigate('PostProductScreen')}>
-        <Feather name="plus" size={20} color={color.second} />
+        <Feather name="plus" size={20} color={color.secondary} />
       </S.WrapperIcon>
       <S.WrapperTitle>
         <S.Title>{title}</S.Title>
       </S.WrapperTitle>
       <S.WrapperIcon onPress={signOut}>
-        <Feather name="log-out" size={20} color={color.second} />
+        <Feather name="log-out" size={20} color={color.secondary} />
       </S.WrapperIcon>
     </S.Container>
   );
