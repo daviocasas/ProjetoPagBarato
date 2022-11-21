@@ -11,25 +11,25 @@ export const FloatingButtonContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
   width: ${(props: IProps) =>
-    props.width ? `${Window.widthScale(props.width)}px` : '100%'};
+    props.width ? `${Window.widthScale(props.width)}px` : '32px'};
   height: ${(props: IProps) =>
-    props.width ? `${Window.heightScale(props.width)}px` : '100%'};
+    props.width ? `${Window.widthScale(props.width)}px` : '32px'};
   position: absolute;
   align-items: center;
   justify-content: center;
-  top: 400;
-  right: 20;
-  background-color: ${color.secondary};
-  border-radius: ${Window.widthScale(0.03)}px;
-  elevation: 3;
+  top: ${(props: IProps) =>
+    props.width ? `${Window.heightScale(0.85)}px` : '600px'};
+  right: 20px;
+  background-color: ${color.primary};
+  border-radius: ${Window.widthScale(1)}px;
+  elevation: 4;
 `;
 
-export const Title = styled.Text`
-  font-family: ${font.semiBold};
-  font-size: ${Window.fontScale(16)}px;
+export const FloatingButtonTitle = styled.Text`
+  font-family: ${font.bold};
+  font-size: ${Window.fontScale(14)}px;
   color: ${color.cream};
   text-align: center;
-  padding-vertical: 5%;
 `;
 
 export const Loading = styled.ActivityIndicator.attrs({

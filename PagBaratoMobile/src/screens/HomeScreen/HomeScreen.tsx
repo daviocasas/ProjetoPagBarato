@@ -17,9 +17,10 @@ import {Slider} from '@miblanchard/react-native-slider';
 import Geolocation from '@react-native-community/geolocation';
 
 import {color} from '../../config/theme.json';
+import {getItem, StorageItems} from '../../services/storage';
 import {ProductItem} from '../../components/ProductItem/ProductItem';
 import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
-import {getItem, StorageItems} from '../../services/storage';
+import FloatingButton from '../../components/FloatingButton/FloatingButton';
 
 import Header from '../../components/Header/Header';
 import api from '../../services/api';
@@ -239,6 +240,12 @@ export function HomeScreen() {
             renderItem={renderItem}
           />
         </View>
+
+        <FloatingButton
+          width={0.1}
+          title="+"
+          onPress={() => navigation.navigate('PostProductScreen')}
+        />
       </SafeAreaView>
     </>
   );

@@ -18,9 +18,7 @@ const Header: FunctionComponent<IHeader> = ({title}: any) => {
 
   return (
     <S.Container>
-      <S.WrapperIcon onPress={() => navigation.navigate('PostProductScreen')}>
-        <Feather name="plus" size={20} color={color.secondary} />
-      </S.WrapperIcon>
+      <S.WrapperIcon></S.WrapperIcon>
       <S.WrapperTitle>
         <S.Title>{title}</S.Title>
       </S.WrapperTitle>

@@ -19,7 +19,7 @@ const FloatingButton = ({title, width, onPress, disabled}: IFloatingButton) => {
       disabled={disabled}
       width={width}
       style={disabled ? styles.disabled : styles.enabled}>
-      <S.Title>{disabled ? '' : title}</S.Title>
+      <S.FloatingButtonTitle>{disabled ? '' : title}</S.FloatingButtonTitle>
     </S.FloatingButtonContainer>
   );
 };
