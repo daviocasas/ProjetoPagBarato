@@ -6,11 +6,15 @@ import * as S from './Input.style';
 interface IInput {
   value: string;
   placeholder: string;
-  onChangeText: (value: string) => void;
+  onChangeText?: (value: string) => void;
   type?: any;
+  readOnly?: boolean;
   password?: boolean;
   disabled?: boolean;
   maxLength?: number;
+  endButton?: boolean;
+  endButtonIcon?: any;
+  endButtonAction?: () => void;
   autoCapitalized?: 'none' | 'sentences' | 'words' | 'characters';
   keyboardType?:
     | 'default'
@@ -33,6 +37,9 @@ const Input = ({
   placeholder,
   onChangeText,
   password,
+  endButton,
+  endButtonIcon,
+  endButtonAction,
   disabled,
   maxLength,
   autoCapitalized,
@@ -47,8 +54,6 @@ const Input = ({
         return <S.IconMail />;
       case InputType.PASSWORD:
         return <S.IconLock />;
-      case InputType.USER:
-      //return <S.IconUser />;
       default:
         break;
     }
@@ -70,14 +75,21 @@ const Input = ({
           ref && ref.setNativeProps({style: {fontFamily: font.regular}})
         }
       />
+
+      {endButton && (
+        <S.WrapperButton onPress={endButtonAction}>
+          {endButtonIcon}
+        </S.WrapperButton>
+      )}
+
       {password && (
-        <S.WrapperPassword onPress={() => setShowPassword(!showPassword)}>
+        <S.WrapperButton onPress={() => setShowPassword(!showPassword)}>
           {showPassword ? (
             <S.IconEye name="eye" />
           ) : (
             <S.IconEye name="eye-off" />
           )}
-        </S.WrapperPassword>
+        </S.WrapperButton>
       )}
     </S.Container>
   );

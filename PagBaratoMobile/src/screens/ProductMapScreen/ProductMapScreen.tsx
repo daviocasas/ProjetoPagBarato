@@ -103,6 +103,7 @@ export function ProductMapScreen({route}) {
               return (
                 <Marker
                   key={x.id}
+                  tracksViewChanges={false}
                   coordinate={{
                     latitude: x.establishment.latitude,
                     longitude: x.establishment.longitude,

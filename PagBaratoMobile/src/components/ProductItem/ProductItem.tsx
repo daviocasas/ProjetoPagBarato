@@ -26,11 +26,7 @@ export function ProductItem({
         <S.ContentContainer>
           <S.TitleContainer>
             <S.DefaultTitle>{name}</S.DefaultTitle>
-            <Feather
-              name="chevrons-right"
-              size={20}
-              color={color['primary']}
-            />
+            <Feather name="chevrons-right" size={20} color={color.primary} />
           </S.TitleContainer>
 
           <S.DefaultDescription>

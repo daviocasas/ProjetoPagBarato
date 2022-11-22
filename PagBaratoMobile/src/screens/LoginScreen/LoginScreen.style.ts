@@ -11,7 +11,6 @@ interface IProps {
 export const LogoContainer = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: ${Window.heightScale(0.06)}px;
 `;
 
 export const WrapperLogo = styled.View`
@@ -22,6 +21,7 @@ export const WrapperLogo = styled.View`
 `;
 
 export const SubContainer = styled.View`
+  justify-content: center;
   width: ${Window.widthScale(1)}px;
   height: ${Window.heightScale(0.7)}px;
   background-color: ${color.cream};

@@ -206,48 +206,43 @@ export function HomeScreen() {
   };
 
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-        <Header title="PagBarato" />
+    <SafeAreaView style={styles.container}>
+      <Header title="PagBarato" />
 
-        <View style={styles.viewContainer}>
-          <Text>Distância (km): {distanceRangeFilter}</Text>
-          <Slider
-            minimumValue={1}
-            maximumValue={20}
-            minimumTrackTintColor={color.mid_orange}
-            thumbTintColor={color.primary}
-            value={distance}
-            onSlidingComplete={changeDistanceRange}
-            onValueChange={value => setDistance(value as number)}
-          />
-          <TextInput
-            placeholder="Pesquise um produto..."
-            value={searchText}
-            onChangeText={t => setSearchText(t)}
-          />
-
-          <FlatList
-            data={list}
-            refreshControl={
-              <RefreshControl
-                refreshing={isFetchingData}
-                onRefresh={fetchData}
-              />
-            }
-            ItemSeparatorComponent={SeparatorItem}
-            keyExtractor={item => item.id}
-            renderItem={renderItem}
-          />
-        </View>
-
-        <FloatingButton
-          width={0.1}
-          title="+"
-          onPress={() => navigation.navigate('PostProductScreen')}
+      <View style={styles.viewContainer}>
+        <Text>Distância (km): {distanceRangeFilter}</Text>
+        <Slider
+          minimumValue={1}
+          maximumValue={20}
+          minimumTrackTintColor={color.mid_orange}
+          thumbTintColor={color.primary}
+          value={distance}
+          onSlidingComplete={changeDistanceRange}
+          onValueChange={value => setDistance(value as number)}
         />
-      </SafeAreaView>
-    </>
+        <TextInput
+          placeholder="Pesquise um produto..."
+          value={searchText}
+          onChangeText={t => setSearchText(t)}
+        />
+
+        <FlatList
+          data={list}
+          refreshControl={
+            <RefreshControl refreshing={isFetchingData} onRefresh={fetchData} />
+          }
+          ItemSeparatorComponent={SeparatorItem}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+        />
+      </View>
+
+      <FloatingButton
+        width={0.135}
+        title="+"
+        onPress={() => navigation.navigate('PostProductScreen')}
+      />
+    </SafeAreaView>
   );
 }
 

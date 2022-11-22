@@ -51,7 +51,7 @@ export const InputText = styled(TextInput).attrs({
   max-width: ${Window.widthScale(0.55)}px;
 `;
 
-export const WrapperPassword = styled.TouchableOpacity.attrs({
+export const WrapperButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.5,
 })`
   position: absolute;
