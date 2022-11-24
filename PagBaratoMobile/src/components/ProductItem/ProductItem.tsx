@@ -7,16 +7,16 @@ import * as S from './ProductItem.style';
 export interface Product {
   id: string;
   name: string;
-  establishment: string;
-  price: number;
+  lowestPrice: number;
+  lowestPriceEstablishment: string;
   isProductWithNearExpirationDate: boolean;
   onPress: () => void;
 }
 
 export function ProductItem({
   name,
-  price,
-  establishment,
+  lowestPrice,
+  lowestPriceEstablishment,
   isProductWithNearExpirationDate,
   onPress,
 }: Product) {
@@ -24,22 +24,23 @@ export function ProductItem({
     <>
       <S.ProductContainer onPress={onPress}>
         <S.ContentContainer>
-          <S.TitleContainer>
+          <S.InlineContainer>
             <S.DefaultTitle>{name}</S.DefaultTitle>
             <Feather name="chevrons-right" size={20} color={color.primary} />
-          </S.TitleContainer>
+          </S.InlineContainer>
 
           <S.DefaultDescription>
-            Estabelecimento: {establishment}
+            Estabelecimento: {lowestPriceEstablishment}
           </S.DefaultDescription>
           <S.DefaultDescription>
             Produto próximo da validade?{' '}
             {isProductWithNearExpirationDate ? 'SIM' : 'NÃO'}
           </S.DefaultDescription>
+
           <S.DefaultPrice>
             Menor preço:{' '}
             <S.DefaultPriceValue>
-              R$ {price.toFixed(2).replace('.', ',')}
+              R$ {lowestPrice.toFixed(2).replace('.', ',')}
             </S.DefaultPriceValue>
           </S.DefaultPrice>
         </S.ContentContainer>

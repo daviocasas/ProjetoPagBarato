@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Platform, PermissionsAndroid, Dimensions} from 'react-native';
 
 import MapView, {Marker} from 'react-native-maps';
+import {PriceMapMarker} from '../../components/PriceMapMarker/PriceMapMarker';
 import api from '../../services/api';
 import {getItem, StorageItems} from '../../services/storage';
 
@@ -10,9 +11,9 @@ import * as S from './ProductMapScreen.style';
 const {width, height} = Dimensions.get('screen');
 
 const getMapZoomLevel = (distanceRange: number) => {
-  let zoomLevel = 16;
-  if (distanceRange === 1) zoomLevel = 17;
-  if (distanceRange === 2) zoomLevel = 16;
+  let zoomLevel = 17;
+  if (distanceRange === 1) zoomLevel = 16;
+  if (distanceRange === 2) zoomLevel = 15;
   if (distanceRange >= 3 && distanceRange <= 5) zoomLevel = 12;
   if (distanceRange >= 6 && distanceRange <= 9) zoomLevel = 8;
   if (distanceRange >= 10 && distanceRange <= 13) zoomLevel = 6;
@@ -57,6 +58,8 @@ export function ProductMapScreen({route}) {
         {headers: {Authorization: `Bearer ${token}`}},
       );
 
+      if (!response) return;
+
       if (response.data?.prices) {
         const lowestPrice = getLowestPrice(response.data?.prices);
         setLowestPrice(lowestPrice);
@@ -67,8 +70,6 @@ export function ProductMapScreen({route}) {
       console.log('Erro: ', err.response);
     }
   };
-
-  console.log('productData: ', productData);
 
   useEffect(() => {
     if (location.currentLongitude && location.currentLongitude)
@@ -108,20 +109,12 @@ export function ProductMapScreen({route}) {
                     latitude: x.establishment.latitude,
                     longitude: x.establishment.longitude,
                   }}>
-                  <S.MarkerContainer>
-                    <S.WrapperMarkerContent>
-                      <S.EstablishmentTitle>
-                        {x.establishment.name || ''}
-                      </S.EstablishmentTitle>
-                      <S.ProductValue>
-                        {x.value
-                          ? `R$ ${Number(String(x.value))
-                              .toFixed(2)
-                              .replace('.', ',')}`
-                          : 'FREE'}
-                      </S.ProductValue>
-                    </S.WrapperMarkerContent>
-                  </S.MarkerContainer>
+                  <PriceMapMarker
+                    isLowestPrice={x.value === lowestPrice.value}
+                    trustingFactor={x.trustingFactor}
+                    establishment={x.establishment}
+                    price={x.value}
+                  />
                 </Marker>
               );
             })}

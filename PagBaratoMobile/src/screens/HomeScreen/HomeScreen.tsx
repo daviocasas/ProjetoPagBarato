@@ -78,16 +78,9 @@ export function HomeScreen() {
         {headers: {Authorization: `Bearer ${token}`}},
       );
 
-      if (response.data) {
-        const formatedData = response.data.map(item => ({
-          ...item,
-          price: item.lowestPrice,
-          name: item.name,
-          establishment: item.lowestPriceEstablishment,
-        }));
+      console.log(response.data);
 
-        setList(formatedData);
-      }
+      if (response && response.data) setList(response.data);
     } catch (err) {
       console.log(err.response.data);
     } finally {
