@@ -34,12 +34,12 @@ const PriceTypeEnum = [
 export function PostProductScreen({navigation}) {
   const [value, setValue] = useState('');
   const [productName, setProductName] = useState('');
-  const [priceType, setPriceType] = useState<any>({});
+  const [selectedPriceType, setSelectedPriceType] = useState<any>({});
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
   const [isProductWithNearExpirationDate, setIsProductWithNearExpirationDate] =
     useState(false);
 
-  const [selectedItem, setSelectedItem] = useState<any>({});
+  const [selectedEstablishment, setSelectedEstablishment] = useState<any>({});
   const [establishmentList, setEstablishmentList] = useState([]);
 
   const [dateModalOpen, setDateModalOpen] = useState(false);
@@ -51,17 +51,22 @@ export function PostProductScreen({navigation}) {
   const fetchData = async () => {
     const token = await getItem(StorageItems.ACCESS_TOKEN);
 
-    const {data} = await api.get('/api/establishment?paginate=false', {
-      headers: {Authorization: `Bearer ${token}`},
-    });
+    const {data: response} = await api.get(
+      '/api/establishment?paginate=false',
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      },
+    );
 
-    const formatedData = data.data.map((item: {id: any; name: any}) => ({
+    if (!response) return;
+
+    const formattedData = response.data.map((item: {id: any; name: any}) => ({
       ...item,
       id: item.id,
       item: item.name,
     }));
 
-    return setEstablishmentList(formatedData);
+    return setEstablishmentList(formattedData);
   };
 
   useEffect(() => {
@@ -71,10 +76,10 @@ export function PostProductScreen({navigation}) {
   const postProductPrice = async () => {
     try {
       if (
-        productName === '' ||
         value === '' ||
-        selectedItem === '' ||
-        priceType === ''
+        productName === '' ||
+        selectedPriceType === '' ||
+        selectedEstablishment === ''
       ) {
         Toast.show({
           type: 'error',
@@ -86,24 +91,24 @@ export function PostProductScreen({navigation}) {
       }
 
       console.log({
-        productName,
-        establishmentId: selectedItem.id,
         value,
-        isProductWithNearExpirationDate,
-        type: priceType.id,
         expiresAt,
+        productName,
+        isProductWithNearExpirationDate,
+        type: selectedPriceType.id,
+        establishmentId: selectedEstablishment.id,
       });
 
       const token = await getItem(StorageItems.ACCESS_TOKEN);
       const res = await api.post(
         `/api/price`,
         {
-          productName,
-          establishmentId: selectedItem.id,
           value,
-          isProductWithNearExpirationDate,
-          type: priceType.id,
           expiresAt,
+          productName,
+          isProductWithNearExpirationDate,
+          establishmentId: selectedEstablishment.id,
+          type: selectedPriceType.id,
         },
         {headers: {Authorization: `Bearer ${token}`}},
       );
@@ -124,11 +129,11 @@ export function PostProductScreen({navigation}) {
   };
 
   function onChangeVal() {
-    return (val: any) => setSelectedItem(val);
+    return (val: any) => setSelectedEstablishment(val);
   }
 
   function onChangeValPriceType() {
-    return (val: any) => setPriceType(val);
+    return (val: any) => setSelectedPriceType(val);
   }
 
   return (
@@ -158,7 +163,7 @@ export function PostProductScreen({navigation}) {
             <SelectBox
               label=""
               options={establishmentList}
-              value={selectedItem}
+              value={selectedEstablishment}
               onChange={onChangeVal()}
               labelStyle={{display: 'none'}}
               containerStyle={{
@@ -223,14 +228,14 @@ export function PostProductScreen({navigation}) {
               selectedItemStyle={{...styles.selectInputText, padding: '3%'}}
               inputPlaceholder="Selecione o tipo de preço"
               options={PriceTypeEnum}
-              value={priceType}
+              value={selectedPriceType}
               onChange={onChangeValPriceType()}
               hideInputFilter={true}
               arrowIconColor={color.mid_green}
             />
           </S.WrapperSelectBox>
 
-          {priceType.id === 'DEAL' ? (
+          {selectedPriceType.id === 'DEAL' ? (
             <Input
               value={
                 expiresAt ? format(expiresAt, 'dd/MM/yyyy', {locale: ptBR}) : ''

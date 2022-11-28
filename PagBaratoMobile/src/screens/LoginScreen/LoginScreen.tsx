@@ -2,21 +2,23 @@ import React, {useState} from 'react';
 import {Image} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-toast-message';
-
-import {setAuthTokens, setItem, StorageItems} from '../../services/storage';
-import Button from '../../components/Button/Button';
-import Input from '../../components/Input/Input';
-import {InputType} from '../../enum/inputType';
-import * as S from './LoginScreen.style';
-import {FirebaseError} from '../../enum/firebaseErrors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+import * as S from './LoginScreen.style';
 import {color} from '../../config/theme.json';
+import {InputType} from '../../enum/inputType';
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
+import {FirebaseError} from '../../enum/firebaseErrors';
+import {setAuthTokens, setItem, StorageItems} from '../../services/storage';
 
 export function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function signIn() {
+  async function signIn(event) {
+    event.preventDefault();
+
     try {
       if (email === '' || password === '') {
         Toast.show({
@@ -29,6 +31,7 @@ export function LoginScreen({navigation}) {
       }
 
       const res = await auth().signInWithEmailAndPassword(email, password);
+
       await setItem(StorageItems.USER_ID, res.user.uid);
 
       Toast.show({
@@ -38,6 +41,8 @@ export function LoginScreen({navigation}) {
         text2: 'Agora você já pode buscar os melhores preços na sua região :)',
       });
     } catch (err) {
+      console.error(err);
+
       const errorsToTest = [
         FirebaseError.WRONG_PASSWORD,
         FirebaseError.USER_NOT_FOUND,
@@ -106,7 +111,7 @@ export function LoginScreen({navigation}) {
           </S.WrapperLink>
         </S.WrapperFormLink>
         <S.WrapperForm>
-          <Button title="Entrar" width={0.6} onPress={() => signIn()} />
+          <Button title="Entrar" width={0.6} onPress={signIn} />
         </S.WrapperForm>
       </S.SubContainer>
     </KeyboardAwareScrollView>

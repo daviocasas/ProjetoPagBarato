@@ -25,9 +25,11 @@ import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import Header from '../../components/Header/Header';
 import api from '../../services/api';
 
+import * as S from './HomeScreen.style';
+
 export function HomeScreen() {
-  const [watchID, setWatchID] = useState(0);
   const [list, setList] = useState<any>([]);
+  const [watchID, setWatchID] = useState(0);
   const [distance, setDistance] = useState(5);
   const [searchText, setSearchText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(false);
@@ -219,15 +221,28 @@ export function HomeScreen() {
           onChangeText={t => setSearchText(t)}
         />
 
-        <FlatList
-          data={list}
-          refreshControl={
-            <RefreshControl refreshing={isFetchingData} onRefresh={fetchData} />
-          }
-          ItemSeparatorComponent={SeparatorItem}
-          keyExtractor={item => item.id}
-          renderItem={renderItem}
-        />
+        {list && list.length ? (
+          <FlatList
+            data={list}
+            refreshControl={
+              <RefreshControl
+                refreshing={isFetchingData}
+                onRefresh={fetchData}
+              />
+            }
+            ItemSeparatorComponent={SeparatorItem}
+            keyExtractor={item => item.id}
+            renderItem={renderItem}
+          />
+        ) : (
+          <S.EmptyStateContainer>
+            <S.EmptyStateText>
+              {isFetchingData
+                ? 'Carregando...'
+                : 'Nenhum preço encontrado na sua região.'}
+            </S.EmptyStateText>
+          </S.EmptyStateContainer>
+        )}
       </View>
 
       <FloatingButton
@@ -242,9 +257,10 @@ export function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: color.cream,
   },
   viewContainer: {
     padding: 16,
+    marginBottom: 16
   },
 });
