@@ -21,7 +21,7 @@ export const WrapperContainer = styled.View`
 export const TransparentContainer = styled.View`
   flex-direction: row;
   background-color: transparent;
-  margin-vertical: ${Dimension.widthScale(0.05)}px;
+  margin-vertical: ${Dimension.widthScale(0.055)}px;
 `;
 
 export const Bubble = styled.View`
@@ -33,7 +33,7 @@ export const Bubble = styled.View`
 
 export const BubbleText = styled.Text`
   font-size: ${Dimension.fontScale(11.5)}px;
-  font-family: ${font.medium};
+  font-family: ${font.semiBold};
   color: ${color.cream};
 `;
 
