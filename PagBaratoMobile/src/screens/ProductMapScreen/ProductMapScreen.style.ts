@@ -21,7 +21,7 @@ export const WrapperContainer = styled.View`
 export const TransparentContainer = styled.View`
   flex-direction: row;
   background-color: transparent;
-  margin-vertical: ${Dimension.widthScale(0.06)}px;
+  margin-vertical: ${Dimension.widthScale(0.055)}px;
 `;
 
 export const Bubble = styled.View`
