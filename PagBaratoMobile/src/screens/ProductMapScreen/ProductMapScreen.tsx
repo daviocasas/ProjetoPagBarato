@@ -6,11 +6,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import MapView, {Marker} from 'react-native-maps';
+import MapView from 'react-native-maps';
 import Feather from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-toast-message';
 
-import {PriceMapMarker} from '../../components/PriceMapMarker/PriceMapMarker';
+import PriceMapMarker from '../../components/PriceMapMarker/PriceMapMarker';
 import {getItem, StorageItems} from '../../services/storage';
 import {color} from '../../config/theme.json';
 
@@ -127,29 +127,16 @@ export function ProductMapScreen({route}) {
           loadingIndicatorColor={color.primary}>
           {prices &&
             prices.length &&
-            prices.map(x => {
+            prices.map(price => {
               return (
-                <Marker
-                  key={x.id}
-                  identifier={x.id}
-                  tracksViewChanges={false}
-                  coordinate={{
-                    latitude: x.establishment.latitude,
-                    longitude: x.establishment.longitude,
-                  }}
-                  onPress={e => {
-                    setSelectedMarker({
-                      priceId: e.nativeEvent.id,
-                      isLowestPrice: x.value === lowestPrice.value,
-                    });
-                  }}>
-                  <PriceMapMarker
-                    isLowestPrice={x.value === lowestPrice.value}
-                    trustingFactor={x.trustingFactor}
-                    establishment={x.establishment}
-                    price={x.value}
-                  />
-                </Marker>
+                <PriceMapMarker
+                  isLowestPrice={price.value === lowestPrice.value}
+                  setSelectedMarker={setSelectedMarker}
+                  trustingFactor={price.trustingFactor}
+                  establishment={price.establishment}
+                  price={price}
+                  key={price.id}
+                />
               );
             })}
         </MapView>

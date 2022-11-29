@@ -21,27 +21,29 @@ export const WrapperContainer = styled.View`
 export const TransparentContainer = styled.View`
   flex-direction: row;
   background-color: transparent;
-  margin-vertical: ${Dimension.widthScale(0.055)}px;
+  margin-vertical: ${Dimension.widthScale(0.05)}px;
 `;
 
 export const Bubble = styled.View`
-  background-color: ${color.dark_gray};
+  background-color: ${color.dark_gray}99;
   padding-horizontal: ${Dimension.widthScale(0.03)}px;
   padding-vertical: ${Dimension.widthScale(0.015)}px;
   border-radius: ${Dimension.widthScale(0.06)}px;
 `;
 
 export const BubbleText = styled.Text`
-  font-size: ${Dimension.fontScale(11)}px;
-  font-family: ${font.semiBold};
+  font-size: ${Dimension.fontScale(11.5)}px;
+  font-family: ${font.medium};
   color: ${color.cream};
 `;
 
-export const ThumbsText = styled.Text`
+export const ThumbsText = styled.Text`r
   color: ${color.black};
-  font-family: ${font.regular};
+  font-family: ${font.medium};
   background-color: ${color.cream}60;
-  font-size: ${Dimension.fontScale(10)}px;
+  font-size: ${Dimension.fontScale(9.5)}px;
+  border-top-left-radius: ${Dimension.widthScale(1)}px;
+  border-top-right-radius: ${Dimension.widthScale(1)}px;
 `;
 
 export const ThumbsMainContainer = styled.View`

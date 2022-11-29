@@ -30,15 +30,16 @@ export const WrapperMarkerContent = styled.View`
 `;
 
 export const EstablishmentTitle = styled.Text`
+  line-height: ${Dimension.fontScale(11.5)}px;
+  font-size: ${Dimension.fontScale(10)}px;
   font-family: ${font.medium};
-  font-size: ${Dimension.fontScale(9)}px;
   color: ${color.cream};
   text-align: justify;
 `;
 
 export const ProductValue = styled.Text`
   font-family: ${font.semiBold};
-  font-size: ${Dimension.fontScale(11)}px;
+  font-size: ${Dimension.fontScale(12)}px;
   color: ${color.cream};
   text-align: right;
 `;
