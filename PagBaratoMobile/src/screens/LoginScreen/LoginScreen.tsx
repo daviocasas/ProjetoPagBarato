@@ -1,101 +1,119 @@
-import React, { useState } from 'react';
-import Button from '../../components/Button/Button';
-import Input from '../../components/Input/Input';
-import { InputType } from '../../enum/inputType';
-import auth from '@react-native-firebase/auth'
-import { Image, Alert } from 'react-native';
-
+import React, {useState} from 'react';
+import {Image} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-toast-message';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as S from './LoginScreen.style';
-import { setAuthTokens, setItem, StorageItems } from '../../services/storage'
+import {color} from '../../config/theme.json';
+import {InputType} from '../../enum/inputType';
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
+import {FirebaseError} from '../../enum/firebaseErrors';
+import {setAuthTokens, setItem, StorageItems} from '../../services/storage';
 
-export function LoginScreen({ navigation }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+export function LoginScreen({navigation}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    function signIn() {
-        if (email === '' || password === '') {
-            console.log('Senha incorreta')
-            Alert.alert('Preencha todos os campos necessarios!')
-        } else {
-            auth().signInWithEmailAndPassword(email, password)
-                .then((res) => {
-                    console.log(res);
-                    console.log(res.user.uid);
-                    setItem(StorageItems.USER_ID, res.user.uid);
-                })
-                .catch(error => {
-                    if (error.code === 'auth/wrong-password') {
-                        Alert.alert('Senha incorreta')
-                        console.log('Senha incorreta')
-                    }
-                    if (error.code === 'auth/invalid-email') {
-                        Alert.alert('Email incorreto ou inexistente')
-                        console.log('Email incorreto ou inexistente')
-                    }
-                })
-        }
+  async function signIn(event) {
+    event.preventDefault();
+
+    try {
+      if (email === '' || password === '') {
+        Toast.show({
+          type: 'error',
+          text1: 'Preencha todos os campos!',
+          text2: 'Não é permitido nenhum campo vazio.',
+        });
+
+        return;
+      }
+
+      const res = await auth().signInWithEmailAndPassword(email, password);
+
+      await setItem(StorageItems.USER_ID, res.user.uid);
+
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Login efetuado com sucesso!',
+        text2: 'Agora você já pode buscar os melhores preços na sua região :)',
+      });
+    } catch (err) {
+      console.error(err);
+
+      const errorsToTest = [
+        FirebaseError.WRONG_PASSWORD,
+        FirebaseError.USER_NOT_FOUND,
+        FirebaseError.INVALID_EMAIL,
+      ];
+
+      if (err?.code && errorsToTest.includes(err.code)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Credenciais incorretas!',
+          text2: 'Verifique seu e-mail e senha e tente novamente.',
+        });
+      }
     }
+  }
 
-    auth().onAuthStateChanged(function (user) {
-        if (user) {
-            user.getIdToken().then(function (idToken) {
-                setAuthTokens(idToken, '');
-                return idToken;
-            });
-        }
-    });
+  auth().onAuthStateChanged(function (user) {
+    if (user) {
+      user.getIdToken().then(function (idToken) {
+        setAuthTokens(idToken, '');
+        return idToken;
+      });
+    }
+  });
 
-
-    return (
-        <>
-            <S.Container>
-                <S.WrapperContainer>
-                    <S.SubContainer>
-                        <S.LogoContainer>
-                            <Image style={{ width: 250, height: 150 }} source={require('../../assets/logo/PagBarato_Cream.png')} />
-                        </S.LogoContainer>
-                        <S.WrapperForm>
-                            <Input
-                                value={email}
-                                onChangeText={setEmail}
-                                type={InputType.EMAIL}
-                                placeholder="E-mail"
-                                autoCapitalized="none"
-                                keyboardType="email-address"
-                                maxLength={120}
-                            />
-                            <Input
-                                value={password}
-                                onChangeText={setPassword}
-                                type={InputType.PASSWORD}
-                                password
-                                placeholder="Senha"
-                                autoCapitalized="none"
-                                keyboardType="default"
-                                maxLength={120}
-                            />
-                        </S.WrapperForm>
-                        <S.WrapperFormLink>
-                            <S.WrapperLink onPress={() => navigation.navigate('ForgotPassword')} >
-                                <S.TextLogo>Esqueci a senha</S.TextLogo>
-                            </S.WrapperLink>
-                            <S.WrapperLink onPress={() => navigation.navigate('CreateAccount')}>
-                                <S.TextLogo>Criar uma conta</S.TextLogo>
-                            </S.WrapperLink>
-
-                        </S.WrapperFormLink>
-                        <S.WrapperForm>
-                            <Button
-                                title="Entrar"
-                                width={0.6}
-                                onPress={signIn}
-                            //onPress={() => signIn(email, password)}
-                            />
-                        </S.WrapperForm>
-                    </S.SubContainer>
-                </S.WrapperContainer>
-            </S.Container>
-        </>
-    );
-};
+  return (
+    <KeyboardAwareScrollView
+      contentContainerStyle={{
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        backgroundColor: color.cream,
+      }}>
+      <S.SubContainer>
+        <S.LogoContainer>
+          <Image
+            style={{width: 250, height: 150}}
+            source={require('../../assets/logo/PagBarato_Cream.png')}
+          />
+        </S.LogoContainer>
+        <S.WrapperForm>
+          <Input
+            value={email}
+            onChangeText={setEmail}
+            type={InputType.EMAIL}
+            placeholder="E-mail"
+            autoCapitalized="none"
+            keyboardType="email-address"
+            maxLength={120}
+          />
+          <Input
+            value={password}
+            onChangeText={setPassword}
+            type={InputType.PASSWORD}
+            password
+            placeholder="Senha"
+            autoCapitalized="none"
+            keyboardType="default"
+            maxLength={120}
+          />
+        </S.WrapperForm>
+        <S.WrapperFormLink>
+          <S.WrapperLink onPress={() => navigation.navigate('CreateAccount')}>
+            <S.TextButtonLink>Criar uma conta</S.TextButtonLink>
+          </S.WrapperLink>
+        </S.WrapperFormLink>
+        <S.WrapperForm>
+          <Button title="Entrar" width={0.6} onPress={signIn} />
+        </S.WrapperForm>
+      </S.SubContainer>
+    </KeyboardAwareScrollView>
+  );
+}

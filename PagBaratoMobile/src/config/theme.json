@@ -1,15 +1,18 @@
 {
   "color": {
     "primary": "#FB5607",
-    "second": "#012900",
-    "mid-green": "#015200",
-    "brighter-green": "#03B800",
-    "light-pink": "#FFD6E8",
-    "main-yellow": "#FFC933",
+    "mid_orange": "#FC7A3E",
+    "secondary": "#012900",
+    "mid_green": "#015200",
+    "brighter_green": "#03B800",
+    "light_pink": "#FFD6E8",
+    "main_yellow": "#FFC933",
     "little_gray": "#E0E0E0",
     "baby_gray": "#BEBEBE",
     "dark_gray": "#737373",
     "black": "#190204",
+    "error": "#B00020",
+    "little_cream": "#F8F2F1",
     "cream": "#F9F1F0",
     "white": "#fff"
   },

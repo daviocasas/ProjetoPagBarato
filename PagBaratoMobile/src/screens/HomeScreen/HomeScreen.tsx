@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {LogBox} from 'react-native';
+import {LogBox, View} from 'react-native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -12,21 +13,26 @@ import {
   Text,
 } from 'react-native';
 
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {ProductItem} from '../../components/ProductItem/ProductItem';
-import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
 import {Slider} from '@miblanchard/react-native-slider';
-import Header from '../../components/Header/Header';
-import api from '../../services/api';
-import {getItem, StorageItems} from '../../services/storage';
 import Geolocation from '@react-native-community/geolocation';
 
+import api from '../../services/api';
+import {color} from '../../config/theme.json';
+import Header from '../../components/Header/Header';
+import {getItem, StorageItems} from '../../services/storage';
+import {ProductItem} from '../../components/ProductItem/ProductItem';
+import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
+import FloatingButton from '../../components/FloatingButton/FloatingButton';
+
+import * as S from './HomeScreen.style';
+
 export function HomeScreen() {
-  const [watchID, setWatchID] = useState(0);
   const [list, setList] = useState<any>([]);
-  const [distance, setDistance] = useState(1);
+  const [watchID, setWatchID] = useState(0);
+  const [distance, setDistance] = useState(5);
   const [searchText, setSearchText] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
+  const [isFetchingData, setIsFetchingData] = useState(false);
+  const [distanceRangeFilter, setDistanceRangeFilter] = useState(5);
 
   const [location, setLocation] = useState({
     currentLatitude: '',
@@ -53,46 +59,40 @@ export function HomeScreen() {
   LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
   LogBox.ignoreAllLogs(); //Ignore all log notifications
 
+  const changeDistanceRange = (val: number | number[]) => {
+    const sliderValue = val[0] && Math.floor(val[0]);
+    if (sliderValue !== distanceRangeFilter) {
+      setDistanceRangeFilter(_prevState => sliderValue);
+    }
+  };
+
   const fetchData = async () => {
     if (!location.currentLatitude || !location.currentLongitude) return;
 
-    setRefreshing(true);
+    setIsFetchingData(true);
 
     const token = await getItem(StorageItems.ACCESS_TOKEN);
 
-    console.log({...location, distance: Math.floor(distance)});
-
     try {
       const {data: response} = await api.get(
-        `/api/product?paginate=false&usersLatitude=${
-          location.currentLatitude
-        }&usersLongitude=${location.currentLongitude}&rangeRadius=${Math.floor(
-          distance,
-        )}`,
+        `/api/product?paginate=false&usersLatitude=${location.currentLatitude}&usersLongitude=${location.currentLongitude}&rangeRadius=${distanceRangeFilter}`,
         {headers: {Authorization: `Bearer ${token}`}},
       );
 
-      if (response.data) {
-        const formatedData = response.data.map(item => ({
-          ...item,
-          price: item.lowestPrice,
-          name: item.name,
-          establishment: item.lowestPriceEstablishment,
-        }));
+      console.log(response.data);
 
-        setList(formatedData);
-      }
+      if (response && response.data) setList(response.data);
     } catch (err) {
       console.log(err.response.data);
     } finally {
-      setRefreshing(false);
+      setIsFetchingData(false);
     }
   };
 
   useFocusEffect(
     useCallback(() => {
       if (location.currentLatitude && location.currentLongitude) {
-        if (distance && Math.floor(distance) && !refreshing) {
+        if (distanceRangeFilter && !isFetchingData) {
           console.log('FocusEffect fetchData()');
           fetchData();
         }
@@ -109,7 +109,7 @@ export function HomeScreen() {
           return i.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
         }),
       );
-    } else if (!refreshing) {
+    } else if (!isFetchingData) {
       console.log('SearchText fetchData()');
       fetchData();
     }
@@ -120,14 +120,13 @@ export function HomeScreen() {
     grantPermissionLocation();
 
     return () => {
-      console.log('Alou');
       clearLocation();
     };
   }, []);
 
   useEffect(() => {
-    if (distance) fetchData();
-  }, [distance]);
+    if (distanceRangeFilter) fetchData();
+  }, [distanceRangeFilter]);
 
   const grantPermissionLocation = () => {
     if (Platform.OS === 'ios') {
@@ -201,40 +200,71 @@ export function HomeScreen() {
   };
 
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-        <Header title="Home" />
-        <Text>Distância (km): {Math.floor(distance)}</Text>
+    <SafeAreaView style={styles.container}>
+      <Header title="PagBarato" />
+
+      <View style={styles.viewContainer}>
+        <Text style={styles.text}>Distância (km): {distanceRangeFilter}</Text>
         <Slider
           minimumValue={1}
-          maximumValue={21}
-          thumbTintColor="#EF8F01"
+          maximumValue={20}
+          minimumTrackTintColor={color.mid_orange}
+          thumbTintColor={color.primary}
           value={distance}
-          onValueChange={value => setDistance(value)}
+          onSlidingComplete={changeDistanceRange}
+          onValueChange={value => setDistance(value as number)}
         />
         <TextInput
+          style={styles.text}
+          placeholderTextColor={color.baby_gray}
           placeholder="Pesquise um produto..."
           value={searchText}
           onChangeText={t => setSearchText(t)}
         />
 
-        <FlatList
-          data={list}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-          }
-          ItemSeparatorComponent={SeparatorItem}
-          keyExtractor={item => item.id}
-          renderItem={renderItem}
-        />
-      </SafeAreaView>
-    </>
+        {list && list.length ? (
+          <FlatList
+            data={list}
+            refreshControl={
+              <RefreshControl
+                refreshing={isFetchingData}
+                onRefresh={fetchData}
+              />
+            }
+            ItemSeparatorComponent={SeparatorItem}
+            keyExtractor={item => item.id}
+            renderItem={renderItem}
+          />
+        ) : (
+          <S.EmptyStateContainer>
+            <S.EmptyStateText>
+              {isFetchingData
+                ? 'Carregando...'
+                : 'Nenhum preço encontrado na sua região.'}
+            </S.EmptyStateText>
+          </S.EmptyStateContainer>
+        )}
+      </View>
+
+      <FloatingButton
+        width={0.135}
+        title="+"
+        onPress={() => navigation.navigate('PostProductScreen')}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: color.cream,
+  },
+  viewContainer: {
+    padding: 16,
+    marginBottom: 16,
+  },
+  text: {
+    color: color.black,
   },
 });

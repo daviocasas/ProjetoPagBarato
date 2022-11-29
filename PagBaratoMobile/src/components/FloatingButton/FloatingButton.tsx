@@ -3,24 +3,24 @@ import {StyleSheet} from 'react-native';
 
 import {color} from '../../config/theme.json';
 
-import * as S from './Button.style';
+import * as S from './FloatingButton.style';
 
-interface IButton {
+interface IFloatingButton {
   width: number;
   title: string;
   onPress: () => void;
   disabled?: any;
 }
 
-const Button = ({title, width, onPress, disabled}: IButton) => {
+const FloatingButton = ({title, width, onPress, disabled}: IFloatingButton) => {
   return (
-    <S.ButtonContainer
+    <S.FloatingButtonContainer
       onPress={onPress}
       disabled={disabled}
       width={width}
       style={disabled ? styles.disabled : styles.enabled}>
-      <S.Title>{disabled ? '' : title}</S.Title>
-    </S.ButtonContainer>
+      <S.FloatingButtonTitle>{disabled ? '' : title}</S.FloatingButtonTitle>
+    </S.FloatingButtonContainer>
   );
 };
 
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default FloatingButton;
