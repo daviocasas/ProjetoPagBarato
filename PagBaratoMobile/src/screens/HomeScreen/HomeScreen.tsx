@@ -16,14 +16,13 @@ import {
 import {Slider} from '@miblanchard/react-native-slider';
 import Geolocation from '@react-native-community/geolocation';
 
+import api from '../../services/api';
 import {color} from '../../config/theme.json';
+import Header from '../../components/Header/Header';
 import {getItem, StorageItems} from '../../services/storage';
 import {ProductItem} from '../../components/ProductItem/ProductItem';
 import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
-
-import Header from '../../components/Header/Header';
-import api from '../../services/api';
 
 import * as S from './HomeScreen.style';
 
@@ -205,7 +204,7 @@ export function HomeScreen() {
       <Header title="PagBarato" />
 
       <View style={styles.viewContainer}>
-        <Text>Distância (km): {distanceRangeFilter}</Text>
+        <Text style={styles.text}>Distância (km): {distanceRangeFilter}</Text>
         <Slider
           minimumValue={1}
           maximumValue={20}
@@ -216,6 +215,8 @@ export function HomeScreen() {
           onValueChange={value => setDistance(value as number)}
         />
         <TextInput
+          style={styles.text}
+          placeholderTextColor={color.baby_gray}
           placeholder="Pesquise um produto..."
           value={searchText}
           onChangeText={t => setSearchText(t)}
@@ -261,6 +262,9 @@ const styles = StyleSheet.create({
   },
   viewContainer: {
     padding: 16,
-    marginBottom: 16
+    marginBottom: 16,
+  },
+  text: {
+    color: color.black,
   },
 });
