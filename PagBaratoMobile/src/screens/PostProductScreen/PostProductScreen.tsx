@@ -90,16 +90,8 @@ export function PostProductScreen({navigation}) {
         return;
       }
 
-      console.log({
-        value,
-        expiresAt,
-        productName,
-        isProductWithNearExpirationDate,
-        type: selectedPriceType.id,
-        establishmentId: selectedEstablishment.id,
-      });
-
       const token = await getItem(StorageItems.ACCESS_TOKEN);
+
       const res = await api.post(
         `/api/price`,
         {
@@ -124,7 +116,7 @@ export function PostProductScreen({navigation}) {
 
       return res.data;
     } catch (error) {
-      console.log(error.response.data);
+      console.error(error.response.data);
     }
   };
 

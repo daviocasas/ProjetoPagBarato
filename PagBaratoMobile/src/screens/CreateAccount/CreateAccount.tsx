@@ -29,13 +29,16 @@ export function CreateAccount({navigation}) {
       }
 
       const res = await api.post('/api/user', {email, password, name});
+
       Toast.show({
         type: 'success',
         position: 'bottom',
         text1: 'Cadastro efetuado com sucesso!',
         text2: 'Agora você já pode desfrutar dos melhores preços :D',
       });
+
       navigation.navigate('Login');
+
       return res.data;
     } catch (err) {
       const errorCode = err.response?.data?.error?.code;

@@ -39,7 +39,7 @@ export const AuthProvider: React.FC = ({children}) => {
         if (idTokenResult) setAuthTokens(idTokenResult.token, '');
       }
     } catch (err) {
-      console.log('refreshToken()', err);
+      console.error('refreshToken()', err);
     }
   }
 

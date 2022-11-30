@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {LogBox, View} from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 import {
@@ -11,6 +10,8 @@ import {
   Platform,
   PermissionsAndroid,
   Text,
+  LogBox,
+  View,
 } from 'react-native';
 
 import {Slider} from '@miblanchard/react-native-slider';
@@ -30,6 +31,7 @@ export function HomeScreen() {
   const [list, setList] = useState<any>([]);
   const [watchID, setWatchID] = useState(0);
   const [distance, setDistance] = useState(5);
+  const [firstLoad, setFirstLoad] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(false);
   const [distanceRangeFilter, setDistanceRangeFilter] = useState(5);
@@ -67,7 +69,7 @@ export function HomeScreen() {
   };
 
   const fetchData = async () => {
-    if (!location.currentLatitude || !location.currentLongitude) return;
+    if (!location.currentLatitude || !location.currentLongitude || isFetchingData) return;
 
     setIsFetchingData(true);
 
@@ -79,12 +81,11 @@ export function HomeScreen() {
         {headers: {Authorization: `Bearer ${token}`}},
       );
 
-      console.log(response.data);
-
       if (response && response.data) setList(response.data);
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err.response.data);
     } finally {
+      if (firstLoad) setFirstLoad(false);
       setIsFetchingData(false);
     }
   };
@@ -93,7 +94,7 @@ export function HomeScreen() {
     useCallback(() => {
       if (location.currentLatitude && location.currentLongitude) {
         if (distanceRangeFilter && !isFetchingData) {
-          console.log('FocusEffect fetchData()');
+          console.info('FocusEffect fetchData()');
           fetchData();
         }
       } else {
@@ -103,16 +104,13 @@ export function HomeScreen() {
   );
 
   useEffect(() => {
-    if (searchText !== '') {
-      setList(prevState =>
-        prevState.filter(i => {
-          return i.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
-        }),
-      );
-    } else if (!isFetchingData) {
-      console.log('SearchText fetchData()');
-      fetchData();
-    }
+    if (searchText === '') return;
+
+    setList(prevState =>
+      prevState.filter(i => {
+        return i.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+      }),
+    );
   }, [searchText]);
   // https://reactnative.dev/docs/refreshcontrol
 
@@ -125,7 +123,10 @@ export function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    if (distanceRangeFilter) fetchData();
+    if (distanceRangeFilter && !isFetchingData && !firstLoad) {
+      console.info('distanceRangeFilter fetchData()');
+      fetchData();
+    }
   }, [distanceRangeFilter]);
 
   const grantPermissionLocation = () => {
@@ -171,7 +172,7 @@ export function HomeScreen() {
         setMyLocation(info.coords.latitude, info.coords.longitude);
       },
       err => {
-        console.log('Erro', err);
+        console.error(err);
       },
       {
         enableHighAccuracy: true,
@@ -184,7 +185,7 @@ export function HomeScreen() {
         setMyLocation(position.coords.latitude, position.coords.longitude);
       },
       err => {
-        console.log('Erro', err);
+        console.error(err);
       },
       {
         enableHighAccuracy: true,

@@ -60,22 +60,34 @@ export function ProductMapScreen({route}) {
     return min;
   };
 
-  const ratePrice = (thumbs?: ThumbsType) => {
-    if (thumbs) {
-      Toast.show({
-        type: 'success',
-        text1: 'Avaliação computada com sucesso!',
-        text2: 'Agradecemos por sua contribuição :)',
-      });
-    }
+  const ratePrice = async (thumbs?: ThumbsType) => {
+    try {
+      if (thumbs) {
+        const token = await getItem(StorageItems.ACCESS_TOKEN);
 
-    setSelectedMarker(null);
+        const res = await api.post(
+          `/api/price/${selectedMarker.priceId}/rate`,
+          {thumbs},
+          {headers: {Authorization: `Bearer ${token}`}},
+        );
+
+        Toast.show({
+          type: 'success',
+          text1: 'Avaliação computada com sucesso!',
+          text2: 'Agradecemos por sua contribuição :)',
+        });
+      }
+
+      setSelectedMarker(null);
+    } catch (err) {
+      console.error(err.response.data.error);
+    }
   };
 
   const fetchProductPrices = async () => {
-    const token = await getItem(StorageItems.ACCESS_TOKEN);
-
     try {
+      const token = await getItem(StorageItems.ACCESS_TOKEN);
+
       const {data: response} = await api.get(
         `/api/product/${productId}?usersLatitude=${location.currentLatitude}
             &usersLongitude=${location.currentLongitude}
@@ -92,7 +104,7 @@ export function ProductMapScreen({route}) {
 
       setProductData(response.data);
     } catch (err) {
-      console.log('Erro: ', err.response);
+      console.error(err.response);
     }
   };
 
