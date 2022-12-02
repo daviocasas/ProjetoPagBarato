@@ -38,7 +38,7 @@ export function PostProductScreen({navigation}) {
   LogBox.ignoreLogs(['VirtualizedLists should never be nested inside']);
 
   const [productName, setProductName] = useState('');
-  const [value, setValue] = useState<number | null>(0);
+  const [value, setValue] = useState<number | null>(null);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
   const [isProductWithNearExpirationDate, setIsProductWithNearExpirationDate] =
     useState(false);
