@@ -26,6 +26,7 @@ import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 
 import * as S from './HomeScreen.style';
+import {useAuth} from '../../contexts/Auth';
 
 export function HomeScreen() {
   const [list, setList] = useState<any>([]);
@@ -42,6 +43,7 @@ export function HomeScreen() {
   });
 
   const navigation = useNavigation();
+  const {refreshToken} = useAuth();
 
   function renderItem({item}) {
     return (
@@ -69,7 +71,12 @@ export function HomeScreen() {
   };
 
   const fetchData = async () => {
-    if (!location.currentLatitude || !location.currentLongitude || isFetchingData) return;
+    if (
+      !location.currentLatitude ||
+      !location.currentLongitude ||
+      isFetchingData
+    )
+      return;
 
     setIsFetchingData(true);
 
@@ -84,6 +91,7 @@ export function HomeScreen() {
       if (response && response.data) setList(response.data);
     } catch (err) {
       console.error(err.response.data);
+      if (err?.response?.data?.error?.statusCode === 403) refreshToken();
     } finally {
       if (firstLoad) setFirstLoad(false);
       setIsFetchingData(false);

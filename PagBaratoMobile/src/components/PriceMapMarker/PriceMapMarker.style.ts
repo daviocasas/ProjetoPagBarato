@@ -18,7 +18,7 @@ export const MarkerContainer = styled.View`
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
   align-items: center;
-  border-radius: 2px;
+  border-radius: ${Dimension.widthScale(0.03)}px;
   border: 2px solid;
   border-color: ${(props: IProps) =>
     props.isLowestPrice ? color.mid_green : color.mid_orange};

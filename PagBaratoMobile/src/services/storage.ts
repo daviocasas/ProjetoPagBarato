@@ -3,9 +3,10 @@ import RNSInfo from 'react-native-sensitive-info';
 const options: RNSInfo.RNSensitiveInfoOptions = {};
 
 export enum StorageItems {
+  USER_ID = 'USER_ID',
   ACCESS_TOKEN = 'ACCESS_TOKEN',
   REFRESH_TOKEN = 'REFRESH_TOKEN',
-  USER_ID = 'USER_ID',
+  RATED_PRICES_LIST = 'RATED_PRICES_LIST',
 }
 
 export const getItem = async (key: StorageItems) =>

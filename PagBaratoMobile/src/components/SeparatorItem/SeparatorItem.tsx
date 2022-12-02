@@ -8,7 +8,7 @@ export function SeparatorItem() {
       style={{
         height: 1,
         alignSelf: 'center',
-        width: '90%',
+        width: '92%',
         backgroundColor: color.baby_gray,
       }}
     />

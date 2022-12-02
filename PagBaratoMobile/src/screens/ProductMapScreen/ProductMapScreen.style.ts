@@ -2,8 +2,11 @@ import styled from 'styled-components/native';
 
 import {color, font} from '../../config/theme.json';
 import * as Dimension from '../../services/dimensionsService';
+import Feather from 'react-native-vector-icons/Feather';
 
 interface IProps {
+  thumbsIconName?: string;
+  thumbsIconSize?: number;
   isLowestPrice?: boolean;
   priceTrustingColor?: string;
 }
@@ -64,8 +67,16 @@ export const InlineThumbsContainer = styled.View`
 export const ThumbsIconButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
-  padding: ${Dimension.widthScale(0.03)}px;
+  padding: ${Dimension.widthScale(0.025)}px;
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
   border-radius: ${Dimension.widthScale(1)}px;
+`;
+
+export const ThumbsIcon = styled(Feather).attrs(({size, name, color}) => ({
+  name,
+  color,
+  size,
+}))`
+  animation: all 0.2s ease-in-out;
 `;

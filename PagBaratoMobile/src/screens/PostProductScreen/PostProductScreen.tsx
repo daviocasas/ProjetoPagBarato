@@ -17,7 +17,7 @@ import Input from '../../components/Input/Input';
 import api from '../../services/api';
 
 import {color, font} from '../../config/theme.json';
-import * as Window from '../../services/dimensionsService';
+import * as Dimension from '../../services/dimensionsService';
 import {getItem, StorageItems} from '../../services/storage';
 
 const PriceTypeEnum = [
@@ -137,10 +137,10 @@ export function PostProductScreen({navigation}) {
         justifyContent: 'center',
         backgroundColor: color.cream,
       }}>
-      <S.SubContainer>
-        <S.TitleText bold>Publicar um preço</S.TitleText>
+      <S.MainContainer>
+        <S.TitleText bold>PUBLICAR PREÇO</S.TitleText>
         <S.DescriptionText>
-          Publique um preço preenchendo os dados a seguir:
+          Publique um preço preenchendo a seguir:
         </S.DescriptionText>
         <S.WrapperForm>
           <Input
@@ -163,14 +163,14 @@ export function PostProductScreen({navigation}) {
                 borderWidth: 1,
                 borderRadius: 4,
                 color: color.dark_gray,
-                fontSize: Window.widthScale(0.0325),
-                width: Window.widthScale(0.8),
+                fontSize: Dimension.widthScale(0.0325),
+                width: Dimension.widthScale(0.8),
                 fontFamily: font.regular,
                 paddingLeft: '6%',
               }}
               inputFilterStyle={{
                 ...styles.selectInputText,
-                fontSize: Window.widthScale(0.0275),
+                fontSize: Dimension.widthScale(0.0275),
               }}
               optionsLabelStyle={styles.selectInputText}
               optionContainerStyle={styles.selectInputText}
@@ -204,14 +204,14 @@ export function PostProductScreen({navigation}) {
                 borderWidth: 1,
                 borderRadius: 4,
                 color: color.dark_gray,
-                fontSize: Window.widthScale(0.0325),
-                width: Window.widthScale(0.8),
+                fontSize: Dimension.widthScale(0.0325),
+                width: Dimension.widthScale(0.8),
                 fontFamily: font.regular,
                 paddingLeft: '6%',
               }}
               inputFilterStyle={{
                 ...styles.selectInputText,
-                fontSize: Window.widthScale(0.0275),
+                fontSize: Dimension.widthScale(0.0275),
               }}
               optionsLabelStyle={styles.selectInputText}
               optionContainerStyle={styles.selectInputText}
@@ -283,11 +283,11 @@ export function PostProductScreen({navigation}) {
         <S.WrapperForm>
           <Button
             title="Publicar preço"
-            width={0.6}
+            width={0.75}
             onPress={postProductPrice}
           />
         </S.WrapperForm>
-      </S.SubContainer>
+      </S.MainContainer>
     </KeyboardAwareScrollView>
   );
 }
@@ -295,7 +295,7 @@ export function PostProductScreen({navigation}) {
 const styles = StyleSheet.create({
   selectInputText: {
     color: color.dark_gray,
-    fontSize: Window.widthScale(0.035),
+    fontSize: Dimension.widthScale(0.035),
     fontFamily: font.regular,
   },
 });
