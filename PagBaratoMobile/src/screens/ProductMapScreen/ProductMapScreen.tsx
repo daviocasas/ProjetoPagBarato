@@ -210,7 +210,7 @@ export function ProductMapScreen({route}) {
                 isLowestPrice={selectedMarker.isLowestPrice}
                 onPress={() => ratePrice(ThumbsType.UP)}>
                 <S.ThumbsIcon
-                  size={alreadyRated(ThumbsType.UP) ? 17 : 12}
+                  size={alreadyRated(ThumbsType.UP) ? 16 : 12}
                   name="thumbs-up"
                   color={
                     alreadyRated(ThumbsType.UP)
@@ -224,7 +224,7 @@ export function ProductMapScreen({route}) {
                 isLowestPrice={selectedMarker.isLowestPrice}
                 onPress={() => ratePrice(ThumbsType.DOWN)}>
                 <S.ThumbsIcon
-                  size={alreadyRated(ThumbsType.DOWN) ? 17 : 12}
+                  size={alreadyRated(ThumbsType.DOWN) ? 16 : 12}
                   name="thumbs-down"
                   color={
                     alreadyRated(ThumbsType.DOWN)

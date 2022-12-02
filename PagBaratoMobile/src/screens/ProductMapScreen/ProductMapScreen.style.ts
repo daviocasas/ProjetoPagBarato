@@ -50,9 +50,12 @@ export const ThumbsText = styled.Text`
 `;
 
 export const ThumbsMainContainer = styled.View`
+  border-width: 2px;
   height: ${Dimension.heightScale(0.05)}px;
   border-radius: ${Dimension.widthScale(1)}px;
   margin-bottom: ${Dimension.widthScale(0.01)}px;
+  border-color: ${(props: IProps) =>
+    props.isLowestPrice ? color.mid_green : color.mid_orange};
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
 `;
@@ -67,7 +70,7 @@ export const InlineThumbsContainer = styled.View`
 export const ThumbsIconButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
-  padding: ${Dimension.widthScale(0.025)}px;
+  padding: ${Dimension.widthScale(0.02)}px;
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
   border-radius: ${Dimension.widthScale(1)}px;
