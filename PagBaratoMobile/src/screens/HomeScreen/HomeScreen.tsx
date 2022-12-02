@@ -1,4 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FunctionComponent,
+} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 import {
@@ -28,7 +33,9 @@ import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import * as S from './HomeScreen.style';
 import {useAuth} from '../../contexts/Auth';
 
-export function HomeScreen() {
+export const HomeScreen: FunctionComponent = () => {
+  LogBox.ignoreLogs(['new NativeEventEmitter']);
+
   const [list, setList] = useState<any>([]);
   const [watchID, setWatchID] = useState(0);
   const [distance, setDistance] = useState(5);
@@ -59,9 +66,6 @@ export function HomeScreen() {
       />
     );
   }
-
-  LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
-  LogBox.ignoreAllLogs(); //Ignore all log notifications
 
   const changeDistanceRange = (val: number | number[]) => {
     const sliderValue = val[0] && Math.floor(val[0]);
@@ -262,7 +266,7 @@ export function HomeScreen() {
       />
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

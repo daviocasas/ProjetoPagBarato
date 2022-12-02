@@ -2,13 +2,16 @@ import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {color} from '../../config/theme.json';
 import {PriceType, TrustingMap, TrustingType} from '../../enum/price';
+import {ProductUnitAbbrevMap, ProductUnitType} from '../../enum/product';
 
 import * as S from './ProductItem.style';
+
+Feather.loadFont();
 
 export interface Product {
   id: string;
   name: string;
-  type: PriceType;
+  unit: ProductUnitType;
   lowestPrice: number;
   lowestPriceEstablishment: string;
   lowestPriceTrustingFactor: TrustingType;
@@ -18,7 +21,7 @@ export interface Product {
 
 export function ProductItem({
   name,
-  type,
+  unit,
   lowestPrice,
   lowestPriceEstablishment,
   lowestPriceTrustingFactor,
@@ -50,14 +53,6 @@ export function ProductItem({
               color={color.black}
             />
           </S.DefaultDescription>
-          <S.DefaultDescription>
-            Oferta?{' '}
-            <Feather
-              name={type === PriceType.DEAL ? 'check' : 'x'}
-              size={14}
-              color={color.black}
-            />
-          </S.DefaultDescription>
 
           <S.BottomContentContainer>
             <S.RatingChipContainer>
@@ -68,11 +63,12 @@ export function ProductItem({
             </S.RatingChipContainer>
 
             <S.PriceContainer>
-              <S.DefaultLabel>
+              <S.DefaultLabel bold>
                 Menor preço:{' '}
                 <S.DefaultPriceValue>
                   R$ {lowestPrice.toFixed(2).replace('.', ',')}
                 </S.DefaultPriceValue>
+                /{ProductUnitAbbrevMap[unit]}
               </S.DefaultLabel>
             </S.PriceContainer>
           </S.BottomContentContainer>

@@ -18,7 +18,9 @@ export const WrapperLogo = styled.View`
 export const TitleText = styled.Text`
   font-family: ${font.regular};
   font-size: ${(props: IProps) =>
-    props.bold ? `${Dimension.fontScale(22)}px` : `${Dimension.fontScale(16)}px`};
+    props.bold
+      ? `${Dimension.fontScale(22)}px`
+      : `${Dimension.fontScale(16)}px`};
   text-decoration: ${(props: IProps) => (props.link ? 'underline' : 'none')};
   text-align: left;
   font-weight: ${(props: IProps) => (props.bold ? 700 : 400)};
@@ -41,7 +43,9 @@ export const DescriptionText = styled.Text`
 export const TextSwitch = styled.Text`
   font-family: ${font.medium};
   font-size: ${(props: IProps) =>
-    props.bold ? `${Dimension.fontScale(22)}px` : `${Dimension.fontScale(10)}px`};
+    props.bold
+      ? `${Dimension.fontScale(22)}px`
+      : `${Dimension.fontScale(10)}px`};
   text-decoration: ${(props: IProps) => (props.link ? 'underline' : 'none')};
   text-align: center;
   font-weight: ${(props: IProps) => (props.bold ? 800 : 400)};
@@ -59,6 +63,16 @@ export const MainContainer = styled.View`
   background-color: ${color.cream};
   border-top-left-radius: ${Dimension.widthScale(0.1)}px;
   border-top-right-radius: ${Dimension.widthScale(0.1)}px;
+`;
+
+export const AutocompleteWrapper = styled.View`
+  flex: 1;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  padding: 20px;
 `;
 
 export const WrapperForm = styled.View`

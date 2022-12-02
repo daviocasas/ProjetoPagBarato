@@ -4,9 +4,9 @@ import {color, font} from '../../config/theme.json';
 import * as Dimension from '../../services/dimensionsService';
 import Feather from 'react-native-vector-icons/Feather';
 
+Feather.loadFont();
+
 interface IProps {
-  thumbsIconName?: string;
-  thumbsIconSize?: number;
   isLowestPrice?: boolean;
   priceTrustingColor?: string;
 }
@@ -50,12 +50,9 @@ export const ThumbsText = styled.Text`
 `;
 
 export const ThumbsMainContainer = styled.View`
-  border-width: 2px;
   height: ${Dimension.heightScale(0.05)}px;
   border-radius: ${Dimension.widthScale(1)}px;
   margin-bottom: ${Dimension.widthScale(0.01)}px;
-  border-color: ${(props: IProps) =>
-    props.isLowestPrice ? color.mid_green : color.mid_orange};
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
 `;
@@ -63,14 +60,15 @@ export const ThumbsMainContainer = styled.View`
 export const InlineThumbsContainer = styled.View`
   flex: 1;
   flex-direction: row;
-  align-self: flex-start;
+  align-items: center;
   justify-content: space-between;
+  border-radius: ${Dimension.widthScale(1)}px;
 `;
 
 export const ThumbsIconButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
-  padding: ${Dimension.widthScale(0.02)}px;
+  padding: ${Dimension.widthScale(0.0275)}px;
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
   border-radius: ${Dimension.widthScale(1)}px;

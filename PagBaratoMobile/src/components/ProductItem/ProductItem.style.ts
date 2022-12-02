@@ -3,6 +3,7 @@ import {color, font} from '../../config/theme.json';
 import * as Dimension from '../../services/dimensionsService';
 
 interface IProps {
+  bold?: boolean;
   priceTrustingColor?: string;
 }
 
@@ -49,15 +50,15 @@ export const DefaultDescription = styled.Text`
 `;
 
 export const DefaultLabel = styled.Text`
-  font-weight: 500;
   color: ${color.black};
   font-size: ${Dimension.fontScale(10.5)}px;
+  font-weight: ${(props: IProps) => (props.bold ? '600' : '400')};
 `;
 
 export const DefaultPriceValue = styled.Text`
   font-weight: bold;
   color: ${color.mid_green};
-  font-size: ${Dimension.fontScale(15)}px;
+  font-size: ${Dimension.fontScale(14.5)}px;
 `;
 
 export const BottomContentContainer = styled.View`
@@ -85,7 +86,7 @@ export const PriceContainer = styled.View`
 export const RatingChip = styled.View`
   align-items: center;
   justify-content: center;
-  width: ${Dimension.widthScale(0.215)}px;
+  width: ${Dimension.widthScale(0.21)}px;
   height: ${Dimension.heightScale(0.025)}px;
   border-radius: ${Dimension.widthScale(1)}px;
   background-color: ${(props: IProps) => props.priceTrustingColor};

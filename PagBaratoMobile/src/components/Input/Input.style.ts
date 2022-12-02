@@ -41,13 +41,12 @@ export const WrapperIcon = styled.View`
 `;
 
 export const InputText = styled(TextInput).attrs({
-  placeholderTextColor: color.dark_gray,
+  placeholderTextColor: color.baby_gray,
 })`
-  background-color: transparent;
-  font-family: ${font.regular};
   padding: 3%;
-  width: ${Dimension.widthScale(0.9)}px;
   color: ${color.dark_gray};
+  background-color: transparent;
+  width: ${Dimension.widthScale(0.9)}px;
   max-width: ${Dimension.widthScale(0.55)}px;
 `;
 

@@ -18,6 +18,8 @@ import api from '../../services/api';
 import * as S from './ProductMapScreen.style';
 import {ThumbsType} from '../../enum/priceRate';
 
+Feather.loadFont();
+
 const {width, height} = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
