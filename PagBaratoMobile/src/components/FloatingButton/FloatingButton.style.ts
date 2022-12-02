@@ -18,8 +18,8 @@ export const FloatingButtonContainer = styled.TouchableOpacity.attrs({
   align-items: center;
   justify-content: center;
   top: ${(props: IProps) =>
-    props.width ? `${Dimension.heightScale(0.85)}px` : '600px'};
-  right: 20px;
+    props.width ? `${Dimension.heightScale(0.8)}px` : '550px'};
+  right: 30px;
   background-color: ${color.primary};
   border-radius: ${Dimension.widthScale(1)}px;
   elevation: 4;

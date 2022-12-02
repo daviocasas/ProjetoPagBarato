@@ -213,7 +213,7 @@ export function HomeScreen() {
       <Header title="PagBarato" />
 
       <View style={styles.viewContainer}>
-        <Text style={styles.text}>Distância (km): {distanceRangeFilter}</Text>
+        <Text style={styles.text}>Raio de busca: {distanceRangeFilter}km</Text>
         <Slider
           minimumValue={1}
           maximumValue={20}
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   },
   viewContainer: {
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 180,
   },
   text: {
     color: color.black,
