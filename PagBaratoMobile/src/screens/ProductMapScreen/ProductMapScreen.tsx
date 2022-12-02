@@ -11,12 +11,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-toast-message';
 
 import PriceMapMarker from '../../components/PriceMapMarker/PriceMapMarker';
-import {getItem, StorageItems} from '../../services/storage';
+import {getItem, setItem, StorageItems} from '../../services/storage';
 import {color} from '../../config/theme.json';
 
 import api from '../../services/api';
 import * as S from './ProductMapScreen.style';
 import {ThumbsType} from '../../enum/priceRate';
+
+Feather.loadFont();
 
 const {width, height} = Dimensions.get('window');
 
@@ -44,6 +46,9 @@ export function ProductMapScreen({route}) {
   const [productData, setProductData] = useState<any>(null);
   const [lowestPrice, setLowestPrice] = useState<any>(null);
   const [selectedMarker, setSelectedMarker] = useState<any>(null);
+  const [ratedPricesList, setRatedPricesList] = useState<Array<any>>([]);
+  const [fetchRatedPricesList, setFetchRatedPricesList] =
+    useState<boolean>(true);
 
   const location = currentLocation;
   const prices = productData?.prices;
@@ -60,22 +65,62 @@ export function ProductMapScreen({route}) {
     return min;
   };
 
-  const ratePrice = (thumbs?: ThumbsType) => {
-    if (thumbs) {
+  const ratePrice = async (thumbs?: ThumbsType) => {
+    try {
+      if (!thumbs) {
+        setSelectedMarker(null);
+        return;
+      }
+
+      const newRatedPricesList = [...ratedPricesList];
+      const token = await getItem(StorageItems.ACCESS_TOKEN);
+
+      await api.post(
+        `/api/price/${selectedMarker.priceId}/rate`,
+        {thumbs},
+        {headers: {Authorization: `Bearer ${token}`}},
+      );
+
+      const index = ratedPricesList.findIndex(
+        x => x.priceId === selectedMarker.priceId,
+      );
+
+      if (index >= 0) {
+        newRatedPricesList[index].thumbs = thumbs;
+      } else {
+        newRatedPricesList.push({
+          thumbs,
+          priceId: selectedMarker.priceId,
+        });
+      }
+
+      setRatedPricesList(newRatedPricesList);
+
+      await setItem(
+        StorageItems.RATED_PRICES_LIST,
+        JSON.stringify(newRatedPricesList),
+      );
+
       Toast.show({
         type: 'success',
         text1: 'Avaliação computada com sucesso!',
         text2: 'Agradecemos por sua contribuição :)',
       });
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    setSelectedMarker(null);
+  const alreadyRated = (thumbs: ThumbsType) => {
+    return !!ratedPricesList.find(
+      x => x.priceId === selectedMarker.priceId && x.thumbs === thumbs,
+    );
   };
 
   const fetchProductPrices = async () => {
-    const token = await getItem(StorageItems.ACCESS_TOKEN);
-
     try {
+      const token = await getItem(StorageItems.ACCESS_TOKEN);
+
       const {data: response} = await api.get(
         `/api/product/${productId}?usersLatitude=${location.currentLatitude}
             &usersLongitude=${location.currentLongitude}
@@ -92,7 +137,7 @@ export function ProductMapScreen({route}) {
 
       setProductData(response.data);
     } catch (err) {
-      console.log('Erro: ', err.response);
+      console.error(err.response);
     }
   };
 
@@ -101,6 +146,19 @@ export function ProductMapScreen({route}) {
       fetchProductPrices();
     }
   }, [location]);
+
+  useEffect(() => {
+    if (fetchRatedPricesList) {
+      getItem(StorageItems.RATED_PRICES_LIST)
+        .then(ratedPrices => {
+          setFetchRatedPricesList(false);
+          setRatedPricesList(JSON.parse(ratedPrices) || []);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  }, [fetchRatedPricesList]);
 
   return (
     <S.WrapperContainer>
@@ -150,19 +208,37 @@ export function ProductMapScreen({route}) {
           <S.ThumbsMainContainer isLowestPrice={selectedMarker.isLowestPrice}>
             <S.InlineThumbsContainer>
               <S.ThumbsIconButton
+                disabled={alreadyRated(ThumbsType.UP)}
                 isLowestPrice={selectedMarker.isLowestPrice}
                 onPress={() => ratePrice(ThumbsType.UP)}>
-                <Feather size={14} name="thumbs-up" color={color.cream} />
+                <S.ThumbsIcon
+                  size={alreadyRated(ThumbsType.UP) ? 16 : 12}
+                  name="thumbs-up"
+                  color={
+                    alreadyRated(ThumbsType.UP)
+                      ? color.cream
+                      : color.little_cream
+                  }
+                />
               </S.ThumbsIconButton>
               <S.ThumbsIconButton
+                disabled={alreadyRated(ThumbsType.DOWN)}
                 isLowestPrice={selectedMarker.isLowestPrice}
                 onPress={() => ratePrice(ThumbsType.DOWN)}>
-                <Feather size={14} name="thumbs-down" color={color.cream} />
+                <S.ThumbsIcon
+                  size={alreadyRated(ThumbsType.DOWN) ? 16 : 12}
+                  name="thumbs-down"
+                  color={
+                    alreadyRated(ThumbsType.DOWN)
+                      ? color.cream
+                      : color.little_cream
+                  }
+                />
               </S.ThumbsIconButton>
               <S.ThumbsIconButton
                 isLowestPrice={selectedMarker.isLowestPrice}
                 onPress={() => ratePrice()}>
-                <Feather size={14} name="x" color={color.cream} />
+                <Feather size={13} name="x" color={color.little_cream} />
               </S.ThumbsIconButton>
             </S.InlineThumbsContainer>
           </S.ThumbsMainContainer>

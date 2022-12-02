@@ -1,5 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {LogBox, View} from 'react-native';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FunctionComponent,
+} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 import {
@@ -11,6 +15,8 @@ import {
   Platform,
   PermissionsAndroid,
   Text,
+  LogBox,
+  View,
 } from 'react-native';
 
 import {Slider} from '@miblanchard/react-native-slider';
@@ -25,11 +31,15 @@ import {SeparatorItem} from '../../components/SeparatorItem/SeparatorItem';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 
 import * as S from './HomeScreen.style';
+import {useAuth} from '../../contexts/Auth';
 
-export function HomeScreen() {
+export const HomeScreen: FunctionComponent = () => {
+  LogBox.ignoreLogs(['new NativeEventEmitter']);
+
   const [list, setList] = useState<any>([]);
   const [watchID, setWatchID] = useState(0);
   const [distance, setDistance] = useState(5);
+  const [firstLoad, setFirstLoad] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(false);
   const [distanceRangeFilter, setDistanceRangeFilter] = useState(5);
@@ -40,6 +50,7 @@ export function HomeScreen() {
   });
 
   const navigation = useNavigation();
+  const {refreshToken} = useAuth();
 
   function renderItem({item}) {
     return (
@@ -56,9 +67,6 @@ export function HomeScreen() {
     );
   }
 
-  LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
-  LogBox.ignoreAllLogs(); //Ignore all log notifications
-
   const changeDistanceRange = (val: number | number[]) => {
     const sliderValue = val[0] && Math.floor(val[0]);
     if (sliderValue !== distanceRangeFilter) {
@@ -67,7 +75,12 @@ export function HomeScreen() {
   };
 
   const fetchData = async () => {
-    if (!location.currentLatitude || !location.currentLongitude) return;
+    if (
+      !location.currentLatitude ||
+      !location.currentLongitude ||
+      isFetchingData
+    )
+      return;
 
     setIsFetchingData(true);
 
@@ -79,12 +92,12 @@ export function HomeScreen() {
         {headers: {Authorization: `Bearer ${token}`}},
       );
 
-      console.log(response.data);
-
       if (response && response.data) setList(response.data);
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err.response.data);
+      if (err?.response?.data?.error?.statusCode === 403) refreshToken();
     } finally {
+      if (firstLoad) setFirstLoad(false);
       setIsFetchingData(false);
     }
   };
@@ -93,7 +106,7 @@ export function HomeScreen() {
     useCallback(() => {
       if (location.currentLatitude && location.currentLongitude) {
         if (distanceRangeFilter && !isFetchingData) {
-          console.log('FocusEffect fetchData()');
+          console.info('FocusEffect fetchData()');
           fetchData();
         }
       } else {
@@ -103,16 +116,13 @@ export function HomeScreen() {
   );
 
   useEffect(() => {
-    if (searchText !== '') {
-      setList(prevState =>
-        prevState.filter(i => {
-          return i.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
-        }),
-      );
-    } else if (!isFetchingData) {
-      console.log('SearchText fetchData()');
-      fetchData();
-    }
+    if (searchText === '') return;
+
+    setList(prevState =>
+      prevState.filter(i => {
+        return i.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+      }),
+    );
   }, [searchText]);
   // https://reactnative.dev/docs/refreshcontrol
 
@@ -125,7 +135,10 @@ export function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    if (distanceRangeFilter) fetchData();
+    if (distanceRangeFilter && !isFetchingData && !firstLoad) {
+      console.info('distanceRangeFilter fetchData()');
+      fetchData();
+    }
   }, [distanceRangeFilter]);
 
   const grantPermissionLocation = () => {
@@ -171,7 +184,7 @@ export function HomeScreen() {
         setMyLocation(info.coords.latitude, info.coords.longitude);
       },
       err => {
-        console.log('Erro', err);
+        console.error(err);
       },
       {
         enableHighAccuracy: true,
@@ -184,7 +197,7 @@ export function HomeScreen() {
         setMyLocation(position.coords.latitude, position.coords.longitude);
       },
       err => {
-        console.log('Erro', err);
+        console.error(err);
       },
       {
         enableHighAccuracy: true,
@@ -204,7 +217,7 @@ export function HomeScreen() {
       <Header title="PagBarato" />
 
       <View style={styles.viewContainer}>
-        <Text style={styles.text}>Distância (km): {distanceRangeFilter}</Text>
+        <Text style={styles.text}>Raio de busca: {distanceRangeFilter}km</Text>
         <Slider
           minimumValue={1}
           maximumValue={20}
@@ -253,7 +266,7 @@ export function HomeScreen() {
       />
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -262,7 +275,7 @@ const styles = StyleSheet.create({
   },
   viewContainer: {
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 180,
   },
   text: {
     color: color.black,

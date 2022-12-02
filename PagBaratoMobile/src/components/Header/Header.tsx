@@ -10,6 +10,8 @@ interface IHeader {
   title?: string;
 }
 
+Feather.loadFont()
+
 const Header: FunctionComponent<IHeader> = ({title}: any) => {
   const showConfirmLogoutDialog = () => {
     return Alert.alert(

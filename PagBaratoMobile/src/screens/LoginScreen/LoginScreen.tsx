@@ -16,9 +16,7 @@ export function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function signIn(event) {
-    event.preventDefault();
-
+  async function signIn() {
     try {
       if (email === '' || password === '') {
         Toast.show({
@@ -77,7 +75,7 @@ export function LoginScreen({navigation}) {
         justifyContent: 'center',
         backgroundColor: color.cream,
       }}>
-      <S.SubContainer>
+      <S.MainContainer>
         <S.LogoContainer>
           <Image
             style={{width: 250, height: 150}}
@@ -107,13 +105,13 @@ export function LoginScreen({navigation}) {
         </S.WrapperForm>
         <S.WrapperFormLink>
           <S.WrapperLink onPress={() => navigation.navigate('CreateAccount')}>
-            <S.TextButtonLink>Criar uma conta</S.TextButtonLink>
+            <S.TextButtonLink>CRIAR UMA CONTA</S.TextButtonLink>
           </S.WrapperLink>
         </S.WrapperFormLink>
         <S.WrapperForm>
-          <Button title="Entrar" width={0.6} onPress={signIn} />
+          <Button title="Entrar" width={0.75} onPress={() => signIn()} />
         </S.WrapperForm>
-      </S.SubContainer>
+      </S.MainContainer>
     </KeyboardAwareScrollView>
   );
 }

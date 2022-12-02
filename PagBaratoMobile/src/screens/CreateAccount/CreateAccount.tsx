@@ -12,8 +12,8 @@ import {color} from '../../config/theme.json';
 import {FirebaseError} from '../../enum/firebaseErrors';
 
 export function CreateAccount({navigation}) {
-  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const signUp = async () => {
@@ -29,13 +29,16 @@ export function CreateAccount({navigation}) {
       }
 
       const res = await api.post('/api/user', {email, password, name});
+
       Toast.show({
         type: 'success',
         position: 'bottom',
         text1: 'Cadastro efetuado com sucesso!',
         text2: 'Agora você já pode desfrutar dos melhores preços :D',
       });
+
       navigation.navigate('Login');
+
       return res.data;
     } catch (err) {
       const errorCode = err.response?.data?.error?.code;
@@ -66,8 +69,8 @@ export function CreateAccount({navigation}) {
         justifyContent: 'center',
         backgroundColor: color.cream,
       }}>
-      <S.SubContainer>
-        <S.TitleText bold>Cadastro</S.TitleText>
+      <S.MainContainer>
+        <S.TitleText bold>CADASTRO</S.TitleText>
         <S.DescriptionText>
           Preencha os dados a seguir para utilizar a plataforma:
         </S.DescriptionText>
@@ -101,9 +104,9 @@ export function CreateAccount({navigation}) {
           />
         </S.WrapperForm>
         <S.WrapperForm>
-          <Button title="Criar conta" width={0.6} onPress={signUp} />
+          <Button title="Criar conta" width={0.75} onPress={() => signUp()} />
         </S.WrapperForm>
-      </S.SubContainer>
+      </S.MainContainer>
     </KeyboardAwareScrollView>
   );
 }

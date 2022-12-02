@@ -2,6 +2,9 @@ import styled from 'styled-components/native';
 
 import {color, font} from '../../config/theme.json';
 import * as Dimension from '../../services/dimensionsService';
+import Feather from 'react-native-vector-icons/Feather';
+
+Feather.loadFont();
 
 interface IProps {
   isLowestPrice?: boolean;
@@ -25,9 +28,9 @@ export const TransparentContainer = styled.View`
 `;
 
 export const Bubble = styled.View`
-  background-color: ${color.dark_gray}99;
-  padding-horizontal: ${Dimension.widthScale(0.03)}px;
-  padding-vertical: ${Dimension.widthScale(0.015)}px;
+  background-color: ${color.dark_gray};
+  padding-horizontal: ${Dimension.widthScale(0.035)}px;
+  padding-vertical: ${Dimension.widthScale(0.02)}px;
   border-radius: ${Dimension.widthScale(0.06)}px;
 `;
 
@@ -37,17 +40,17 @@ export const BubbleText = styled.Text`
   color: ${color.cream};
 `;
 
-export const ThumbsText = styled.Text`r
+export const ThumbsText = styled.Text`
   color: ${color.black};
   font-family: ${font.medium};
   background-color: ${color.cream}60;
-  font-size: ${Dimension.fontScale(9.5)}px;
+  font-size: ${Dimension.fontScale(10)}px;
   border-top-left-radius: ${Dimension.widthScale(1)}px;
   border-top-right-radius: ${Dimension.widthScale(1)}px;
 `;
 
 export const ThumbsMainContainer = styled.View`
-  height: ${Dimension.heightScale(0.04)}px;
+  height: ${Dimension.heightScale(0.05)}px;
   border-radius: ${Dimension.widthScale(1)}px;
   margin-bottom: ${Dimension.widthScale(0.01)}px;
   background-color: ${(props: IProps) =>
@@ -57,15 +60,24 @@ export const ThumbsMainContainer = styled.View`
 export const InlineThumbsContainer = styled.View`
   flex: 1;
   flex-direction: row;
-  align-self: flex-start;
+  align-items: center;
   justify-content: space-between;
+  border-radius: ${Dimension.widthScale(1)}px;
 `;
 
 export const ThumbsIconButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
 })`
-  padding: ${Dimension.widthScale(0.02)}px;
+  padding: ${Dimension.widthScale(0.0275)}px;
   background-color: ${(props: IProps) =>
     props.isLowestPrice ? color.secondary : color.primary};
   border-radius: ${Dimension.widthScale(1)}px;
+`;
+
+export const ThumbsIcon = styled(Feather).attrs(({size, name, color}) => ({
+  name,
+  color,
+  size,
+}))`
+  animation: all 0.2s ease-in-out;
 `;
