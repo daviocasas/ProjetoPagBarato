@@ -1,8 +1,10 @@
 import React from 'react';
+import {enableLatestRenderer} from 'react-native-maps';
 
-import { } from 'react-native/Libraries/NewAppScreen';
 import { AuthProvider } from './src/contexts/Auth';
 import { Router } from './src/routes/Router';
+
+enableLatestRenderer();
 
 const App = ({ navigation, route }) => {
   return (

@@ -1,31 +1,79 @@
 import React from 'react';
-import { Image, ImageProps } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import {color} from '../../config/theme.json';
+import {PriceType, TrustingMap, TrustingType} from '../../enum/price';
+import {ProductUnitAbbrevMap, ProductUnitType} from '../../enum/product';
 
 import * as S from './ProductItem.style';
 
+Feather.loadFont();
+
 export interface Product {
-    id: string;
-    name: string;
-    establishment: string;
-    price: number;
-    image: ImageProps["source"];
-    onPress: () => void;
+  id: string;
+  name: string;
+  unit: ProductUnitType;
+  lowestPrice: number;
+  lowestPriceEstablishment: string;
+  lowestPriceTrustingFactor: TrustingType;
+  isProductWithNearExpirationDate: boolean;
+  onPress: () => void;
 }
 
-export function ProductItem({ name, price, establishment, image, onPress }: Product) {
-    return (
-        <>
-            <S.ProductContainer onPress={onPress}>
-                <Image style={{ width: 120, height: 100 }} source={image || { uri: 'https://cdn-icons-png.flaticon.com/512/2424/2424721.png' }} />
-                <S.ContentContainer>
-                    <S.DefaultTitle>{name}</S.DefaultTitle>
-                    <S.DefaultDescription>Estabelecimento: {establishment}</S.DefaultDescription>
-                    <S.DefaultDescription>Preço mais baixo encontrado: </S.DefaultDescription>
-                    <S.DefaultPrice>
-                        R$ {price.toFixed(2)}
-                    </S.DefaultPrice>
-                </S.ContentContainer>
-            </S.ProductContainer>
-        </>
-    );
+export function ProductItem({
+  name,
+  unit,
+  lowestPrice,
+  lowestPriceEstablishment,
+  lowestPriceTrustingFactor,
+  isProductWithNearExpirationDate,
+  onPress,
+}: Product) {
+  const {value: priceTrustingFactor, color: priceTrustingColor} =
+    TrustingMap[lowestPriceTrustingFactor];
+
+  return (
+    <>
+      <S.ProductContainer>
+        <S.ContentContainer>
+          <S.InlineContainer>
+            <S.DefaultTitle>{name}</S.DefaultTitle>
+            <S.OpenProductIconButton onPress={onPress}>
+              <Feather name="map-pin" size={14} color={color.cream} />
+            </S.OpenProductIconButton>
+          </S.InlineContainer>
+
+          <S.DefaultDescription>
+            Em: {lowestPriceEstablishment}
+          </S.DefaultDescription>
+          <S.DefaultDescription>
+            Produto próx. da validade?{' '}
+            <Feather
+              name={isProductWithNearExpirationDate ? 'check' : 'x'}
+              size={14}
+              color={color.black}
+            />
+          </S.DefaultDescription>
+
+          <S.BottomContentContainer>
+            <S.RatingChipContainer>
+              <S.DefaultLabel>Confiabilidade: </S.DefaultLabel>
+              <S.RatingChip priceTrustingColor={priceTrustingColor}>
+                <S.RatingChipText>{priceTrustingFactor}</S.RatingChipText>
+              </S.RatingChip>
+            </S.RatingChipContainer>
+
+            <S.PriceContainer>
+              <S.DefaultLabel bold>
+                Menor preço:{' '}
+                <S.DefaultPriceValue>
+                  R$ {lowestPrice.toFixed(2).replace('.', ',')}
+                </S.DefaultPriceValue>
+                /{ProductUnitAbbrevMap[unit]}
+              </S.DefaultLabel>
+            </S.PriceContainer>
+          </S.BottomContentContainer>
+        </S.ContentContainer>
+      </S.ProductContainer>
+    </>
+  );
 }
